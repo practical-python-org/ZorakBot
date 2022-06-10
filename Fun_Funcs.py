@@ -27,9 +27,10 @@ def pugFact():
 	pugFact = soup.find('h2')
 	return pugFact.text[:-15]
 
-def catpic():
-	r = requests.get('http://aws.random.cat/meow').text
-	return(r[9:-2])
+# def catpic():  # THIS DOES NOT WORK YET
+# 	r = requests.get('https://cataas.com/cat').text
+# 	return(r[9:-2])
+
 
 def joke():
   return(json.loads(requests.get('https://geek-jokes.sameerkumar.website/api?format=json').text)['joke'])
