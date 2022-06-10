@@ -1,11 +1,13 @@
-from keep_alive import keep_alive
-import os, math
 from discord.ext.commands import Bot
-import discord
-import BotFuncs
-import datetime
+from z_keep_alive import keep_alive
 from discord.ext import owoify
 from discord import Member
+import Admin_Funcs
+import Fun_Funcs
+import Utility_Funcs
+import os, math
+import discord
+import datetime
 
 bot = Bot("!")
 bot.remove_command("help")
@@ -15,50 +17,11 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="you..."))
 	print('{0.user}, ready to conquer the world.'.format(bot))
 
-# @bot.event
-# async def on_message(message):
-# 	if "https://discord.com/channels" in message.content:
-# 		text = message.content
-# 		l = text.replace(", ", " ").split(" ")
-# 		key = "https://discord.com/channels/"
-# 		for item in l:
-# 			if key in item:
-# 				try:
-# 					lilink = l[l.index(item)]
-# 					response = "-**---** Link Preview **---**- \n\n"
-# 					link = lilink.replace("https://discord.com/channels/", "").split("/")
-# 					sourceServer = bot.get_guild(int(link[0]))
-# 					sourceChannel = sourceServer.get_channel(int(link[1]))
-# 					sourceMessage = await sourceChannel.fetch_message(int(link[2]))
-	
-# 					if len(sourceMessage.content) <= 1000:
-# 						embed = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
-# 						embed.add_field(name=f"Length: {len(sourceMessage.content)}", value=sourceMessage.content)
-# 						embed.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
-# 						await message.channel.send(embed=embed)
-	
-# 					if len(sourceMessage.content) > 1000:
-# 						contents = sourceMessage.content
-# 						con2 = []
-# 						splitstr = math.ceil(len(contents) / 1000)
-# 						embed1 = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
-# 						while contents:
-# 							con2.append(contents[:900])
-# 							contents = contents[900:]
-# 						for feilds in range(0, splitstr):
-# 							embed1.add_field(name="----------------------", value=f"```py\n{con2[feilds]}\n```",
-# 																 inline=False)
-# 						embed1.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
-# 						await message.channel.send(embed=embed1)
-# 				except:
-# 					await message.channel.send(f"-**Cannot** **preview**-\n-"
-# 												f"**Make sure message is in this server,"
-# 												f" and not a text file or image**-")
-				
 #-----------------------------#  Administrator Commands
 @bot.command()
 async def echo(ctx, *, args):
 	if ctx.message.author.guild_permissions.administrator:
+		await ctx.message.delete()
 		try:
 			await ctx.send(args)
 		except:
@@ -70,8 +33,8 @@ async def echo(ctx, *, args):
 @bot.command()
 async def dailychallenge(ctx):
 	if ctx.message.author.guild_permissions.administrator:
-		await ctx.send(BotFuncs.DailyChallenge())
-		BotFuncs.increaseDay()
+		await ctx.send(Admin_Funcs.DailyChallenge())
+		Admin_Funcs.increaseDay()
 	else:
 		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
 
@@ -89,61 +52,65 @@ async def rules(ctx, *, args):
 	else:
 		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
 
-#-----------------------------#  User Commands
+#-----------------------------#  User "Fun" Commands
 @bot.command()
 async def hello(ctx):
-	await ctx.send("Don't talk to me, I am being developed!", reference=ctx.message)
-
-@bot.command()
-async def catfact(ctx):
-	await ctx.send(BotFuncs.catfact(), reference=ctx.message)
-
-@bot.command()
-async def dogfact(ctx):
-	await ctx.send(BotFuncs.dogfact(), reference=ctx.message)
-
-@bot.command()
-async def quote(ctx):
-	await ctx.send(BotFuncs.quote(), reference=ctx.message)
-
-@bot.command()
-async def joke(ctx):
-	await ctx.send(BotFuncs.joke(), reference=ctx.message)
-
-@bot.command()
-async def google(ctx, *, args):
-	await ctx.send(
-		f"Here, allow me to google that one for you:\nhttps://letmegooglethat.com/?q={args.replace(' ', '+')}",
-		reference=ctx.message
-	)
-
-@bot.command(aliases=["8ball"])
-async def eightball(ctx):
-	await ctx.send('🎱 - ' + BotFuncs.magik(), reference=ctx.message)
-
-@bot.command()
-async def fakeperson(ctx):
-	await ctx.send(BotFuncs.fakePerson(), reference=ctx.message)
-
-@bot.command()
-async def pugfact(ctx):
-	await ctx.send(BotFuncs.pugFact(), reference=ctx.message)
+	await ctx.send(Fun_Funcs.hello(), reference=ctx.message)
 
 @bot.command()
 async def taunt(ctx):
-	await ctx.send(BotFuncs.taunt(), reference=ctx.message)
-
-@bot.command()
-async def runcode(ctx):
-	await ctx.send(BotFuncs.runcode(), reference=ctx.message)
+	await ctx.send(Fun_Funcs.taunt(), reference=ctx.message)
 	
 @bot.command()
-async def codeblock(ctx):
-	await ctx.send(BotFuncs.codeblock(), reference=ctx.message)
+async def catfact(ctx):
+	await ctx.send(Fun_Funcs.catfact(), reference=ctx.message)
+
+@bot.command()
+async def dogfact(ctx):
+	await ctx.send(Fun_Funcs.dogfact(), reference=ctx.message)
+
+@bot.command()
+async def pugfact(ctx):
+	await ctx.send(Fun_Funcs.pugFact(), reference=ctx.message)
+
+@bot.command()
+async def catpic(ctx):
+	await ctx.send(Fun_Funcs.catpic(), reference=ctx.message)
+
+@bot.command()
+async def joke(ctx):
+	await ctx.send(Fun_Funcs.joke(), reference=ctx.message)
+	
+@bot.command()
+async def quote(ctx):
+	await ctx.send(Fun_Funcs.quote(), reference=ctx.message)
+
+@bot.command(aliases=["8ball"])
+async def eightball(ctx):
+	await ctx.send('🎱 - ' + Fun_Funcs.eightball(), reference=ctx.message)
+	
+@bot.command()
+async def fakeperson(ctx):
+	await ctx.send(Fun_Funcs.fakePerson(), reference=ctx.message)
 
 @bot.command()
 async def rolldice(ctx):
-	await ctx.send(f"**{ctx.message.author.name}** rolled a **{BotFuncs.dice()}**", reference=ctx.message)
+	await ctx.send(f"**{ctx.message.author.name}** rolled a **{Fun_Funcs.dice()}**", reference=ctx.message)
+
+@bot.command()
+async def google(ctx, *, args):
+	await ctx.send(f"Here, allow me to google that one for you:\nhttps://letmegooglethat.com/?q={args.replace(' ', '+')}",reference=ctx.message)
+
+
+	
+#-----------------------------#  User "Utility" Commands
+@bot.command()
+async def runcode(ctx):
+	await ctx.send(Utility_Funcs.runcode(), reference=ctx.message)
+	
+@bot.command()
+async def codeblock(ctx):
+	await ctx.send(Utility_Funcs.codeblock(), reference=ctx.message)
 
 @bot.command()
 async def embed(ctx):
@@ -169,7 +136,7 @@ async def embed(ctx):
 
 @bot.command()
 async def zeus(ctx, *, args):
-	res = BotFuncs.check_site(url=args)
+	res = Utility_Funcs.Run_zeus(url=args)
 
 	if res[1] == "**ONLINE**":
 		COLOR = discord.Color.green()
@@ -278,7 +245,7 @@ async def owo(ctx, *, args):
 
 @bot.command()
 async def help(ctx):
-	embed = discord.Embed(title="User-Commands", description=BotFuncs.help_msg(), timestamp=datetime.datetime.utcnow())
+	embed = discord.Embed(title="User-Commands", description=Utility_Funcs.help_msg(), timestamp=datetime.datetime.utcnow())
 	await ctx.send(embed=embed, reference=ctx.message)
 
 if __name__ == "__main__":
