@@ -15,7 +15,46 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="you..."))
 	print('{0.user}, ready to conquer the world.'.format(bot))
 
-
+# @bot.event
+# async def on_message(message):
+# 	if "https://discord.com/channels" in message.content:
+# 		text = message.content
+# 		l = text.replace(", ", " ").split(" ")
+# 		key = "https://discord.com/channels/"
+# 		for item in l:
+# 			if key in item:
+# 				try:
+# 					lilink = l[l.index(item)]
+# 					response = "-**---** Link Preview **---**- \n\n"
+# 					link = lilink.replace("https://discord.com/channels/", "").split("/")
+# 					sourceServer = bot.get_guild(int(link[0]))
+# 					sourceChannel = sourceServer.get_channel(int(link[1]))
+# 					sourceMessage = await sourceChannel.fetch_message(int(link[2]))
+	
+# 					if len(sourceMessage.content) <= 1000:
+# 						embed = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
+# 						embed.add_field(name=f"Length: {len(sourceMessage.content)}", value=sourceMessage.content)
+# 						embed.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
+# 						await message.channel.send(embed=embed)
+	
+# 					if len(sourceMessage.content) > 1000:
+# 						contents = sourceMessage.content
+# 						con2 = []
+# 						splitstr = math.ceil(len(contents) / 1000)
+# 						embed1 = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
+# 						while contents:
+# 							con2.append(contents[:900])
+# 							contents = contents[900:]
+# 						for feilds in range(0, splitstr):
+# 							embed1.add_field(name="----------------------", value=f"```py\n{con2[feilds]}\n```",
+# 																 inline=False)
+# 						embed1.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
+# 						await message.channel.send(embed=embed1)
+# 				except:
+# 					await message.channel.send(f"-**Cannot** **preview**-\n-"
+# 												f"**Make sure message is in this server,"
+# 												f" and not a text file or image**-")
+				
 #-----------------------------#  Administrator Commands
 @bot.command()
 async def echo(ctx, *, args):
@@ -33,7 +72,6 @@ async def dailychallenge(ctx):
 	if ctx.message.author.guild_permissions.administrator:
 		await ctx.send(BotFuncs.DailyChallenge())
 		BotFuncs.increaseDay()
-	
 	else:
 		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
 
@@ -75,7 +113,7 @@ async def joke(ctx):
 @bot.command()
 async def google(ctx, *, args):
 	await ctx.send(
-		f"Here, allow me to google that one for you:\nhttps://letmegooglethat.com/q={args.replace(' ', '+')}",
+		f"Here, allow me to google that one for you:\nhttps://letmegooglethat.com/?q={args.replace(' ', '+')}",
 		reference=ctx.message
 	)
 
@@ -94,6 +132,14 @@ async def pugfact(ctx):
 @bot.command()
 async def taunt(ctx):
 	await ctx.send(BotFuncs.taunt(), reference=ctx.message)
+
+@bot.command()
+async def runcode(ctx):
+	await ctx.send(BotFuncs.runcode(), reference=ctx.message)
+	
+@bot.command()
+async def codeblock(ctx):
+	await ctx.send(BotFuncs.codeblock(), reference=ctx.message)
 
 @bot.command()
 async def rolldice(ctx):
@@ -226,7 +272,7 @@ async def avatar(ctx, member: Member = None):
 
 @bot.command()
 async def owo(ctx, *, args):
-	embed = discord.Embed(description=owoify.owoify(args), timestamp=datetime.datetime.utcnow())
+	embed = discord.Embed(description=await owoify.owoify(args), timestamp=datetime.datetime.utcnow())
 	embed.set_author(name=f"{ctx.message.author.display_name} OWO'd something!", icon_url=ctx.message.author.avatar_url)
 	await ctx.send(embed=embed, reference=ctx.message)
 

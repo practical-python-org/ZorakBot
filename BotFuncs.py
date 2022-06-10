@@ -1,12 +1,10 @@
 from bs4 import BeautifulSoup
-from time import sleep
-from os import system
 import requests
 import random
 import json
 import os
-import time 
 
+requests.packages.urllib3.disable_warnings()
 
 def taunt():
 	r = requests.get('https://fungenerators.com/random/insult/shakespeare/')
@@ -95,6 +93,29 @@ def check_site(url):
 
 	return context
 
+def runcode():
+	return """
+To run python code in the chat, type:
+
+\./run python
+\```py
+Your code here
+\```
+"""
+
+def codeblock():
+	return """
+	To format your python code like this:
+```py
+x = 'Hello World!'
+```
+Type this:
+
+\```py
+Your code here
+\```
+"""
+	
 def help_msg():
 	return """
 ***For-fun commands***
@@ -108,16 +129,15 @@ def help_msg():
 - !taunt
 - !rolldice
 - !owo [text]
+	
 ***Utility Commands***
+- !codeblock
+- !runcode
 - !google [question]
 - !embed </br>[title]</br>[content]  
 - !zeus [website]
 - !fakeperson
 - !poll </br>[title]</br>[options]
 - !suggest [suggestion]
-- avatar [member] (default=author)
-***Admin Commands***
-- !echo [message]
-- !dailychallenge
-- !rules </br>[title]</br>[rules]
+- !avatar [member] (default=author)
 	"""
