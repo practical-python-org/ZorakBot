@@ -150,43 +150,45 @@ async def zeus(ctx, *, args):
 
 	await ctx.send(embed=embed)
 
-@bot.command()
-async def preview(ctx, *, args):
-	if "https://discord.com/channels" in args:
-		text = args
-		l = text.replace(", ", " ").split(" ")
-		key = "https://discord.com/channels/"
-		for item in l:
-				if key in item:
-						try:
-								lilink = l[l.index(item)]
-								response = "-**---** Link Preview **---**- \n\n"
-								link = lilink.replace("https://discord.com/channels/", "").split("/")
-								sourceMessage = await bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
-	
-								if len(sourceMessage.content) <= 1000:
-										embed = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
-										embed.add_field(name=f"Length: {len(sourceMessage.content)}", value=sourceMessage.content)
-										embed.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
-										await ctx.send(embed=embed)
-	
-								if len(sourceMessage.content) > 1000:
-										contents = sourceMessage.content
-										con2 = []
-										splitstr = math.ceil(len(contents) / 1000)
-										embed1 = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
-										while contents:
-												con2.append(contents[:900])
-												contents = contents[900:]
-										for feilds in range(0, splitstr):
-												embed1.add_field(name="----------------------", value=f"```py\n{con2[feilds]}\n```",
-																				 inline=False)
-										embed1.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
-										await ctx.send(embed=embed1)
-						except:
-								await ctx.send(f"-**Cannot** **preview**-\n-"
-															f"**Make sure message is in this server,"
-															f" and not a text file or image**-")
+@bot.event
+async def on_message(message):
+    text = message.content
+    l = text.replace(", ", " ").split(" ")
+    key = "https://discord.com/channels/"
+    for item in l:
+        if key in item:
+            try:
+                lilink = l[l.index(item)]
+                response = "-**---** **Content** **in** **the** **link** **above** **---**- \n\n"
+                link = lilink.replace("https://discord.com/channels/", "").split("/")
+                sourceServer = bot.get_guild(int(link[0]))
+                sourceChannel = sourceServer.get_channel(int(link[1]))
+                sourceMessage = await sourceChannel.fetch_message(int(link[2]))
+
+                if len(sourceMessage.content) <= 1000:
+                    embed = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
+                    embed.add_field(name=f"Length: {len(sourceMessage.content)}", value=sourceMessage.content)
+                    embed.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
+                    await message.channel.send(embed=embed)
+
+                if len(sourceMessage.content) > 1000:
+                    contents = sourceMessage.content
+                    con2 = []
+                    splitstr = math.ceil(len(contents)/1000)
+                    embed1 = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
+                    while contents:
+                        con2.append(contents[:900])
+                        contents = contents[900:]
+                    for feilds in range(0, splitstr):
+                        embed1.add_field(name="**---CUT---HERE---**", value=f"```py\n{con2[feilds]}\n```", inline=False)
+                    embed1.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
+                    await message.channel.send(embed=embed1)
+
+            except:
+
+                await message.channel.send(f"         -**Cannot** **preview**-\n-"
+                                           f"**Make sure message is in this server,"
+                                           f" and not a text file or image**-")
 
 @bot.command()
 async def suggest(ctx, *, args):
