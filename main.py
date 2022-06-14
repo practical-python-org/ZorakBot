@@ -20,7 +20,8 @@ async def on_ready():
 #-----------------------------#  Administrator Commands
 @bot.command()
 async def echo(ctx, *, args):
-	if ctx.message.author.guild_permissions.administrator:
+	if ctx.message.author.guild_permissions.manage_roles:
+		print('has role')
 		await ctx.message.delete()
 		try:
 			await ctx.send(args)
@@ -150,8 +151,8 @@ async def zeus(ctx, *, args):
 
 	await ctx.send(embed=embed)
 
-@bot.event
-async def on_message(message):
+@bot.listen('on_message')
+async def preview(message):
     text = message.content
     l = text.replace(", ", " ").split(" ")
     key = "https://discord.com/channels/"
