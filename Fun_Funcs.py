@@ -1,4 +1,5 @@
 #### Any non-utility "Fun functions" should stay here. 
+from io import BytesIO
 from bs4 import BeautifulSoup
 import requests
 import random
@@ -27,9 +28,8 @@ def pugFact():
 	pugFact = soup.find('h2')
 	return pugFact.text[:-15]
 
-# def catpic():  # THIS DOES NOT WORK YET
-# 	r = requests.get('https://cataas.com/cat').text
-# 	return(r[9:-2])
+def catpic():
+	return BytesIO(requests.get("https://cataas.com/cat").content)
 
 
 def joke():
