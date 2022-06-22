@@ -77,4 +77,5 @@ def help_msg():
 - !poll </br>[title]</br>[options]
 - !suggest [suggestion]
 - !avatar [member] (default=author)
+- !catpic
 	"""
