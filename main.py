@@ -74,9 +74,13 @@ async def dogfact(ctx):
 async def pugfact(ctx):
 	await ctx.send(Fun_Funcs.pugFact(), reference=ctx.message)
 
-# @bot.command() # THIS DOES NOT WORK YET
-# async def catpic(ctx):
-# 	await ctx.send(Fun_Funcs.catpic(), reference=ctx.message)
+@bot.command()
+async def catpic(ctx):
+	await ctx.send(
+		"**Here's a cutie cute Cat's pic for you**",
+		file=discord.File(fp=Fun_Funcs.catpic(), filename="cat.png"),
+		reference=ctx.message
+	)
 
 
 @bot.command()
