@@ -18,6 +18,7 @@ Zorak is hosted on Replit, and kept running with UptimeRobot.
 - !rolldice
 - !catpic
 - !dogpic [breed] (Optional)
+- !pokedex [pokemon]
 #### Utility Commands
 - !google [question]
 - !embed [title] [ content ]  

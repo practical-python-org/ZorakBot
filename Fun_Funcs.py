@@ -62,4 +62,21 @@ def dogpic(breed):
 	
 	return requests.get(f"https://dog.ceo/api/breed/{breed}/images/random").json()["message"]
 
-# print(dogpic())
+def pokedex(pokemon):
+	res = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon.lower()}").json()
+
+	def get_image(data):
+		try:
+			return data["sprites"]["other"]["official-artwork"]["front-default"]
+		except:
+			return data["sprites"]["front_shiny"]
+
+	return {
+		"url": get_image(res),
+		"hp": res["base_experience"],
+		"name": res["name"].title(),
+		"height": f'{res["height"]/10} m',
+		"weight": f'{res["weight"]/10} kg',
+		"category": res["types"][0]["type"]["name"].title(),
+		"ability": [data["ability"]["name"].capitalize() for data in res["abilities"]],
+	}

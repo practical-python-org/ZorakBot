@@ -67,6 +67,7 @@ def help_msg():
 - !owo [text]
 - !catpic
 - !dogpic [breed] (Optional)
+- !pokedex [pokemon]
 	
 ***Utility Commands***
 - !codeblock
