@@ -273,9 +273,9 @@ async def userinfo(ctx, member: Member = None):
 		title=str(member.display_name)
 	)
 	embed.set_thumbnail(url=member.avatar_url)
-	embed.set_footer(text=f"Requested by {member}")
+	embed.set_footer(text=f"Requested by {ctx.message.author}")
 
-	embed.add_field(name="Username:", value=ctx.message.author.name, inline=False)
+	embed.add_field(name="Username:", value=member.name, inline=False)
 	embed.add_field(name="ID:", value=member.id, inline=False)
 
 	embed.add_field(name="Account Created On:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
