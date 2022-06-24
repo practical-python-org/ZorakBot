@@ -65,6 +65,8 @@ def help_msg():
 - !taunt
 - !rolldice
 - !owo [text]
+- !catpic
+- !dogpic [breed] (Optional)
 	
 ***Utility Commands***
 - !codeblock
@@ -77,6 +79,5 @@ def help_msg():
 - !poll </br>[title]</br>[options]
 - !suggest [suggestion]
 - !avatar/!av [member] (default=author)
-- !catpic
 - !userinfo/!whois [member] (Optional)
 	"""

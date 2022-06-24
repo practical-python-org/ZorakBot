@@ -17,6 +17,7 @@ Zorak is hosted on Replit, and kept running with UptimeRobot.
 - !taunt
 - !rolldice
 - !catpic
+- !dogpic [breed] (Optional)
 #### Utility Commands
 - !google [question]
 - !embed [title] [ content ]  
