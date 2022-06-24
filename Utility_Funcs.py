@@ -8,9 +8,9 @@ def runcode():
 To run python code in the chat, type:
 
 \./run python
-\```py
+\`\`\`py
 Your code here
-\```
+\`\`\`
 """
 
 def codeblock():
@@ -21,9 +21,9 @@ x = 'Hello World!'
 ```
 Type this:
 
-\```py
+\`\`\`py
 Your code here
-\```
+\`\`\`
 """
 
 # !embed
@@ -76,6 +76,7 @@ def help_msg():
 - !fakeperson
 - !poll </br>[title]</br>[options]
 - !suggest [suggestion]
-- !avatar [member] (default=author)
+- !avatar/!av [member] (default=author)
 - !catpic
+- !userinfo/!whois [member] (Optional)
 	"""
