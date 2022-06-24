@@ -56,6 +56,10 @@ def dice():
 	result = random.choice(roll)
 	return result
 
-# Coming soon! :dogesmile:
-# def dogpic():
-# 	return requests.get("https://dog.ceo/api/breeds/image/random")
+def dogpic(breed):
+	if breed==" ":
+		return requests.get("https://dog.ceo/api/breeds/image/random").json()["message"]
+	
+	return requests.get(f"https://dog.ceo/api/breed/{breed}/images/random").json()["message"]
+
+# print(dogpic())

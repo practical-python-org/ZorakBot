@@ -1,3 +1,4 @@
+from random import choice
 from discord.ext.commands import Bot
 from z_keep_alive import keep_alive
 from discord.ext import owoify
@@ -107,16 +108,24 @@ async def rolldice(ctx):
 async def google(ctx, *, args):
 	await ctx.send(f"Here, allow me to google that one for you:\nhttps://letmegooglethat.com/?q={args.replace(' ', '+')}",reference=ctx.message)
 
-# Coming soon! :dogesmile:
-# @bot.command()
-# async def dogpic(ctx):
-# 	embed=discord.Embed(
-# 			title="Dogs are cute! :right_facing_fist::left_facing_fist:",
-# 			description="[Wanna upload your dog's image too?](https://github.com/jigsawpieces/dog-api-images#dog-api-images)"
-# 		)
-# 	embed.set_image(url=Fun_Funcs.dogpic())
-# 	await ctx.send(embed=embed)
+@bot.command()
+async def dogpic(ctx):
+	phrases = ["Dogs are cute!", "Oh are you a dog person too?", "Awwwwww!"]
+	breed = ctx.message.content.split()[-1].replace("!dogpic", " ")
 
+	if not breed==" ":
+		phrases.append(f"Here's a dose of {breed} for you oWo!")
+	embed=discord.Embed(
+			title=choice(phrases),
+			description="[Wanna upload your dog's image too?](https://github.com/jigsawpieces/dog-api-images#dog-api-images)"
+		)
+
+	try:
+		embed.set_image(url=Fun_Funcs.dogpic(breed=breed))
+		await ctx.send(embed=embed)
+	
+	except:
+		await ctx.send(embed=discord.Embed(title="Touch some grass dude!", description="Invalid breed or something else!"))
 	
 #-----------------------------#  User "Utility" Commands
 @bot.command()
