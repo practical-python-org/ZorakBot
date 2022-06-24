@@ -107,6 +107,15 @@ async def rolldice(ctx):
 async def google(ctx, *, args):
 	await ctx.send(f"Here, allow me to google that one for you:\nhttps://letmegooglethat.com/?q={args.replace(' ', '+')}",reference=ctx.message)
 
+# Coming soon! :dogesmile:
+# @bot.command()
+# async def dogpic(ctx):
+# 	embed=discord.Embed(
+# 			title="Dogs are cute! :right_facing_fist::left_facing_fist:",
+# 			description="[Wanna upload your dog's image too?](https://github.com/jigsawpieces/dog-api-images#dog-api-images)"
+# 		)
+# 	embed.set_image(url=Fun_Funcs.dogpic())
+# 	await ctx.send(embed=embed)
 
 	
 #-----------------------------#  User "Utility" Commands
@@ -250,6 +259,36 @@ async def owo(ctx, *, args):
 	embed = discord.Embed(description=await owoify.owoify(args), timestamp=datetime.datetime.utcnow())
 	embed.set_author(name=f"{ctx.message.author.display_name} OWO'd something!", icon_url=ctx.message.author.avatar_url)
 	await ctx.send(embed=embed, reference=ctx.message)
+
+@bot.command(aliases=["whois"])
+async def userinfo(ctx, member: Member = None):
+	if not member:
+		member = ctx.message.author
+
+	roles = [role for role in member.roles]
+
+	embed = discord.Embed(
+		colour=discord.Colour.orange(),
+		timestamp=ctx.message.created_at,
+		title=str(member.display_name)
+	)
+	embed.set_thumbnail(url=member.avatar_url)
+	embed.set_footer(text=f"Requested by {member}")
+
+	embed.add_field(name="Username:", value=ctx.message.author.name, inline=False)
+	embed.add_field(name="ID:", value=member.id, inline=False)
+
+	embed.add_field(name="Account Created On:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
+	embed.add_field(name="Joined Server On:", value=member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
+
+	try:
+		embed.add_field(name="Roles:", value="".join([role.mention for role in roles[1:]]))
+		embed.add_field(name="Highest Role:", value=member.top_role.mention)
+		
+		await ctx.send(embed=embed)
+
+	except:
+		await ctx.send(embed=discord.Embed(title="Traceback (most recent call last): \"~/ur_brain\"", colour=discord.Colour.red(), description="NoRoleError: Please get atleast one role for yourself"))
 
 @bot.command()
 async def help(ctx):

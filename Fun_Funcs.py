@@ -55,3 +55,7 @@ def dice():
 	roll = ['1','2','3','4','5','6']
 	result = random.choice(roll)
 	return result
+
+# Coming soon! :dogesmile:
+# def dogpic():
+# 	return requests.get("https://dog.ceo/api/breeds/image/random")
