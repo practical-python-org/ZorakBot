@@ -335,9 +335,15 @@ async def pipsearch(ctx):
 		embed.set_footer(text=f"Requested by {ctx.message.author}")
 		await ctx.send(embed=embed)
 
-# @bot.command()
-# async def ping(ctx):
-# 	await ctx.send(f"My current ping is {round(bot.latency * 1000)}ms")
+@bot.command()
+async def ping(ctx):
+	await ctx.send(
+		embed=discord.Embed(
+			title="Zorathian Army Report",
+			description=f"Zorak's current ping is **{round(bot.latency * 1000)}ms**",
+			timestamp=ctx.message.created_at
+		)
+	)
 
 @bot.command()
 async def help(ctx):
