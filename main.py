@@ -8,7 +8,6 @@ import Fun_Funcs
 import Utility_Funcs
 import os, math
 import discord
-import datetime
 
 bot = Bot("!")
 bot.remove_command("help")
@@ -45,7 +44,7 @@ async def rules(ctx, *, args):
 	if ctx.message.author.guild_permissions.administrator:
 		text = args.replace("!rules", "").split("\n")
 		
-		embed = discord.Embed(title=text[0], description="", timestamp=datetime.datetime.utcnow())
+		embed = discord.Embed(title=text[0], description="", timestamp=ctx.message.created_at)
 		for index, content in enumerate(text, 1):
 			if int(index) >= 2:
 				embed.add_field(name='Rule #'+str(index-1) , value=content)
@@ -157,7 +156,7 @@ async def codeblock(ctx):
 async def embed(ctx):
 	text = ctx.message.content.replace("!embed", "").split("\n")
 
-	embed = discord.Embed(title=text[1], description="", timestamp=datetime.datetime.utcnow())
+	embed = discord.Embed(title=text[1], description="", timestamp=ctx.message.created_at)
 
 	if len(text) <= 3:
 		embed.add_field(name="Content", value=text[2])
@@ -184,7 +183,7 @@ async def zeus(ctx, *, args):
 	else:
 		COLOR = discord.Color.red()
 
-	embed = discord.Embed(title="ZeusTheInvestigator", description="", timestamp=datetime.datetime.utcnow(), color=COLOR)
+	embed = discord.Embed(title="ZeusTheInvestigator", description="", timestamp=ctx.message.created_at, color=COLOR)
 	embed.add_field(name=f"Checked link: *{res[0]}*", value=f"STATUS: {res[1]}")
 	embed.set_footer(text="Credits to: @777advait#6334")
 
@@ -206,7 +205,7 @@ async def preview(message):
                 sourceMessage = await sourceChannel.fetch_message(int(link[2]))
 
                 if len(sourceMessage.content) <= 1000:
-                    embed = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
+                    embed = discord.Embed(title=response, description="", timestamp=ctx.message.created_at)
                     embed.add_field(name=f"Length: {len(sourceMessage.content)}", value=sourceMessage.content)
                     embed.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
                     await message.channel.send(embed=embed)
@@ -215,7 +214,7 @@ async def preview(message):
                     contents = sourceMessage.content
                     con2 = []
                     splitstr = math.ceil(len(contents)/1000)
-                    embed1 = discord.Embed(title=response, description="", timestamp=datetime.datetime.utcnow())
+                    embed1 = discord.Embed(title=response, description="", timestamp=ctx.message.created_at)
                     while contents:
                         con2.append(contents[:900])
                         contents = contents[900:]
@@ -233,7 +232,7 @@ async def preview(message):
 @bot.command()
 async def suggest(ctx, *, args):
 	await ctx.message.delete()
-	embed = discord.Embed(description=args, timestamp=datetime.datetime.utcnow())
+	embed = discord.Embed(description=args, timestamp=ctx.message.created_at)
 	embed.set_author(name=f"Suggestion by {ctx.message.author.display_name}", icon_url=ctx.message.author.avatar_url)
 	msg = await ctx.send(embed=embed)
 	await msg.add_reaction("👍")	
@@ -263,7 +262,7 @@ async def poll(ctx):
 	else:
 		embed = discord.Embed(
 			description=f"**{text[1]}**\n\n"+"\n\n".join(f"{reactions[str(idx)]}: {opt}" for idx, opt in enumerate(text[2:], 1)),
-			timestamp=datetime.datetime.utcnow()
+			timestamp=ctx.message.created_at
 		)
 		embed.set_author(name=f"Poll by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
 
@@ -276,13 +275,13 @@ async def poll(ctx):
 async def avatar(ctx, member: Member = None):
 	if not member:
 		member = ctx.author
-	embed = discord.Embed(title=f"Avatar for {member}", description=f"[Download image]({member.avatar_url})", timestamp=datetime.datetime.utcnow())
+	embed = discord.Embed(title=f"Avatar for {member}", description=f"[Download image]({member.avatar_url})", timestamp=ctx.message.created_at)
 	embed.set_image(url=member.avatar_url)
 	await ctx.send(embed=embed, reference=ctx.message)
 
 @bot.command()
 async def owo(ctx, *, args):
-	embed = discord.Embed(description=await owoify.owoify(args), timestamp=datetime.datetime.utcnow())
+	embed = discord.Embed(description=await owoify.owoify(args), timestamp=ctx.message.created_at)
 	embed.set_author(name=f"{ctx.message.author.display_name} OWO'd something!", icon_url=ctx.message.author.avatar_url)
 	await ctx.send(embed=embed, reference=ctx.message)
 
@@ -316,9 +315,39 @@ async def userinfo(ctx, member: Member = None):
 	except:
 		await ctx.send(embed=discord.Embed(title="Traceback (most recent call last): \"~/ur_brain\"", colour=discord.Colour.red(), description="NoRoleError: Please get atleast one role for yourself"))
 
+@bot.command(aliases=["pip", "pypi"])
+async def pipsearch(ctx):
+	package = ctx.message.content.split(" ")[-1]
+	
+	if not package:
+		await ctx.send(embed=discord.Embed(title="Traceback (most recent call): \"~/ur_brain\"", description="Invalid pacakge name!", colour=discord.Colour.red()))
+	else:
+		data = Utility_Funcs.getPypiInfo(package)
+		
+		embed=discord.Embed(
+			title=f"Searched {package}",
+			description=f"[Project URL]({data['info']['package_url']})",
+			colour=discord.Colour.green(),
+			timestamp=ctx.message.created_at,
+		)
+
+		embed.add_field(name=f"{data['info']['name']}-{data['info']['version']}", value=f"{data['info']['summary']}")
+		embed.set_footer(text=f"Requested by {ctx.message.author}")
+		await ctx.send(embed=embed)
+
+@bot.command()
+async def ping(ctx):
+	await ctx.send(
+		embed=discord.Embed(
+			title="Zorathian Army Report",
+			description=f"Zorak's current ping is **{round(bot.latency * 1000)}ms**",
+			timestamp=ctx.message.created_at
+		)
+	)
+
 @bot.command()
 async def help(ctx):
-	embed = discord.Embed(title="User-Commands", description=Utility_Funcs.help_msg(), timestamp=datetime.datetime.utcnow())
+	embed = discord.Embed(title="User-Commands", description=Utility_Funcs.help_msg(), timestamp=ctx.message.created_at)
 	await ctx.send(embed=embed, reference=ctx.message)
 
 if __name__ == "__main__":

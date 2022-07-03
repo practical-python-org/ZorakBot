@@ -82,3 +82,7 @@ def help_msg():
 - !avatar/!av [member] (default=author)
 - !userinfo/!whois [member] (Optional)
 	"""
+
+
+def getPypiInfo(package):
+	return requests.get(f"https://pypi.org/pypi/{package}/json").json()
