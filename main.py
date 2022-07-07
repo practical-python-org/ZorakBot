@@ -419,8 +419,8 @@ async def help(ctx):
 	await ctx.send(embed=embed, reference=ctx.message)
 
 if __name__ == "__main__":
-	# keep_alive()
+	keep_alive()
 	try:
-		bot.run("OTgzMDM1NTY3MDM2MDQzMzM1.GE8XjE.pQEX9nD8B7fGjb8Y3XnrVgchKdBjgQHT1pfX-o")
+		bot.run(os.environ["TOKEN"])
 	except:
 	    os.system("kill 1")
