@@ -81,8 +81,15 @@ def help_msg():
 - !suggest [suggestion]
 - !avatar/!av [member] (default=author)
 - !userinfo/!whois [member] (Optional)
+- !pipsearch/!pypi/!pip [package]
+- !ping
+- !git/!github [endpoint]
 	"""
 
 
 def getPypiInfo(package):
 	return requests.get(f"https://pypi.org/pypi/{package}/json").json()
+
+
+def getgitinfo(endpoint):
+	return requests.get(f"https://api.github.com/repos/{endpoint}").json()
