@@ -345,6 +345,74 @@ async def ping(ctx):
 		)
 	)
 
+@bot.command(aliases=["git"])
+async def github(ctx, *, endpoint):
+	info = Utility_Funcs.getgitinfo(endpoint)
+
+	owner = info["owner"]["login"]
+	language = info["language"]
+	stars = info["stargazers_count"]
+	forks = info["forks"]
+	issues = info["open_issues"]
+	license = info["license"]["name"] if info["license"] is not None else "None"
+	thumbnail = info["owner"]["avatar_url"]
+	
+	contrib_info = Utility_Funcs.getgitinfo(endpoint+"/contributors")
+	contributors = [contribs["login"] for contribs in contrib_info]
+
+	embed = discord.Embed(
+		title=info["name"],
+		description=f"[Repository Link]({info['html_url']})",
+		colour=discord.Colour.gold(),
+		timestamp=ctx.message.created_at
+	)
+
+	embed.add_field(
+		name="Owner",
+		value=owner
+	)
+	embed.add_field(
+		name="Language",
+		value=language
+	)
+	embed.add_field(
+		name="Stars",
+		value=stars
+	)
+	embed.add_field(
+		name="Forks",
+		value=forks
+	)
+	embed.add_field(
+		name="License",
+		value=license
+	)
+	embed.add_field(
+		name="Open Issues",
+		value=issues
+	)
+	embed.add_field(
+		name="Contributors",
+		value="\n".join(contributors)
+	)
+	embed.set_thumbnail(url=thumbnail)
+	embed.set_footer(text=f"Requested by {ctx.message.author}", icon_url=ctx.message.author.avatar_url)
+
+	await ctx.send(embed=embed, reference=ctx.message)
+
+@github.error
+async def no_endpoint(ctx, error):
+	if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
+		await ctx.send(
+			embed=discord.Embed(
+				title="No endpoint",
+				description="Please add an endpoint!\n`Syntax: !github|!git <username/repo_name>`",
+				timestamp=ctx.message.created_at,
+				colour=discord.Colour.red()
+			),
+			reference=ctx.message
+		)
+
 @bot.command()
 async def help(ctx):
 	embed = discord.Embed(title="User-Commands", description=Utility_Funcs.help_msg(), timestamp=ctx.message.created_at)

@@ -26,6 +26,9 @@ Zorak is hosted on Replit, and kept running with UptimeRobot.
 - !fakeperson
 - !userinfo/!whois
 - !avatar/!av
+- !ping
+- !pipsearch/!pypi/!pip [package]
+- !git/!github [endpoint]
 #### Admin Commands
 - !echo [message]
 - !dailychallenge
