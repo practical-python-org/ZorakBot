@@ -53,6 +53,26 @@ async def rules(ctx, *, args):
 	else:
 		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
 
+@bot.command(aliases=["purge", "clr", "clean"])
+@commands.has_role("Staff")
+@commands.cooldown(1, 500, commands.BucketType.user)
+async def clear(ctx, amount: str):
+	audit = bot.get_channel(953545221260595280)
+	if int(amount) <= 50:
+		#set to 50 max to prevent wrongdoings.
+		await ctx.channel.purge(limit=int(amount)), await audit.send(f"{ctx.author} deleted {amount} messages in {ctx.channel}")
+	else:
+		embed = discord.Embed(title="ERROR", description="")
+		embed.add_field(name="Reason:", value="Invalid input- please choose a number 1-50")
+		await ctx.channel.send(embed=embed)
+
+@bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, commands.CommandOnCooldown):
+		msg = "**You're still on cooldown!! next avaliable in {:.2f}s".format(error.retry_after)
+		alert = bot.get_channel(953545221260595280)
+		await alert.send(f"{ctx.author.mention}\n {msg}")
+
 #-----------------------------#  User "Fun" Commands
 @bot.command()
 async def hello(ctx):
@@ -131,7 +151,6 @@ async def pokedex(ctx, *, pokemon):
 	try:
 		data = Fun_Funcs.pokedex(pokemon)
 		embed=discord.Embed(title=data["name"])
-
 		embed.set_thumbnail(url=data["url"])
 		embed.add_field(name="HP", value=data["hp"])
 		embed.add_field(name="Height", value=data["height"])
@@ -191,43 +210,43 @@ async def zeus(ctx, *, args):
 
 @bot.listen('on_message')
 async def preview(message):
-    text = message.content
-    l = text.replace(", ", " ").split(" ")
-    key = "https://discord.com/channels/"
-    for item in l:
-        if key in item:
-            try:
-                lilink = l[l.index(item)]
-                response = "-**---** **Content** **in** **the** **link** **above** **---**- \n\n"
-                link = lilink.replace("https://discord.com/channels/", "").split("/")
-                sourceServer = bot.get_guild(int(link[0]))
-                sourceChannel = sourceServer.get_channel(int(link[1]))
-                sourceMessage = await sourceChannel.fetch_message(int(link[2]))
+	text = message.content
+	l = text.replace(", ", " ").split(" ")
+	key = "https://discord.com/channels/"
+	for item in l:
+		if key in item:
+			try:
+				lilink = l[l.index(item)]
+				response = "-**---** **Content** **in** **the** **link** **above** **---**- \n\n"
+				link = lilink.replace("https://discord.com/channels/", "").split("/")
+				sourceServer = bot.get_guild(int(link[0]))
+				sourceChannel = sourceServer.get_channel(int(link[1]))
+				sourceMessage = await sourceChannel.fetch_message(int(link[2]))
 
-                if len(sourceMessage.content) <= 1000:
-                    embed = discord.Embed(title=response, description="", timestamp=ctx.message.created_at)
-                    embed.add_field(name=f"Length: {len(sourceMessage.content)}", value=sourceMessage.content)
-                    embed.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
-                    await message.channel.send(embed=embed)
+				if len(sourceMessage.content) <= 1000:
+					embed = discord.Embed(title=response, description="", timestamp=sourceMessage.created_at)
+					embed.add_field(name=f"Length: {len(sourceMessage.content)}", value=sourceMessage.content)
+					embed.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
+					await message.channel.send(embed=embed)
 
-                if len(sourceMessage.content) > 1000:
-                    contents = sourceMessage.content
-                    con2 = []
-                    splitstr = math.ceil(len(contents)/1000)
-                    embed1 = discord.Embed(title=response, description="", timestamp=ctx.message.created_at)
-                    while contents:
-                        con2.append(contents[:900])
-                        contents = contents[900:]
-                    for feilds in range(0, splitstr):
-                        embed1.add_field(name="**---CUT---HERE---**", value=f"```py\n{con2[feilds]}\n```", inline=False)
-                    embed1.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
-                    await message.channel.send(embed=embed1)
+				if len(sourceMessage.content) > 1000:
+					contents = sourceMessage.content
+					con2 = []
+					splitstr = math.ceil(len(contents)/1000)
+					embed1 = discord.Embed(title=response, description="", timestamp=sourceMessage.created_at)
+					while contents:
+						con2.append(contents[:900])
+						contents = contents[900:]
+					for feilds in range(0, splitstr):
+						embed1.add_field(name="**---CUT---HERE---**", value=f"```py\n{con2[feilds]}\n```", inline=False)
+					embed1.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
+					await message.channel.send(embed=embed1)
 
-            except:
+			except:
 
-                await message.channel.send(f"         -**Cannot** **preview**-\n-"
-                                           f"**Make sure message is in this server,"
-                                           f" and not a text file or image**-")
+				await message.channel.send(f"         -**Cannot** **preview**-\n-"
+										   f"**Make sure message is in this server,"
+										   f" and not a text file or image**-")
 
 @bot.command()
 async def suggest(ctx, *, args):
