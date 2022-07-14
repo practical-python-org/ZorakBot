@@ -1,4 +1,5 @@
 from random import choice
+from discord.ext import commands
 from discord.ext.commands import Bot
 from z_keep_alive import keep_alive
 from discord.ext import owoify
@@ -74,12 +75,11 @@ async def on_command_error(ctx, error):
 		await alert.send(f"{ctx.author.mention}\n {msg}")
 
 
-@bot.command()
-async def times(ctx):
-	embed = discord.Embed(title=f"**TIMES**", description="")
-	embed.add_field(name="Staff", value=Admin_Funcs.get_times())
-	await ctx.send(embed=embed)
-
+ @bot.command()
+ async def times(ctx):
+  embed = discord.Embed(title=f"**TIMES**", description="")
+  embed.add_field(name="Staff", value=Admin_Funcs.get_times())
+  await ctx.send(embed=embed)
 
 #-----------------------------#  User "Fun" Commands
 @bot.command()
