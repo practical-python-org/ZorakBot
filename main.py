@@ -73,6 +73,14 @@ async def on_command_error(ctx, error):
 		alert = bot.get_channel(953545221260595280)
 		await alert.send(f"{ctx.author.mention}\n {msg}")
 
+
+@bot.command()
+async def times(ctx):
+	embed = discord.Embed(title=f"**TIMES**", description="")
+	embed.add_field(name="Staff", value=Admin_Funcs.get_times())
+	await ctx.send(embed=embed)
+
+
 #-----------------------------#  User "Fun" Commands
 @bot.command()
 async def hello(ctx):
