@@ -75,11 +75,11 @@ async def on_command_error(ctx, error):
 		await alert.send(f"{ctx.author.mention}\n {msg}")
 
 
- @bot.command()
- async def times(ctx):
-  embed = discord.Embed(title=f"**TIMES**", description="")
-  embed.add_field(name="Staff", value=Admin_Funcs.get_times())
-  await ctx.send(embed=embed)
+@bot.command()
+async def times(ctx):
+	embed = discord.Embed(title=f"**TIMES**", description="")
+	embed.add_field(name="Staff", value=Admin_Funcs.get_times())
+	await ctx.send(embed=embed)
 
 #-----------------------------#  User "Fun" Commands
 @bot.command()
@@ -269,17 +269,17 @@ async def suggest(ctx, *, args):
 async def poll(ctx):
 	await ctx.message.delete()
 	reactions = {
-        '1': '1️⃣',
-        '2': '2️⃣',
-        '3': '3️⃣',
-        '4': '4️⃣',
-        '5': '5️⃣',
-        '6': '6️⃣',
-        '7': '7️⃣',
-        "8": '8️⃣',
-        "9": '9️⃣',
-        "10": '🔟'
-    }
+		'1': '1️⃣',
+		'2': '2️⃣',
+		'3': '3️⃣',
+		'4': '4️⃣',
+		'5': '5️⃣',
+		'6': '6️⃣',
+		'7': '7️⃣',
+		"8": '8️⃣',
+		"9": '9️⃣',
+		"10": '🔟'
+	}
 	text = ctx.message.content.replace("!poll", "").split("\n")
 
 	if len(text) < 4:
@@ -450,4 +450,4 @@ if __name__ == "__main__":
 	try:
 		bot.run(os.environ["TOKEN"])
 	except:
-	    os.system("kill 1")
+		os.system("kill 1")
