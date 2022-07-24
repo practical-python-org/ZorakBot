@@ -2,8 +2,6 @@
 
 ZorakBot is the House bot of the Practical Python discord server. Zorak is developed with features by the community. Anyone from our server can contribute. 
 
-Zorak is hosted on Replit, and kept running with UptimeRobot. 
-
 
 ## User Commands
 #### For-fun commands

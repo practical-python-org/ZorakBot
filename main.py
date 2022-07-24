@@ -1,7 +1,6 @@
 from random import choice
 from discord.ext import commands
 from discord.ext.commands import Bot
-# from discord.ext import owoify
 from discord import Member
 import Admin_Funcs
 import Fun_Funcs
@@ -306,11 +305,6 @@ async def avatar(ctx, member: Member = None):
 	embed.set_image(url=member.avatar_url)
 	await ctx.send(embed=embed, reference=ctx.message)
 
-# @bot.command()
-# async def owo(ctx, *, args):
-# 	embed = discord.Embed(description=await owoify.owoify(args), timestamp=ctx.message.created_at)
-# 	embed.set_author(name=f"{ctx.message.author.display_name} OWO'd something!", icon_url=ctx.message.author.avatar_url)
-# 	await ctx.send(embed=embed, reference=ctx.message)
 
 @bot.command(aliases=["whois"])
 async def userinfo(ctx, member: Member = None):
