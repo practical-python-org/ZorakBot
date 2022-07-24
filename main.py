@@ -1,7 +1,6 @@
 from random import choice
 from discord.ext import commands
 from discord.ext.commands import Bot
-from z_keep_alive import keep_alive
 from discord.ext import owoify
 from discord import Member
 import Admin_Funcs
@@ -10,6 +9,7 @@ import Utility_Funcs
 import os, math
 import discord
 
+TOKEN = os.environ(['TOKEN'])
 bot = Bot("!")
 bot.remove_command("help")
 
@@ -446,8 +446,5 @@ async def help(ctx):
 	await ctx.send(embed=embed, reference=ctx.message)
 
 if __name__ == "__main__":
-	keep_alive()
-	try:
-		bot.run(os.environ["TOKEN"])
-	except:
-		os.system("kill 1")
+	bot.run(TOKEN)
+
