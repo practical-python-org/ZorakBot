@@ -9,7 +9,7 @@ import Utility_Funcs
 import os, math
 import discord
 
-TOKEN = os.environ(['TOKEN'])
+TOKEN = os.environ['TOKEN']
 bot = Bot("!")
 bot.remove_command("help")
 
