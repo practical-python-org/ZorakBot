@@ -137,8 +137,8 @@ async def dogpic(ctx):
 	
 @bot.command()
 async def pokedex(ctx, *, pokemon):
-	try:
-		await ctx.send(embed=Fun_Funcs.pokedex(pokemon))
+	# try:
+	await ctx.send(embed=Fun_Funcs.pokedex(pokemon))
 		# data = Fun_Funcs.pokedex(pokemon)
 		# embed=discord.Embed(title=data["name"])
 		# embed.set_thumbnail(url=data["url"])
@@ -148,10 +148,10 @@ async def pokedex(ctx, *, pokemon):
 		# embed.add_field(name="Category", value=data["category"])
 		# embed.add_field(name="Abilities", value="\n".join(data["ability"]))
 		# await ctx.send(embed=embed)
-	except:
-		await ctx.send(embed=discord.Embed(colour=discord.Colour.red(),
-		title="Oops!",
-		description="The name of the pokemon is invalid!"))
+	# except:
+	# 	await ctx.send(embed=discord.Embed(colour=discord.Colour.red(),
+	# 	title="Oops!",
+	# 	description="The name of the pokemon is invalid!"))
 
 """   
 
