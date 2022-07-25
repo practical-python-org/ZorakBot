@@ -63,20 +63,12 @@ def dogpic(breed):
 	return requests.get(f"https://dog.ceo/api/breed/{breed}/images/random").json()["message"]
 
 def pokedex(pokemon):
-	res = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon.lower()}").json()
-
-	def get_image(data):
-		try:
-			return data["sprites"]["other"]["official-artwork"]["front-default"]
-		except:
-			return data["sprites"]["front_shiny"]
-
-	return {
-		"url": get_image(res),
-		"hp": res["base_experience"],
-		"name": res["name"].title(),
-		"height": f'{res["height"]/10} m',
-		"weight": f'{res["weight"]/10} kg',
-		"category": res["types"][0]["type"]["name"].title(),
-		"ability": [data["ability"]["name"].capitalize() for data in res["abilities"]],
-	}
+	data = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon.lower()}").json()
+	embed=discord.Embed(title=data['name'].title())
+	embed.set_thumbnail(url=data['sprites']['front_default'])
+	embed.add_field(name="HP", value=data['stats'][0]['base_stat'])
+	embed.add_field(name="Height", value=data['weight'])
+	embed.add_field(name="Weight", value=data["weight"])
+	embed.add_field(name="Type", value=data['types'][0]['type']['name'].title())
+	embed.add_field(name="Abilities", value=data["abilities"][0]['ability']['name'])
+	return embed
