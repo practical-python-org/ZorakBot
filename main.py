@@ -17,32 +17,41 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="you..."))
 	print('{0.user}, ready to conquer the world.'.format(bot))
 
-
-"""   
-
-				Administrator Commands
-
-"""
-
+#-----------------------------#  Administrator Commands
 @bot.command()
-@commands.has_role("Staff")
 async def echo(ctx, *, args):
-	await ctx.message.delete()
-	try:
-		await ctx.send(args)
-	except:
-		await ctx.send("Please enter a message to echo.", reference=ctx.message)
+	if ctx.message.author.guild_permissions.manage_roles:
+		print('has role')
+		await ctx.message.delete()
+		try:
+			await ctx.send(args)
+		except:
+			await ctx.send("Please enter a message to echo.", reference=ctx.message)
+
+	else:
+		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
 
 @bot.command()
-@commands.has_role("Staff")
+async def dailychallenge(ctx):
+	if ctx.message.author.guild_permissions.administrator:
+		await ctx.send(Admin_Funcs.DailyChallenge())
+		Admin_Funcs.increaseDay()
+	else:
+		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
+
+@bot.command()
 async def rules(ctx, *, args):
-	text = args.replace("!rules", "").split("\n")
-	embed = discord.Embed(title=text[0], description="", timestamp=ctx.message.created_at)
-	for index, content in enumerate(text, 1):
-		if int(index) >= 2:
-			embed.add_field(name='Rule #'+str(index-1) , value=content)
-	await ctx.message.delete()
-	await ctx.send(embed=embed)
+	if ctx.message.author.guild_permissions.administrator:
+		text = args.replace("!rules", "").split("\n")
+		
+		embed = discord.Embed(title=text[0], description="", timestamp=ctx.message.created_at)
+		for index, content in enumerate(text, 1):
+			if int(index) >= 2:
+				embed.add_field(name='Rule #'+str(index-1) , value=content)
+		await ctx.message.delete()
+		await ctx.send(embed=embed)
+	else:
+		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
 
 @bot.command(aliases=["purge", "clr", "clean"])
 @commands.has_role("Staff")
@@ -56,6 +65,7 @@ async def clear(ctx, amount: str):
 		embed = discord.Embed(title="ERROR", description="")
 		embed.add_field(name="Reason:", value="Invalid input- please choose a number 1-50")
 		await ctx.channel.send(embed=embed)
+
 @bot.event
 async def on_command_error(ctx, error):
 	if isinstance(error, commands.CommandOnCooldown):
@@ -63,12 +73,14 @@ async def on_command_error(ctx, error):
 		alert = bot.get_channel(953545221260595280)
 		await alert.send(f"{ctx.author.mention}\n {msg}")
 
-"""   
 
-				User "Fun" Commands
+@bot.command()
+async def times(ctx):
+	embed = discord.Embed(title=f"**TIMES**", description="")
+	embed.add_field(name="Staff", value=Admin_Funcs.get_times())
+	await ctx.send(embed=embed)
 
-"""
-
+#-----------------------------#  User "Fun" Commands
 @bot.command()
 async def hello(ctx):
 	await ctx.send(Fun_Funcs.hello(), reference=ctx.message)
@@ -91,9 +103,12 @@ async def pugfact(ctx):
 
 @bot.command()
 async def catpic(ctx):
-	await ctx.send("**Here's a cutie cute Cat's pic for you**",
+	await ctx.send(
+		"**Here's a cutie cute Cat's pic for you**",
 		file=discord.File(fp=Fun_Funcs.catpic(), filename="cat.png"),
-		reference=ctx.message)
+		reference=ctx.message
+	)
+
 
 @bot.command()
 async def joke(ctx):
@@ -125,8 +140,11 @@ async def dogpic(ctx):
 	breed = ctx.message.content.split()[-1].replace("!dogpic", " ")
 
 	if not breed==" ":
-		phrases.append(f"Here's a {breed} for you!")
-	embed=discord.Embed(title=choice(phrases))
+		phrases.append(f"Here's a dose of {breed} for you oWo!")
+	embed=discord.Embed(
+			title=choice(phrases),
+			description="[Wanna upload your dog's image too?](https://github.com/jigsawpieces/dog-api-images#dog-api-images)"
+		)
 
 	try:
 		embed.set_image(url=Fun_Funcs.dogpic(breed=breed))
@@ -137,6 +155,7 @@ async def dogpic(ctx):
 	
 @bot.command()
 async def pokedex(ctx, *, pokemon):
+<<<<<<< HEAD
 	# try:
 	await ctx.send(embed=Fun_Funcs.pokedex(pokemon))
 		# data = Fun_Funcs.pokedex(pokemon)
@@ -152,13 +171,23 @@ async def pokedex(ctx, *, pokemon):
 	# 	await ctx.send(embed=discord.Embed(colour=discord.Colour.red(),
 	# 	title="Oops!",
 	# 	description="The name of the pokemon is invalid!"))
+=======
+	try:
+		data = Fun_Funcs.pokedex(pokemon)
+		embed=discord.Embed(title=data["name"])
+		embed.set_thumbnail(url=data["url"])
+		embed.add_field(name="HP", value=data["hp"])
+		embed.add_field(name="Height", value=data["height"])
+		embed.add_field(name="Weight", value=data["weight"])
+		embed.add_field(name="Category", value=data["category"])
+		embed.add_field(name="Abilities", value="\n".join(data["ability"]))
 
-"""   
+		await ctx.send(embed=embed)
+	except:
+		await ctx.send(embed=discord.Embed(colour=discord.Colour.red(), title="Go watch some pokemon!", description="The name of the pokemon is invalid!"))
+>>>>>>> parent of 31f2ad5 (Cleaning Up)
 
-				Utility Commands
-
-"""
-
+#-----------------------------#  User "Utility" Commands
 @bot.command()
 async def runcode(ctx):
 	await ctx.send(Utility_Funcs.runcode(), reference=ctx.message)
@@ -170,17 +199,21 @@ async def codeblock(ctx):
 @bot.command()
 async def embed(ctx):
 	text = ctx.message.content.replace("!embed", "").split("\n")
+
 	embed = discord.Embed(title=text[1], description="", timestamp=ctx.message.created_at)
+
 	if len(text) <= 3:
 		embed.add_field(name="Content", value=text[2])
 		await ctx.message.delete()
 		await ctx.send(embed=embed)
+	
 	elif len(text) > 3:
 		for i in range(2, len(text)):
 			if len(text[i]) < 1:
 				continue
 			else:
 				embed.add_field(name=f" ----- ", value=text[i], inline=False)
+
 		embed.set_footer(icon_url=ctx.message.author.avatar_url, text=ctx.message.author.name)
 		await ctx.message.delete()
 		await ctx.send(embed=embed)
@@ -188,13 +221,16 @@ async def embed(ctx):
 @bot.command()
 async def zeus(ctx, *, args):
 	res = Utility_Funcs.Run_zeus(url=args)
+
 	if res[1] == "**ONLINE**":
 		COLOR = discord.Color.green()
 	else:
 		COLOR = discord.Color.red()
+
 	embed = discord.Embed(title="ZeusTheInvestigator", description="", timestamp=ctx.message.created_at, color=COLOR)
 	embed.add_field(name=f"Checked link: *{res[0]}*", value=f"STATUS: {res[1]}")
 	embed.set_footer(text="Credits to: @777advait#6334")
+
 	await ctx.send(embed=embed)
 
 @bot.listen('on_message')
@@ -249,8 +285,20 @@ async def suggest(ctx, *, args):
 @bot.command()
 async def poll(ctx):
 	await ctx.message.delete()
-	reactions = {'1': '1️⃣','2': '2️⃣', '3': '3️⃣', '4': '4️⃣', '5': '5️⃣', '6': '6️⃣', '7': '7️⃣', "8": '8️⃣', "9": '9️⃣', "10": '🔟'}
+	reactions = {
+		'1': '1️⃣',
+		'2': '2️⃣',
+		'3': '3️⃣',
+		'4': '4️⃣',
+		'5': '5️⃣',
+		'6': '6️⃣',
+		'7': '7️⃣',
+		"8": '8️⃣',
+		"9": '9️⃣',
+		"10": '🔟'
+	}
 	text = ctx.message.content.replace("!poll", "").split("\n")
+
 	if len(text) < 4:
 		await ctx.send("Can't create a poll! Please provide more options.")
 	elif len(text) > 12:
@@ -403,13 +451,6 @@ async def no_endpoint(ctx, error):
 			),
 			reference=ctx.message
 		)
-
-
-@bot.command()
-async def times(ctx):
-	embed = discord.Embed(title=f"**TIMES**", description="")
-	embed.add_field(name="Staff", value=Utility_Funcs.get_times())
-	await ctx.send(embed=embed)
 
 @bot.command()
 async def help(ctx):
