@@ -25,4 +25,18 @@ def increaseDay():
       file.write(day)
 
 
+def get_times():
+    # India
+    tz_india = datetime.now(tz=pytz.FixedOffset(330))
+    # Japan
+    tz_japan = datetime.now(tz=pytz.timezone("Asia/Tokyo"))
+    # America
+    tz_america_ny = datetime.now(tz=pytz.timezone("America/New_York"))
+    # Austria- Vienna
+    tz_austria = datetime.now(tz=pytz.timezone("Europe/Vienna"))
+    Times = (f"Japan: {tz_japan.strftime('%m/%d/%Y %I:%M %p')}"
+             f"\nIndia: {tz_india.strftime('%m/%d/%Y %H:%M %p')}"
+             f"\nAustria: {tz_austria.strftime('%m/%d/%Y %I:%M %p')}"
+             f"\nAmerica: {tz_america_ny.strftime('%m/%d/%Y %I:%M %p')} ")
+    return Times
 

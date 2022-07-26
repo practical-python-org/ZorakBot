@@ -26,6 +26,7 @@ Your code here
 \`\`\`
 """
 
+
 def get_times():
     # India
     tz_india = datetime.now(tz=pytz.timezone("Asia/Kolkata")
@@ -40,8 +41,8 @@ def get_times():
              f"\nAustria (Xarlos): {tz_austria.strftime('%m/%d/%Y %I:%M %p')}"
              f"\nAmerica (Minus): {tz_america_ny.strftime('%m/%d/%Y %I:%M %p')} ")
     return Times
-
-	
+    
+# !embed
 def Run_zeus(url):
 	if "https://" in url == True:
 			try:
