@@ -26,8 +26,23 @@ Your code here
 \`\`\`
 """
 
+
+def get_times():
+    # India
+    tz_india = datetime.now(tz=pytz.timezone("Asia/Kolkata")
+    # Japan
+    tz_japan = datetime.now(tz=pytz.timezone("Asia/Tokyo"))
+    # America
+    tz_america_ny = datetime.now(tz=pytz.timezone("America/New_York"))
+    # Austria- Vienna
+    tz_austria = datetime.now(tz=pytz.timezone("Europe/Vienna"))
+    Times = (f"Japan (Chiaki): {tz_japan.strftime('%m/%d/%Y %I:%M %p')}"
+             f"\nIndia (777advait): {tz_india.strftime('%m/%d/%Y %I:%M %p')}"
+             f"\nAustria (Xarlos): {tz_austria.strftime('%m/%d/%Y %I:%M %p')}"
+             f"\nAmerica (Minus): {tz_america_ny.strftime('%m/%d/%Y %I:%M %p')} ")
+    return Times
+    
 # !embed
-	
 def Run_zeus(url):
 	if "https://" in url == True:
 			try:
