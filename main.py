@@ -176,20 +176,6 @@ async def pokedex(ctx, *, pokemon):
 				Utility Commands
 
 """
-	try:
-		data = Fun_Funcs.pokedex(pokemon)
-		embed=discord.Embed(title=data["name"])
-		embed.set_thumbnail(url=data["url"])
-		embed.add_field(name="HP", value=data["hp"])
-		embed.add_field(name="Height", value=data["height"])
-		embed.add_field(name="Weight", value=data["weight"])
-		embed.add_field(name="Category", value=data["category"])
-		embed.add_field(name="Abilities", value="\n".join(data["ability"]))
-
-		await ctx.send(embed=embed)
-	except:
-		await ctx.send(embed=discord.Embed(colour=discord.Colour.red(), title="Go watch some pokemon!", description="The name of the pokemon is invalid!"))
-#-----------------------------#  User "Utility" Commands
 @bot.command()
 async def runcode(ctx):
 	await ctx.send(Utility_Funcs.runcode(), reference=ctx.message)
