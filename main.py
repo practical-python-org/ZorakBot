@@ -155,7 +155,6 @@ async def dogpic(ctx):
 	
 @bot.command()
 async def pokedex(ctx, *, pokemon):
-<<<<<<< HEAD
 	# try:
 	await ctx.send(embed=Fun_Funcs.pokedex(pokemon))
 		# data = Fun_Funcs.pokedex(pokemon)
