@@ -185,7 +185,6 @@ async def pokedex(ctx, *, pokemon):
 		await ctx.send(embed=embed)
 	except:
 		await ctx.send(embed=discord.Embed(colour=discord.Colour.red(), title="Go watch some pokemon!", description="The name of the pokemon is invalid!"))
->>>>>>> parent of 31f2ad5 (Cleaning Up)
 
 #-----------------------------#  User "Utility" Commands
 @bot.command()
