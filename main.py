@@ -170,7 +170,6 @@ async def pokedex(ctx, *, pokemon):
 	# 	await ctx.send(embed=discord.Embed(colour=discord.Colour.red(),
 	# 	title="Oops!",
 	# 	description="The name of the pokemon is invalid!"))
-=======
 	try:
 		data = Fun_Funcs.pokedex(pokemon)
 		embed=discord.Embed(title=data["name"])
