@@ -29,7 +29,7 @@ Your code here
 
 def get_times():
     # India
-    tz_india = datetime.now(tz=pytz.timezone("Asia/Kolkata")
+    tz_india = datetime.now(tz=pytz.timezone("Asia/Kolkata"))
     # Japan
     tz_japan = datetime.now(tz=pytz.timezone("Asia/Tokyo"))
     # America
