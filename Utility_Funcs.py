@@ -42,6 +42,7 @@ def get_times():
              f"\nAmerica (Minus): {tz_america_ny.strftime('%m/%d/%Y %I:%M %p')} ")
     return Times
     
+    
 # !embed
 def Run_zeus(url):
 	if "https://" in url == True:
