@@ -1,6 +1,5 @@
 import os
-from datetime import datetime
-import pytz
+
 
 def DailyChallenge():
   dayPath = '/home/runner/Zorak/2_Challenges/day.txt'

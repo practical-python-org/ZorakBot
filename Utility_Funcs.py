@@ -1,5 +1,7 @@
 #### Any utility should stay here. 
 import requests
+from datetime import datetime
+import pytz
 
 requests.packages.urllib3.disable_warnings()
 
@@ -41,7 +43,7 @@ def get_times():
              f"\nAustria (Xarlos): {tz_austria.strftime('%m/%d/%Y %I:%M %p')}"
              f"\nAmerica (Minus): {tz_america_ny.strftime('%m/%d/%Y %I:%M %p')} ")
     return Times
-    
+
     
 # !embed
 def Run_zeus(url):
