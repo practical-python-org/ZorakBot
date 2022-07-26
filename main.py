@@ -77,7 +77,7 @@ async def on_command_error(ctx, error):
 @bot.command()
 async def times(ctx):
 	embed = discord.Embed(title=f"**TIMES**", description="")
-	embed.add_field(name="Staff", value=Admin_Funcs.get_times())
+	embed.add_field(name="Staff", value=Utility_Funcs.get_times())
 	await ctx.send(embed=embed)
 
 #-----------------------------#  User "Fun" Commands
