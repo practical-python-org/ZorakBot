@@ -58,10 +58,13 @@ def dice():
 	return result
 
 def dogpic(breed):
-	if breed==" ":
-		return requests.get("https://dog.ceo/api/breeds/image/random").json()["message"]
-	
-	return requests.get(f"https://dog.ceo/api/breed/{breed}/images/random").json()["message"]
+	embed = discord.Embed(title="Dog Pic!", description='A lovely dog pic just for you.')
+	if breed is None:
+		link = requests.get("https://dog.ceo/api/breeds/image/random").json()["message"]
+	elif breed is not None:
+		link =  requests.get(f"https://dog.ceo/api/breed/{breed}/images/random").json()["message"]
+	embed.set_image(url=link)
+	return embed
 
 def pokedex(pokemon):
 	data = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon.lower()}")

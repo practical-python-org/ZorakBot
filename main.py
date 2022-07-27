@@ -103,12 +103,7 @@ async def pugfact(ctx):
 
 @bot.command()
 async def catpic(ctx):
-	await ctx.send(
-		"**Here's a cutie cute Cat's pic for you**",
-		file=discord.File(fp=Fun_Funcs.catpic(), filename="cat.png"),
-		reference=ctx.message
-	)
-
+	await ctx.send(file=discord.File(fp=Fun_Funcs.catpic(), filename="cat.png"), reference=ctx.message)
 
 @bot.command()
 async def joke(ctx):
@@ -139,24 +134,8 @@ async def pokedex(ctx, *, pokemon):
     await ctx.send(embed=Fun_Funcs.pokedex(pokemon))
     
 @bot.command()
-async def dogpic(ctx):
-	phrases = ["Dogs are cute!", "Oh are you a dog person too?", "Awwwwww!"]
-	breed = ctx.message.content.split()[-1].replace("!dogpic", " ")
-
-	if not breed==" ":
-		phrases.append(f"Here's a dose of {breed} for you oWo!")
-	embed=discord.Embed(
-			title=choice(phrases),
-			description="[Wanna upload your dog's image too?](https://github.com/jigsawpieces/dog-api-images#dog-api-images)"
-		)
-
-	try:
-		embed.set_image(url=Fun_Funcs.dogpic(breed=breed))
-		await ctx.send(embed=embed)
-	
-	except:
-		await ctx.send(embed=discord.Embed(title="Touch some grass dude!", description="Invalid breed or something else!"))
-
+async def dogpic(ctx, *, breed=None):
+    await ctx.send(embed=Fun_Funcs.dogpic(breed))
 
 """   
 
