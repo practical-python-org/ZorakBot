@@ -135,6 +135,10 @@ async def google(ctx, *, args):
 	await ctx.send(f"Here, allow me to google that one for you:\nhttps://letmegooglethat.com/?q={args.replace(' ', '+')}",reference=ctx.message)
 
 @bot.command()
+async def pokedex(ctx, *, pokemon):
+    await ctx.send(embed=funcs.pokedex(pokemon))
+    
+@bot.command()
 async def dogpic(ctx):
 	phrases = ["Dogs are cute!", "Oh are you a dog person too?", "Awwwwww!"]
 	breed = ctx.message.content.split()[-1].replace("!dogpic", " ")
@@ -152,24 +156,7 @@ async def dogpic(ctx):
 	
 	except:
 		await ctx.send(embed=discord.Embed(title="Touch some grass dude!", description="Invalid breed or something else!"))
-	
-@bot.command()
-async def pokedex(ctx, *, pokemon):
-	# try:
-	await ctx.send(embed=Fun_Funcs.pokedex(pokemon))
-		# data = Fun_Funcs.pokedex(pokemon)
-		# embed=discord.Embed(title=data["name"])
-		# embed.set_thumbnail(url=data["url"])
-		# embed.add_field(name="HP", value=data["hp"])
-		# embed.add_field(name="Height", value=data["height"])
-		# embed.add_field(name="Weight", value=data["weight"])
-		# embed.add_field(name="Category", value=data["category"])
-		# embed.add_field(name="Abilities", value="\n".join(data["ability"]))
-		# await ctx.send(embed=embed)
-	# except:
-	# 	await ctx.send(embed=discord.Embed(colour=discord.Colour.red(),
-	# 	title="Oops!",
-	# 	description="The name of the pokemon is invalid!"))
+
 
 """   
 

@@ -1,7 +1,8 @@
 #### Any non-utility "Fun functions" should stay here. 
-from io import BytesIO
 from bs4 import BeautifulSoup
+from io import BytesIO
 import requests
+import discord
 import random
 import json
 
@@ -63,12 +64,18 @@ def dogpic(breed):
 	return requests.get(f"https://dog.ceo/api/breed/{breed}/images/random").json()["message"]
 
 def pokedex(pokemon):
-	data = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon.lower()}").json()
-	embed=discord.Embed(title=data['name'].title())
-	embed.set_thumbnail(url=data['sprites']['front_default'])
-	embed.add_field(name="HP", value=data['stats'][0]['base_stat'])
-	embed.add_field(name="Height", value=data['weight'])
-	embed.add_field(name="Weight", value=data["weight"])
-	embed.add_field(name="Type", value=data['types'][0]['type']['name'].title())
-	embed.add_field(name="Abilities", value=data["abilities"][0]['ability']['name'])
-	return embed
+	data = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon.lower()}")
+	if data.status_code == 200:
+		data = data.json()
+		embed = discord.Embed(title=data['name'].title(),color=discord.Color.blue())
+		embed.set_thumbnail(url=data['sprites']['front_default'])
+		embed.add_field(name="Stats", value=data['name'].title())
+		embed.add_field(name="Weight", value=data['weight'])
+		embed.add_field(name="Type", value=data['types'][0]['type']['name'].title())
+		embed.add_field(name="Abilities", value=data["abilities"][0]['ability']['name']) 
+		return embed
+	elif data.status_code == 404:
+		embed = discord.Embed(title="Uhh oh...",color=discord.Color.blue())
+		embed.set_thumbnail(url="https://assets.pokemon.com/assets/cms2/img/misc/gus/buttons/logo-pokemon-79x45.png")
+		embed.add_field(name="Error", value=pokemon.title() + " does not exist!")
+		return embed
