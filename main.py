@@ -136,7 +136,7 @@ async def google(ctx, *, args):
 
 @bot.command()
 async def pokedex(ctx, *, pokemon):
-    await ctx.send(embed=funcs.pokedex(pokemon))
+    await ctx.send(embed=Fun_Funcs.pokedex(pokemon))
     
 @bot.command()
 async def dogpic(ctx):
