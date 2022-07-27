@@ -151,26 +151,14 @@ async def codeblock(ctx):
 	await ctx.send(Utility_Funcs.codeblock(), reference=ctx.message)
 
 @bot.command()
-async def embed(ctx):
-	text = ctx.message.content.replace("!embed", "").split("\n")
-
-	embed = discord.Embed(title=text[1], description="", timestamp=ctx.message.created_at)
-
-	if len(text) <= 3:
-		embed.add_field(name="Content", value=text[2])
-		await ctx.message.delete()
-		await ctx.send(embed=embed)
-	
-	elif len(text) > 3:
-		for i in range(2, len(text)):
-			if len(text[i]) < 1:
-				continue
-			else:
-				embed.add_field(name=f" ----- ", value=text[i], inline=False)
-
-		embed.set_footer(icon_url=ctx.message.author.avatar_url, text=ctx.message.author.name)
-		await ctx.message.delete()
-		await ctx.send(embed=embed)
+async def embed(ctx, *, args):
+    text = args.split("\n")
+    embed = discord.Embed(title=text[0], timestamp=ctx.message.created_at)
+    text.pop(0)
+    [embed.add_field(name=f" ----- ", value=text[index], inline=False) for index,item in enumerate(text)]
+    embed.set_footer(icon_url=ctx.message.author.avatar_url, text=ctx.message.author.name)
+    await ctx.message.delete()
+    await ctx.send(embed=embed)
 
 @bot.command()
 async def zeus(ctx, *, args):
