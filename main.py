@@ -152,11 +152,10 @@ async def codeblock(ctx):
 
 @bot.command()
 async def embed(ctx, *, args):
-    text = args.split("\n")
-    embed = discord.Embed(title=text[0], timestamp=ctx.message.created_at)
-    text.pop(0)
-    [embed.add_field(name=f" ----- ", value=text[index], inline=False) for index,item in enumerate(text)]
-    embed.set_footer(icon_url=ctx.message.author.avatar_url, text=ctx.message.author.name)
+    embed = Utility_Funcs.make_embed(ctx.message.content, 
+								 ctx.message.author,
+                                 ctx.message.created_at,
+                                 ctx.message.author.avatar_url)
     await ctx.message.delete()
     await ctx.send(embed=embed)
 

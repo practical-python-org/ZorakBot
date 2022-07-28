@@ -45,7 +45,14 @@ def get_times():
     return Times
 
     
-# !embed
+def make_embed(message, author, created_at, avatar):
+	text = message.split("\n")
+	embed = discord.Embed(title=text[0], timestamp=created_at)
+	text.pop(0)
+	[embed.add_field(name=f" ----- ", value=text[index], inline=False) for index,item in enumerate(text)]
+	embed.set_footer(icon_url=avatar, text=author)
+	return embed
+
 def Run_zeus(url):
 	if "https://" in url == True:
 			try:
