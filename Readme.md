@@ -29,6 +29,5 @@ ZorakBot is the House bot of the Practical Python discord server. Zorak is devel
 - !git/!github [endpoint]
 #### Admin Commands
 - !echo [message]
-- !dailychallenge
 - !rules [title] [rules]
 

@@ -31,13 +31,13 @@ async def echo(ctx, *, args):
 	else:
 		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
 
-@bot.command()
-async def dailychallenge(ctx):
-	if ctx.message.author.guild_permissions.administrator:
-		await ctx.send(Admin_Funcs.DailyChallenge())
-		Admin_Funcs.increaseDay()
-	else:
-		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
+# @bot.command()
+# async def dailychallenge(ctx):
+# 	if ctx.message.author.guild_permissions.administrator:
+# 		await ctx.send(Admin_Funcs.DailyChallenge())
+# 		Admin_Funcs.increaseDay()
+# 	else:
+# 		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
 
 @bot.command()
 async def rules(ctx, *, args):
