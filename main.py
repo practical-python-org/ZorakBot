@@ -254,7 +254,7 @@ async def poll(ctx):
 		msg = await ctx.send(embed=embed)
 		
 		for idx in range(1, len(text[2:]) + 1):
-			await msg.add_reaction(reactions[str(idx)])
+			await msg.add_reaction(reactions[str(idx)]), await ctx.message.delete()
 
 @bot.command(aliases=["av"])
 async def avatar(ctx, member: Member = None):
