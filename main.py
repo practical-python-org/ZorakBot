@@ -397,6 +397,22 @@ async def help(ctx):
 	embed = discord.Embed(title="User-Commands", description=Utility_Funcs.help_msg(), timestamp=ctx.message.created_at)
 	await ctx.send(embed=embed, reference=ctx.message)
 
+
+"""   
+
+				Error Handling
+
+"""
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MemberNotFound):
+        await ctx.send("User you requested cannot be found.",
+                       reference=ctx.message)
+    elif isinstance(error, commands.CommandNotFound):
+        await ctx.send("Zorak has no such command!", reference=ctx.message)
+    await ctx.message.delete()
+
+
 if __name__ == "__main__":
 	bot.run(TOKEN)
 
