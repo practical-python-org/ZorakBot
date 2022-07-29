@@ -9,7 +9,7 @@ import os, math
 import discord
 
 TOKEN = os.environ['TOKEN']
-bot = Bot("!")
+bot = Bot(command_prefix=["z.", "Z."])
 bot.remove_command("help")
 
 @bot.event
