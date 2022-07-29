@@ -257,12 +257,11 @@ async def poll(ctx):
 			await msg.add_reaction(reactions[str(idx)]), await ctx.message.delete()
 
 @bot.command(aliases=["av"])
-async def avatar(ctx, member: Member = None):
-	if not member:
-		member = ctx.author
-	embed = discord.Embed(title=f"Avatar for {member}", description=f"[Download image]({member.avatar_url})", timestamp=ctx.message.created_at)
-	embed.set_image(url=member.avatar_url)
-	await ctx.send(embed=embed, reference=ctx.message)
+async def avatar(
+        ctx,
+        member: discord.Member = None):
+    embed = functions.get_avatar(ctx, member)
+    await ctx.send(embed=embed, reference=ctx.message)
 
 
 @bot.command(aliases=["whois"])

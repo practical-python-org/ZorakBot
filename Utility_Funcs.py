@@ -2,6 +2,7 @@
 import requests
 from datetime import datetime
 import pytz
+import discord
 
 requests.packages.urllib3.disable_warnings()
 
@@ -52,6 +53,17 @@ def make_embed(message, author, created_at, avatar):
 	[embed.add_field(name=f" ----- ", value=text[index], inline=False) for index,item in enumerate(text)]
 	embed.set_footer(icon_url=avatar, text=author)
 	return embed
+
+def get_avatar(ctx, member):
+    if not member:
+        member = ctx.author
+    embed = discord.Embed(
+        title=f"Avatar for {member}",
+        description=f"[Download image]({member.avatar_url})",
+        timestamp=ctx.message.created_at,
+    )
+    embed.set_image(url=member.avatar_url)
+    return embed
 
 def Run_zeus(url):
 	if "https://" in url == True:
