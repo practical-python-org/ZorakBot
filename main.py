@@ -225,36 +225,25 @@ async def suggest(ctx, *, args):
 
 @bot.command()
 async def poll(ctx):
-	await ctx.message.delete()
-	reactions = {
-		'1': '1️⃣',
-		'2': '2️⃣',
-		'3': '3️⃣',
-		'4': '4️⃣',
-		'5': '5️⃣',
-		'6': '6️⃣',
-		'7': '7️⃣',
-		"8": '8️⃣',
-		"9": '9️⃣',
-		"10": '🔟'
-	}
-	text = ctx.message.content.replace("!poll", "").split("\n")
+    await ctx.message.delete()
+    reactions = {'1': '1️⃣', '2': '2️⃣', '3': '3️⃣', '4': '4️⃣', '5': '5️⃣', '6': '6️⃣',
+                 '7': '7️⃣', "8": '8️⃣', "9": '9️⃣', "10": '🔟'}
+    text = ctx.message.content.replace("!poll", "").split("\n")
+    if len(text) < 4:
+        await ctx.send("Can't create a poll! Please provide more options.")
+    elif len(text) > 12:
+        await ctx.send("Can't create a poll! Please provide only 10 options.")
+    else:
+        embed = discord.Embed(
+            description=f"**{text[1]}**\n\n" + "\n\n".join(
+                f"{reactions[str(idx)]}: {opt}" for idx, opt in enumerate(text[2:], 1)),
+            timestamp=ctx.message.created_at
+        )
+        embed.set_author(name=f"Poll by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
+        msg = await ctx.send(embed=embed)
+        for idx in range(1, len(text[2:]) + 1):
+            await msg.add_reaction(reactions[str(idx)])
 
-	if len(text) < 4:
-		await ctx.send("Can't create a poll! Please provide more options.")
-	elif len(text) > 12:
-		await ctx.send("Can't create a poll! Please provide only 10 options.")
-	else:
-		embed = discord.Embed(
-			description=f"**{text[1]}**\n\n"+"\n\n".join(f"{reactions[str(idx)]}: {opt}" for idx, opt in enumerate(text[2:], 1)),
-			timestamp=ctx.message.created_at
-		)
-		embed.set_author(name=f"Poll by {ctx.author.display_name}", icon_url=ctx.author.avatar_url)
-
-		msg = await ctx.send(embed=embed)
-		
-		for idx in range(1, len(text[2:]) + 1):
-			await msg.add_reaction(reactions[str(idx)]), await ctx.message.delete()
 
 @bot.command(aliases=["av"])
 async def avatar(
