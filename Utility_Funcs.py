@@ -3,6 +3,14 @@ import requests
 from datetime import datetime
 import pytz
 import discord
+from io import BytesIO
+from matplotlib import mathtext, font_manager
+import matplotlib as mpl
+
+mpl.rcParams['savefig.transparent'] = True
+mpl.rcParams['text.color'] = "white"
+
+texFont = font_manager.FontProperties(size=30, family='serif', math_fontfamily='cm')
 
 requests.packages.urllib3.disable_warnings()
 
@@ -130,3 +138,28 @@ def getPypiInfo(package):
 
 def getgitinfo(endpoint):
 	return requests.get(f"https://api.github.com/repos/{endpoint}").json()
+
+
+def render_latex(tex_expr, ctx):
+	buff = BytesIO()
+	
+	mathtext.math_to_image(
+		rf"${tex_expr}$".replace("\n", " "),
+		buff,
+		dpi = 300,
+		prop=texFont,
+		format="png"
+	)
+
+	buff.seek(0)
+
+	file = discord.File(
+		fp=buff,
+		filename="expr.png"
+	)
+
+	embed = discord.Embed(colour=discord.Colour.green(), timestamp=ctx.message.created_at)
+	embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
+	embed.set_image(url="attachment://expr.png")
+
+	return (embed, file)

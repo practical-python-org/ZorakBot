@@ -9,7 +9,7 @@ import os, math
 import discord
 
 TOKEN = os.environ['TOKEN']
-bot = Bot("!")
+bot = Bot(command_prefix=["z.", "Z."])
 bot.remove_command("help")
 
 @bot.event
@@ -391,6 +391,14 @@ async def no_endpoint(ctx, error):
 			),
 			reference=ctx.message
 		)
+
+
+@bot.command(aliases=["tex"])
+async def latex(ctx, *, expr):
+	res = Utility_Funcs.render_latex(expr, ctx)
+
+	await ctx.message.delete()
+	await ctx.send(embed=res[0], file=res[1])
 
 @bot.command()
 async def help(ctx):
