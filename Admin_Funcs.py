@@ -1,5 +1,12 @@
 import os
 
+def send_echo(message):
+	#check if user has provided a message to display
+	if message:
+		return message
+  # otherwise let user know they need to add a message
+	return "Please enter a message to echo."
+
 # TODO: Recreate the daily challenges, and bring this back to life
 # def DailyChallenge():
 #   dayPath = '/home/runner/Zorak/2_Challenges/day.txt'

@@ -19,17 +19,17 @@ async def on_ready():
 
 #-----------------------------#  Administrator Commands
 @bot.command()
-async def echo(ctx, *, args):
-	if ctx.message.author.guild_permissions.manage_roles:
-		print('has role')
-		await ctx.message.delete()
-		try:
-			await ctx.send(args)
-		except:
-			await ctx.send("Please enter a message to echo.", reference=ctx.message)
-
-	else:
-		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
+async def echo(ctx, *, message=None):
+    """
+    Echos a message. If no message, it will alert the user.
+    Args:
+        ctx: discord context : dictionary
+        message: message to display : str
+    Returns:
+        None
+    """
+    await ctx.message.delete()
+    await ctx.send(Admin_Funcs.send_echo(message))
 
 # @bot.command()
 # async def dailychallenge(ctx):
