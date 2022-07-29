@@ -8,7 +8,7 @@ import Utility_Funcs
 import os, math
 import discord
 
-# TOKEN = os.environ['TOKEN']
+TOKEN = os.environ['TOKEN']
 bot = Bot("!")
 bot.remove_command("help")
 
@@ -422,5 +422,5 @@ async def on_command_error(ctx, error):
 
 
 if __name__ == "__main__":
-	bot.run("OTgzMDM1NTY3MDM2MDQzMzM1.GPPfHl.StlvNb4EQYWyVif51vtNqH0hhgmiT-1p51_8dk")
+	bot.run(TOKEN)
 
