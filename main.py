@@ -260,7 +260,7 @@ async def poll(ctx):
 async def avatar(
         ctx,
         member: discord.Member = None):
-    embed = functions.get_avatar(ctx, member)
+    embed = Utility_Funcs.get_avatar(ctx, member)
     await ctx.send(embed=embed, reference=ctx.message)
 
 
