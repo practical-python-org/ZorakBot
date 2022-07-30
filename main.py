@@ -2,6 +2,7 @@ from random import choice
 from discord.ext import commands
 from discord.ext.commands import Bot
 from discord import Member
+import Error_Handling
 import Admin_Funcs
 import Fun_Funcs
 import Utility_Funcs
@@ -17,6 +18,11 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="you..."))
 	print('{0.user}, ready to conquer the world.'.format(bot))
 
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.send(Error_Handling.get_error_msg(error),
+                       reference=ctx.message)
+    await ctx.message.delete()
 #-----------------------------#  Administrator Commands
 @bot.command()
 async def echo(ctx, *, message=None):
