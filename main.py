@@ -182,43 +182,34 @@ async def zeus(ctx, *, args):
 
 @bot.listen('on_message')
 async def preview(message):
-	text = message.content
-	l = text.replace(", ", " ").split(" ")
-	key = "https://discord.com/channels/"
-	for item in l:
-		if key in item:
-			try:
-				lilink = l[l.index(item)]
-				response = "-**---** **Content** **in** **the** **link** **above** **---**- \n\n"
-				link = lilink.replace("https://discord.com/channels/", "").split("/")
-				sourceServer = bot.get_guild(int(link[0]))
-				sourceChannel = sourceServer.get_channel(int(link[1]))
-				sourceMessage = await sourceChannel.fetch_message(int(link[2]))
+	if message.content.startswith(
+		"https://discord.com/channels/"
+    ) is True or message.content.startswith(
+            "https://discordapp.com/channels/") is True:
+		try:
+			link = message.content.replace("/", " ").split(" ")
+			sourceServer = bot.get_guild(int(link[4]))
+			sourceChannel = sourceServer.get_channel(int(link[5]))
+			sourceMessage = await sourceChannel.fetch_message(int(link[6]))
 
-				if len(sourceMessage.content) <= 1000:
-					embed = discord.Embed(title=response, description="", timestamp=sourceMessage.created_at)
-					embed.add_field(name=f"Length: {len(sourceMessage.content)}", value=sourceMessage.content)
-					embed.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
-					await message.channel.send(embed=embed)
+			embed = discord.Embed(title="**Message** **Preview**",description="",timestamp=sourceMessage.created_at)
 
-				if len(sourceMessage.content) > 1000:
-					contents = sourceMessage.content
-					con2 = []
-					splitstr = math.ceil(len(contents)/1000)
-					embed1 = discord.Embed(title=response, description="", timestamp=sourceMessage.created_at)
-					while contents:
-						con2.append(contents[:900])
-						contents = contents[900:]
-					for feilds in range(0, splitstr):
-						embed1.add_field(name="**---CUT---HERE---**", value=f"```py\n{con2[feilds]}\n```", inline=False)
-					embed1.set_footer(text=sourceMessage.author, icon_url=sourceMessage.author.avatar_url)
-					await message.channel.send(embed=embed1)
+			if len(sourceMessage.content) <= 1000:
+				embed.add_field(name="**Content:** ",value=sourceMessage.content)
+			elif len(sourceMessage.content) > 1000:
+				# This just breaks the source message into 950 character chunks in a list.
+				chunks = [sourceMessage.content[i:i + 950]for i in range(0, len(sourceMessage.content), 950)]
+				for chunk in chunks: # for each item in the chunk list, add a field to the embed.
+					embed.add_field(name="**---------**",value=f"```py\n{chunk}\n```",inline=False)
 
-			except:
+			embed.set_footer(text=sourceMessage.author,icon_url=sourceMessage.author.avatar_url)
+			await message.channel.send(embed=embed)
 
-				await message.channel.send(f"         -**Cannot** **preview**-\n-"
-										   f"**Make sure message is in this server,"
-										   f" and not a text file or image**-")
+		except:
+			await message.channel.send(
+                f"         -**Cannot** **preview**-\n-"
+                f"**Make sure message is in this server,"
+                f" and not a text file or image**-")
 
 @bot.command()
 async def suggest(ctx, *, args):
