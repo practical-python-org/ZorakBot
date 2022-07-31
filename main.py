@@ -313,13 +313,7 @@ async def pipsearch(ctx):
 
 @bot.command()
 async def ping(ctx):
-	await ctx.send(
-		embed=discord.Embed(
-			title="Zorathian Army Report",
-			description=f"Zorak's current ping is **{round(bot.latency * 1000)}ms**",
-			timestamp=ctx.message.created_at
-		)
-	)
+	await ctx.send(embed=Utility_Funcs.zong(ctx, bot))
 
 @bot.command(aliases=["git"])
 async def github(ctx, *, endpoint):

@@ -14,6 +14,13 @@ texFont = font_manager.FontProperties(size=30, family='serif', math_fontfamily='
 
 requests.packages.urllib3.disable_warnings()
 
+def zong(ctx, bot): # Alias for the Z.ping command
+	return(discord.Embed(
+		title="Zong!",
+		description=f"Zorak's current ping is **{round(bot.latency * 1000)}ms**",
+		timestamp=ctx.message.created_at,
+		color=discord.Color.green()))
+
 def runcode():
 	return """
 To run python code in the chat, type:
