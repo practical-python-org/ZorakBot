@@ -143,8 +143,34 @@ def getPypiInfo(package):
 	return requests.get(f"https://pypi.org/pypi/{package}/json").json()
 
 
-def getgitinfo(endpoint):
-	return requests.get(f"https://api.github.com/repos/{endpoint}").json()
+def getgitinfo(ctx, endpoint):
+	try:
+		info = requests.get(f"https://api.github.com/repos/{endpoint}").json()
+		contrib_info = requests.get(f"https://api.github.com/repos/{endpoint}/contributors").json()
+		embed = discord.Embed(
+			title=info["name"],
+			description=f"[Repository Link]({info['html_url']})",
+			colour=discord.Colour.green(),
+			timestamp=ctx.message.created_at)
+	
+		embed.add_field(name="Owner",value=info["owner"]["login"])
+		embed.add_field(name="Language",value=info["language"])
+		embed.add_field(name="Stars",value=info["stargazers_count"])
+		embed.add_field(name="Forks",value=info["forks"])
+		embed.add_field(name="License",value=info["license"]["name"] if info["license"] is not None else "None")
+		embed.add_field(name="Open Issues",value=info["open_issues"])
+		embed.add_field(name="Contributors",value="\n".join([contribs["login"] for contribs in contrib_info]))
+		embed.set_thumbnail(url=info["owner"]["avatar_url"])
+		embed.set_footer(text=f"Requested by {ctx.message.author}", icon_url=ctx.message.author.avatar_url)
+		return embed
+	except:
+		embed = discord.Embed(
+			title="Oops",
+			description="Repository does not exist!",
+			colour=discord.Colour.red(),
+			timestamp=ctx.message.created_at)
+		embed.set_footer(text=f"Requested by {ctx.message.author}", icon_url=ctx.message.author.avatar_url)
+	return embed
 
 
 def render_latex(tex_expr, ctx):
