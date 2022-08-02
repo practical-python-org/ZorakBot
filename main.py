@@ -313,7 +313,7 @@ async def github(ctx, *, endpoint):
                    reference=ctx.message)
 
 @bot.command(aliases=["tex"])
-async def latex(ctx, *, expr)e
+async def latex(ctx, *, expr):
 	res = Utility_Funcs.render_latex(expr, ctx)
 
 	await ctx.message.delete()
