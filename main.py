@@ -88,18 +88,6 @@ async def on_command_error(ctx, error):
         await ctx.send("Zorak has no such command!", reference=ctx.message)
     await ctx.message.delete()
 
-@github.error
-async def no_endpoint(ctx, error):
-	if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
-		await ctx.send(
-			embed=discord.Embed(
-				title="No endpoint",
-				description="Please add an endpoint!\n`Syntax: !github|!git <username/repo_name>`",
-				timestamp=ctx.message.created_at,
-				colour=discord.Colour.red()
-			),
-			reference=ctx.message
-		)
 
 if __name__ == "__main__":
 	bot.run(TOKEN)

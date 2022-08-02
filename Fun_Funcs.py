@@ -1,4 +1,3 @@
-#### Any non-utility "Fun functions" should stay here. 
 from bs4 import BeautifulSoup
 from io import BytesIO
 import requests

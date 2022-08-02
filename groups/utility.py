@@ -1,4 +1,3 @@
-"command group for utilities"
 import discord
 from discord import Member
 from discord.ext import commands
@@ -178,5 +177,21 @@ class Utility(commands.Cog):
         embed.add_field(name="Staff", value=Utility_Funcs.get_times())
         await ctx.send(embed=embed)
 
+
+
+
+    @github.error
+    async def no_endpoint(ctx, error):
+        if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
+            await ctx.send(
+                embed=discord.Embed(
+                    title="No endpoint",
+                    description="Please add an endpoint!\n`Syntax: !github|!git <username/repo_name>`",
+                    timestamp=ctx.message.created_at,
+                    colour=discord.Colour.red()
+                ),
+                reference=ctx.message
+            )
+            
 def setup(client: commands.Bot):
     client.add_cog(Utility(client))
