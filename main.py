@@ -475,7 +475,6 @@ async def no_endpoint(ctx, error):
 			),
 			reference=ctx.message
 		)
->>>>>>> parent of 2ee684f (Moved error into Error handling area.)
 
 
 @bot.command(aliases=["tex"])
