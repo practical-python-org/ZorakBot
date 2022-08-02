@@ -313,7 +313,7 @@ async def github(ctx, *, endpoint):
                    reference=ctx.message)
 
 @bot.command(aliases=["tex"])
-async def latex(ctx, *, expr):
+async def latex(ctx, *, expr)e
 	res = Utility_Funcs.render_latex(expr, ctx)
 
 	await ctx.message.delete()
@@ -355,35 +355,6 @@ async def no_endpoint(ctx, error):
 			),
 			reference=ctx.message
 		)
-
-
-@bot.command(aliases=["tex"])
-async def latex(ctx, *, expr):
-	res = Utility_Funcs.render_latex(expr, ctx)
-
-	await ctx.message.delete()
-	await ctx.send(embed=res[0], file=res[1])
-
-@bot.command()
-async def help(ctx):
-	embed = discord.Embed(title="User-Commands", description=Utility_Funcs.help_msg(), timestamp=ctx.message.created_at)
-	await ctx.send(embed=embed, reference=ctx.message)
-
-
-"""   
-
-				Error Handling
-
-"""
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.MemberNotFound):
-        await ctx.send("User you requested cannot be found.",
-                       reference=ctx.message)
-    elif isinstance(error, commands.CommandNotFound):
-        await ctx.send("Zorak has no such command!", reference=ctx.message)
-    await ctx.message.delete()
-
 
 if __name__ == "__main__":
 	bot.run(TOKEN)
