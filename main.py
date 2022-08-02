@@ -207,15 +207,10 @@ async def preview(message):
 
 		except:
 			await message.channel.send(
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 				f"         -**Cannot** **preview**-\n-"
 				f"**Make sure message is in this server,"
 				f" and not a text file or image**-")
-=======
-                f"         -**Cannot** **preview**-\n-"
-                f"**Make sure message is in this server,"
-                f" and not a text file or image**-")
 
 @bot.command()
 async def suggest(ctx, *, args):
@@ -342,7 +337,6 @@ async def help(ctx):
 		 description=Utility_Funcs.help_msg(),
 		  timestamp=ctx.message.created_at)
 	await ctx.send(embed=embed, reference=ctx.message)
->>>>>>> parent of 6e1f444 (Added command groups (#33))
 
 
 """   
@@ -360,10 +354,6 @@ async def on_command_error(ctx, error):
         await ctx.send("Zorak has no such command!", reference=ctx.message)
     await ctx.message.delete()
 
-=======
-                f"         -**Cannot** **preview**-\n-"
-                f"**Make sure message is in this server,"
-                f" and not a text file or image**-")
 
 @bot.command()
 async def suggest(ctx, *, args):
