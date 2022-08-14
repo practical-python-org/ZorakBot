@@ -6,8 +6,8 @@ from discord import Member
 from discord.ext import commands
 from discord.ext.commands import Bot
 
-import zorak_bot.admin as admin
-import zorak_bot.play as play
+import zorak_bot.core.admin as admin
+import zorak_bot.core.play as play
 import zorak_bot.util.general as general
 from zorak_bot.util.args_util import parse_args
 from zorak_bot.util.logging_util import setup_logger
