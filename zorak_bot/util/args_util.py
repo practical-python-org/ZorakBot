@@ -40,6 +40,7 @@ class Args:
     """Data Class for storing CL args"""
     log_file: Path | None
     err_file: Path | None
+    discord_token: str | None
     log_level: int = logging.INFO
     console_log: bool = True
 
@@ -61,6 +62,13 @@ def parse_args() -> Args:
         type=int,
         dest="log_level",
         help="The log level of logging",
+    )
+    arg_parser.add_argument(
+        "-dt",
+        "--discord-token",
+        type=str,
+        dest="discord_token",
+        help="Token for the discord bot connection. If not included the TOKEN env variable is used.",
     )
     arg_parser.add_argument(
         "-lf",

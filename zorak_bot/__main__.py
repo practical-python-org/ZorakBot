@@ -368,9 +368,13 @@ def main() -> None:
 		log_file=args.log_file,
 		err_file=args.err_file
     )
+	logger.info(f"Arguments Passed {args}")
 	logger.info("Logger initialised")
 	logger.info("Attempting to run Zorak")
-	bot.run(os.environ['TOKEN'])
+	if args.discord_token is not None:
+		bot.run(args.discord_token)
+	else:
+		bot.run(os.environ['TOKEN'])
 
 if __name__ == "__main__":
     main()
