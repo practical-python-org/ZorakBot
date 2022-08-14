@@ -12,6 +12,6 @@ FROM python:3.9.12-buster
 	COPY . /code
 	RUN pip3 --no-cache-dir install .
    EXPOSE 5000
-	CMD [ "python","-u", "zorak_bot/__main__.py" ]
+	CMD [ "python","-u", "build/lib/zorak_bot/__main__.py" ]
 
 
