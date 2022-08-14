@@ -361,7 +361,7 @@ async def no_endpoint(ctx, error):
 			reference=ctx.message
 		)
 
-if __name__ == "__main__":
+def main() -> None:
 	args = parse_args()
 	setup_logger(
         level=args.log_level,
@@ -373,3 +373,5 @@ if __name__ == "__main__":
 	logger.info("Attempting to run Zorak")
 	bot.run(TOKEN)
 
+if __name__ == "__main__":
+    main()
