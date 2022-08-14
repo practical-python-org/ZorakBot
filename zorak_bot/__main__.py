@@ -14,7 +14,6 @@ from zorak_bot.util.logging_util import setup_logger
 
 logger = logging.getLogger(__name__)
 
-TOKEN = os.environ['TOKEN']
 bot = Bot(command_prefix=["z.", "Z."])
 bot.remove_command("help")
 
@@ -371,7 +370,7 @@ def main() -> None:
     )
 	logger.info("Logger initialised")
 	logger.info("Attempting to run Zorak")
-	bot.run(TOKEN)
+	bot.run(os.environ['TOKEN'])
 
 if __name__ == "__main__":
     main()
