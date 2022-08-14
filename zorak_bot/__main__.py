@@ -9,6 +9,8 @@ from discord.ext.commands import Bot
 import zorak_bot.admin as admin
 import zorak_bot.play as play
 import zorak_bot.util.general as general
+from zorak_bot.util.args_util import parse_args
+from zorak_bot.util.logging_util import setup_logger
 
 logger = logging.getLogger(__name__)
 
@@ -360,5 +362,14 @@ async def no_endpoint(ctx, error):
 		)
 
 if __name__ == "__main__":
+	args = parse_args()
+	setup_logger(
+        level=args.log_level,
+        stream_logs=args.console_log,
+		log_file=args.log_file,
+		err_file=args.err_file
+    )
+	logger.info("Logger initialised")
+	logger.info("Attempting to run Zorak")
 	bot.run(TOKEN)
 

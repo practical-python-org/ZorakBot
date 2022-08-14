@@ -5,16 +5,14 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-LOG_FILE = Path("info_logs.log")
-ERR_FILE = Path("err_logs.log")
 LOGGER_FORMAT = "%(asctime)s %(levelname)s %(name)s %(message)s"
 
 
 def setup_logger(
+    log_file: Path | None,
+    err_file: Path | None,
     level: int = logging.INFO,
     stream_logs: bool = False,
-    log_file: Path = LOG_FILE,
-    err_file: Path = ERR_FILE,
     logger_format: str = LOGGER_FORMAT,
 ) -> None:
     """Sets up the service logger
@@ -40,15 +38,17 @@ def setup_logger(
         stream_handler.setFormatter(log_formatter)
         stream_handler.setLevel(level)
         handlers.append(stream_handler)
+    
+    if log_file is not None:
+        handler = logging.FileHandler(log_file, mode="w")
+        handler.setFormatter(log_formatter)
+        handler.setLevel(level)
+        handlers.append(handler)
 
-    handler = logging.FileHandler(log_file, mode="w")
-    handler.setFormatter(log_formatter)
-    handler.setLevel(level)
-    handlers.append(handler)
-
-    err_handler = logging.FileHandler(err_file, mode="w")
-    err_handler.setFormatter(log_formatter)
-    err_handler.setLevel(logging.ERROR)
-    handlers.append(err_handler)
+    if err_file is not None:
+        err_handler = logging.FileHandler(err_file, mode="w")
+        err_handler.setFormatter(log_formatter)
+        err_handler.setLevel(logging.ERROR)
+        handlers.append(err_handler)
 
     logging.basicConfig(level=level, handlers=handlers)
