@@ -33,7 +33,7 @@ ZorakBot is the House bot of the Practical Python discord server. Zorak is devel
 
 ## Deployment
 
-Run 'pip install .' in the root directory to pull all dependencies and create a build of zorak_module. Build is then runnable via a call to  zorak_bot__main__.py script.
+Run 'pip install .' in the root directory to pull all dependencies and create a build of zorak_module. Build is then runnable via a call to  zorak_bot/__main__.py script.
 
 If you're developing on the project you won't want to rebuild the module each time you make a change, so you can do this once to set up your enviroment and then delete the two generated build folders within zorak_module, before continuing to run __main__.py. Or alternitevely if using VSCode install the Jupyter extension and you can add '#%%' at the top of __main__.py (or anywhere for that matter) to run/debug as a Jupyter cell.
 
