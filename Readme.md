@@ -5,29 +5,29 @@ ZorakBot is the House bot of the Practical Python discord server. Zorak is devel
 
 ## User Commands
 #### For-fun commands
-- !hello
-- !catfact
-- !dogfact
-- !pugfact
-- !quote
-- !joke
-- !8ball [question]
-- !taunt
-- !rolldice
-- !catpic
-- !dogpic [breed] (Optional)
-- !pokedex [pokemon]
+- z.hello
+- z.catfact
+- z.dogfact
+- z.pugfact
+- z.quote
+- z.joke
+- z.8ball [question]
+- z.taunt
+- z.rolldice
+- z.catpic
+- z.dogpic [breed] (Optional)
+- z.pokedex [pokemon]
 #### Utility Commands
-- !google [question]
-- !embed [title] [ content ]  
-- !zeus [website]
-- !fakeperson
-- !userinfo/!whois
-- !avatar/!av
-- !ping
-- !pipsearch/!pypi/!pip [package]
-- !git/!github [endpoint]
+- z.google [question]
+- z.embed [title] [ content ]  
+- z.zeus [website]
+- z.fakeperson
+- z.userinfo/z.whois
+- z.avatar/z.av
+- z.ping
+- z.pipsearch/z.pypi/z.pip [package]
+- z.git/z.github [endpoint]
 #### Admin Commands
-- !echo [message]
-- !rules [title] [rules]
+- z.echo [message]
+- z.rules [title] [rules]
 

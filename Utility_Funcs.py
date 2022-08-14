@@ -16,7 +16,7 @@ requests.packages.urllib3.disable_warnings()
 
 def zong(ctx, bot): # Alias for the Z.ping command
 	return(discord.Embed(
-		title="Zong!",
+		title="Pong.",
 		description=f"Zorak's current ping is **{round(bot.latency * 1000)}ms**",
 		timestamp=ctx.message.created_at,
 		color=discord.Color.green()))
@@ -98,44 +98,44 @@ def Run_zeus(url):
 
 	return context	
 
-# !preview
-# !suggest
-# !poll
-# !avatar
-# !owo
+# z.preview
+# z.suggest
+# z.poll
+# z.avatar
+# z.owo
 
 def help_msg():
 	return """
 ***For-fun commands***
-- !hello
-- !catfact
-- !dogfact
-- !pugfact
-- !quote
-- !joke
-- !8ball [question]
-- !taunt
-- !rolldice
-- !owo [text]
-- !catpic
-- !dogpic [breed] (Optional)
-- !pokedex [pokemon]
+- z.hello
+- z.catfact
+- z.dogfact
+- z.pugfact
+- z.quote
+- z.joke
+- z.8ball [question]
+- z.taunt
+- z.rolldice
+- z.owo [text]
+- z.catpic
+- z.dogpic [breed] (Optional)
+- z.pokedex [pokemon]
 	
 ***Utility Commands***
-- !codeblock
-- !runcode
-- !preview
-- !google [question]
-- !embed </br>[title]</br>[content]  
-- !zeus [website]
-- !fakeperson
-- !poll </br>[title]</br>[options]
-- !suggest [suggestion]
-- !avatar/!av [member] (default=author)
-- !userinfo/!whois [member] (Optional)
-- !pipsearch/!pypi/!pip [package]
-- !ping
-- !git/!github [endpoint]
+- z.codeblock
+- z.runcode
+- z.preview
+- z.google [question]
+- z.embed </br>[title]</br>[content]  
+- z.zeus [website]
+- z.fakeperson
+- z.poll </br>[title]</br>[options]
+- z.suggest [suggestion]
+- z.avatar/z.av [member] (default=author)
+- z.userinfo/z.whois [member] (Optional)
+- z.pipsearch/z.pypi/z.pip [package]
+- z.ping
+- z.git/z.github [endpoint]
 	"""
 
 
@@ -166,7 +166,7 @@ def getgitinfo(ctx, endpoint):
 	except:
 		embed = discord.Embed(
 			title="Oops",
-			description="Repository does not exist!",
+			description="Repository does not existz.",
 			colour=discord.Colour.red(),
 			timestamp=ctx.message.created_at)
 		embed.set_footer(text=f"Requested by {ctx.message.author}", icon_url=ctx.message.author.avatar_url)
