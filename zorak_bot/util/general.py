@@ -1,11 +1,12 @@
 #### Any utility should stay here. 
-import requests
 from datetime import datetime
-import pytz
-import discord
 from io import BytesIO
-from matplotlib import mathtext, font_manager
+
+import discord
 import matplotlib as mpl
+import pytz
+import requests
+from matplotlib import font_manager, mathtext
 
 mpl.rcParams['savefig.transparent'] = True
 mpl.rcParams['text.color'] = "white"

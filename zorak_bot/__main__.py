@@ -1,11 +1,16 @@
+import logging
+import os
+
+import discord
+from discord import Member
 from discord.ext import commands
 from discord.ext.commands import Bot
-from discord import Member
+
 import zorak_bot.admin as admin
 import zorak_bot.play as play
 import zorak_bot.util.general as general
-import os
-import discord
+
+logger = logging.getLogger(__name__)
 
 TOKEN = os.environ['TOKEN']
 bot = Bot(command_prefix=["z.", "Z."])
