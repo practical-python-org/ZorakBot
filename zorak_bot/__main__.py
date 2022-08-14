@@ -1,12 +1,10 @@
-from random import choice
 from discord.ext import commands
 from discord.ext.commands import Bot
 from discord import Member
-import Error_Handling
-import Admin_Funcs
-import Fun_Funcs
-import Utility_Funcs
-import os, math
+import zorak_bot.admin as admin
+import zorak_bot.play as play
+import zorak_bot.util.general as general
+import os
 import discord
 
 TOKEN = os.environ['TOKEN']
@@ -31,7 +29,7 @@ async def echo(ctx, *, message=None):
         None
     """
     await ctx.message.delete()
-    await ctx.send(Admin_Funcs.send_echo(message))
+    await ctx.send(admin.send_echo(message))
 
 # @bot.command()
 # async def dailychallenge(ctx):
@@ -74,53 +72,53 @@ async def clear(ctx, amount: str):
 @bot.command()
 async def times(ctx):
 	embed = discord.Embed(title=f"**TIMES**", description="")
-	embed.add_field(name="Staff", value=Utility_Funcs.get_times())
+	embed.add_field(name="Staff", value=general.get_times())
 	await ctx.send(embed=embed)
 
 #-----------------------------#  User "Fun" Commands
 @bot.command()
 async def hello(ctx):
-	await ctx.send(Fun_Funcs.hello(), reference=ctx.message)
+	await ctx.send(play.hello(), reference=ctx.message)
 
 @bot.command()
 async def taunt(ctx):
-	await ctx.send(Fun_Funcs.taunt(), reference=ctx.message)
+	await ctx.send(play.taunt(), reference=ctx.message)
 	
 @bot.command()
 async def catfact(ctx):
-	await ctx.send(Fun_Funcs.catfact(), reference=ctx.message)
+	await ctx.send(play.catfact(), reference=ctx.message)
 
 @bot.command()
 async def dogfact(ctx):
-	await ctx.send(Fun_Funcs.dogfact(), reference=ctx.message)
+	await ctx.send(play.dogfact(), reference=ctx.message)
 
 @bot.command()
 async def pugfact(ctx):
-	await ctx.send(Fun_Funcs.pugFact(), reference=ctx.message)
+	await ctx.send(play.pugFact(), reference=ctx.message)
 
 @bot.command()
 async def catpic(ctx):
-	await ctx.send(file=discord.File(fp=Fun_Funcs.catpic(), filename="cat.png"), reference=ctx.message)
+	await ctx.send(file=discord.File(fp=play.catpic(), filename="cat.png"), reference=ctx.message)
 
 @bot.command()
 async def joke(ctx):
-	await ctx.send(Fun_Funcs.joke(), reference=ctx.message)
+	await ctx.send(play.joke(), reference=ctx.message)
 	
 @bot.command()
 async def quote(ctx):
-	await ctx.send(Fun_Funcs.quote(), reference=ctx.message)
+	await ctx.send(play.quote(), reference=ctx.message)
 
 @bot.command(aliases=["8ball"])
 async def eightball(ctx):
-	await ctx.send('🎱 - ' + Fun_Funcs.eightball(), reference=ctx.message)
+	await ctx.send('🎱 - ' + play.eightball(), reference=ctx.message)
 	
 @bot.command()
 async def fakeperson(ctx):
-	await ctx.send(Fun_Funcs.fakePerson(), reference=ctx.message)
+	await ctx.send(play.fakePerson(), reference=ctx.message)
 
 @bot.command()
 async def rolldice(ctx):
-	await ctx.send(f"**{ctx.message.author.name}** rolled a **{Fun_Funcs.dice()}**", reference=ctx.message)
+	await ctx.send(f"**{ctx.message.author.name}** rolled a **{play.dice()}**", reference=ctx.message)
 
 @bot.command()
 async def google(ctx, *, args):
@@ -128,11 +126,11 @@ async def google(ctx, *, args):
 
 @bot.command()
 async def pokedex(ctx, *, pokemon):
-    await ctx.send(embed=Fun_Funcs.pokedex(pokemon))
+    await ctx.send(embed=play.pokedex(pokemon))
     
 @bot.command()
 async def dogpic(ctx, *, breed=None):
-    await ctx.send(embed=Fun_Funcs.dogpic(breed))
+    await ctx.send(embed=play.dogpic(breed))
 
 """   
 
@@ -141,15 +139,15 @@ async def dogpic(ctx, *, breed=None):
 """
 @bot.command()
 async def runcode(ctx):
-	await ctx.send(Utility_Funcs.runcode(), reference=ctx.message)
+	await ctx.send(general.runcode(), reference=ctx.message)
 	
 @bot.command()
 async def codeblock(ctx):
-	await ctx.send(Utility_Funcs.codeblock(), reference=ctx.message)
+	await ctx.send(general.codeblock(), reference=ctx.message)
 
 @bot.command()
 async def embed(ctx, *, args):
-    embed = Utility_Funcs.make_embed(ctx.message.content, 
+    embed = general.make_embed(ctx.message.content, 
 								 ctx.message.author,
                                  ctx.message.created_at,
                                  ctx.message.author.avatar_url)
@@ -158,7 +156,7 @@ async def embed(ctx, *, args):
 
 @bot.command()
 async def zeus(ctx, *, args):
-	res = Utility_Funcs.Run_zeus(url=args)
+	res = general.Run_zeus(url=args)
 
 	if res[1] == "**ONLINE**":
 		COLOR = discord.Color.green()
@@ -249,7 +247,7 @@ async def poll(ctx):
 async def avatar(
         ctx,
         member: discord.Member = None):
-    embed = Utility_Funcs.get_avatar(ctx, member)
+    embed = general.get_avatar(ctx, member)
     await ctx.send(embed=embed, reference=ctx.message)
 
 
@@ -290,7 +288,7 @@ async def pipsearch(ctx):
 	if not package:
 		await ctx.send(embed=discord.Embed(title="Traceback (most recent call): \"~/ur_brain\"", description="Invalid pacakge name!", colour=discord.Colour.red()))
 	else:
-		data = Utility_Funcs.getPypiInfo(package)
+		data = general.getPypiInfo(package)
 		
 		embed=discord.Embed(
 			title=f"Searched {package}",
@@ -305,16 +303,16 @@ async def pipsearch(ctx):
 
 @bot.command()
 async def ping(ctx):
-	await ctx.send(embed=Utility_Funcs.zong(ctx, bot))
+	await ctx.send(embed=general.zong(ctx, bot))
 
 @bot.command(aliases=["git"])
 async def github(ctx, *, endpoint):
-    await ctx.send(embed=Utility_Funcs.getgitinfo(ctx, endpoint),
+    await ctx.send(embed=general.getgitinfo(ctx, endpoint),
                    reference=ctx.message)
 
 @bot.command(aliases=["tex"])
 async def latex(ctx, *, expr):
-	res = Utility_Funcs.render_latex(expr, ctx)
+	res = general.render_latex(expr, ctx)
 
 	await ctx.message.delete()
 	await ctx.send(embed=res[0], file=res[1])
@@ -323,7 +321,7 @@ async def latex(ctx, *, expr):
 async def help(ctx):
 	embed = discord.Embed(
 		title="User-Commands",
-		 description=Utility_Funcs.help_msg(),
+		 description=general.help_msg(),
 		  timestamp=ctx.message.created_at)
 	await ctx.send(embed=embed, reference=ctx.message)
 
