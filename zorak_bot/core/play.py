@@ -1,9 +1,10 @@
-from bs4 import BeautifulSoup
-from io import BytesIO
-import requests
-import discord
-import random
 import json
+import random
+from io import BytesIO
+
+import discord
+import requests
+from bs4 import BeautifulSoup
 
 requests.packages.urllib3.disable_warnings()
 

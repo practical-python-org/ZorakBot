@@ -1,5 +1,6 @@
-import discord
+#import discord
 from discord.ext import commands
+
 
 def get_error_msg(error):
     if isinstance(error, commands.MemberNotFound):
