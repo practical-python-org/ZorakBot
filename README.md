@@ -1,10 +1,4 @@
-███████╗     ██████╗     ██████╗      █████╗     ██╗  ██╗
-╚══███╔╝    ██╔═══██╗    ██╔══██╗    ██╔══██╗    ██║ ██╔╝
-  ███╔╝     ██║   ██║    ██████╔╝    ███████║    █████╔╝ 
- ███╔╝      ██║   ██║    ██╔══██╗    ██╔══██║    ██╔═██╗ 
-███████╗    ╚██████╔╝    ██║  ██║    ██║  ██║    ██║  ██╗
-╚══════╝     ╚═════╝     ╚═╝  ╚═╝    ╚═╝  ╚═╝    ╚═╝  ╚═╝
-
+# ZorakBot
 
 ZorakBot is the House bot of the Practical Python discord server. Zorak is developed with features by the community. Anyone from our server can contribute. 
 
