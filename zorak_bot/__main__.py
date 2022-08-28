@@ -62,15 +62,27 @@ async def rules(ctx, *, args):
 @bot.command(aliases=["purge", "clr", "clean"])
 @commands.has_role("Staff")
 @commands.cooldown(1, 500, commands.BucketType.user)
-async def clear(ctx, amount: str):
-	audit = bot.get_channel(953545221260595280)
-	if int(amount) <= 50:
-		#set to 50 max to prevent wrongdoings.
-		await ctx.channel.purge(limit=int(amount)), await audit.send(f"{ctx.author} deleted {amount} messages in {ctx.channel}")
-	else:
-		embed = discord.Embed(title="ERROR", description="")
-		embed.add_field(name="Reason:", value="Invalid input- please choose a number 1-50")
-		await ctx.channel.send(embed=embed)
+async def clear(ctx, amount: int, range2=None):
+    audit = bot.get_channel(953545221260595280)
+    await ctx.message.delete()
+    try:
+        if amount >= 200:
+            sourceServer = bot.get_guild(ctx.guild.id)
+            sourceChannel = sourceServer.get_channel(ctx.channel.id)
+            startMessage = await sourceChannel.fetch_message(amount)
+            if range2 != None:
+                endMessage = await sourceChannel.fetch_message(range2)
+                await ctx.channel.purge(after=startMessage, before=endMessage)
+            else:
+                await ctx.channel.purge(after=startMessage)
+            await audit.send(f"{ctx.author.mention} deleted some messages in {ctx.channel}")
+        if amount <= 50:
+            await ctx.channel.purge(limit=amount), await audit.send(f"{ctx.author} deleted {amount} messages in {ctx.channel}")
+
+    except:
+        embed = discord.Embed(title="ERROR", description="")
+        embed.add_field(name="Reason:", value="Plese either check the range or that the number is under 50!")
+        await ctx.channel.send(embed=embed)
 
 
 
