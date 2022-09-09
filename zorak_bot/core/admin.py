@@ -1,4 +1,4 @@
-#import os
+import os
 
 
 def send_echo(message):
@@ -9,6 +9,17 @@ def send_echo(message):
 	return "Please enter a message to echo."
 
 # TODO: Recreate the daily challenges, and bring this back to life
+def get_challange(day: int):
+    with open(f'ZorakBot/Challenges/day_{day}.txt', 'r') as f:
+        text = f.read()
+        return text
+def add_challange(day: int, text):
+    with open(f'ZorakBot/Challenges/day_{f"10{day}"}.txt', 'w') as f:
+        f.write(text)
+def contents():
+    ToC = os.listdir("ZorakBot/Challenges")
+    return ToC
+
 # def DailyChallenge():
 #   dayPath = '/home/runner/Zorak/2_Challenges/day.txt'
 #   path = '/home/runner/Zorak/2_Challenges/'
