@@ -5,7 +5,6 @@ import discord
 from discord import Member
 from discord.ext import commands
 from discord.ext.commands import Bot
-
 import zorak_bot.core.admin as admin
 import zorak_bot.core.play as play
 import zorak_bot.util.general as general
@@ -37,13 +36,21 @@ async def echo(ctx, *, message=None):
     await ctx.message.delete()
     await ctx.send(admin.send_echo(message))
 
-# @bot.command()
-# async def dailychallenge(ctx):
-# 	if ctx.message.author.guild_permissions.administrator:
-# 		await ctx.send(Admin_Funcs.DailyChallenge())
-# 		Admin_Funcs.increaseDay()
-# 	else:
-# 		await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
+@bot.command()
+@commands.has_role("Staff")
+async def dailychallenge(ctx, day):
+        await ctx.send(admin.get_challange(day=day))
+
+@bot.command()
+@commands.has_role("Staff")
+async def addChallange(ctx, day, *, text):
+	await admin.add_challange(day=day, text=text)
+	await ctx.send("ADDED!!!"), await ctx.message.delete()
+
+@bot.command()
+@commands.has_role("Staff")
+async def toc(ctx):
+	await ctx.send(admin.contents), await ctx.message.delete()
 
 @bot.command()
 async def rules(ctx, *, args):
