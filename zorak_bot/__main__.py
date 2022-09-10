@@ -409,9 +409,9 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-	
+
 	t1 = Thread(target=main_thread)
 	t2 = Thread(target=webserver_thread)
 
-    t1.start()
-    t2.start()
+	t1.start()
+	t2.start()
