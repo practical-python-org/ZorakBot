@@ -1,5 +1,7 @@
 import logging
 import os
+from flask import Flask
+from threading import Thread
 
 import discord
 from discord import Member
@@ -13,6 +15,8 @@ from zorak_bot.util.logging_util import setup_logger
 
 logger = logging.getLogger(__name__)
 
+app = Flask(__name__)
+
 bot = Bot(command_prefix=["z.", "Z."])
 bot.remove_command("help")
 
@@ -21,6 +25,9 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="you..."))
 	print('{0.user}, ready to conquer the world.'.format(bot))
 
+@app.route('/')
+def index():
+    return 'Zorak, Ready to conquer the world.'
 
 #-----------------------------#  Administrator Commands
 @bot.command()
@@ -379,6 +386,11 @@ async def no_endpoint(ctx, error):
 			reference=ctx.message
 		)
 
+def main_thread():
+	main()
+def webserver_thread():
+	app.run(debug=False, port=80, host='0.0.0.0')
+
 def main() -> None:
 	args = parse_args()
 	setup_logger(
@@ -396,4 +408,5 @@ def main() -> None:
 		bot.run(os.environ['TOKEN'])
 
 if __name__ == "__main__":
-    main()
+    main_thread.start()
+    webserver_thread.start()
