@@ -407,6 +407,11 @@ def main() -> None:
 	else:
 		bot.run(os.environ['TOKEN'])
 
+
 if __name__ == "__main__":
-    main_thread.start()
-    webserver_thread.start()
+	
+	t1 = Thread(target=main_thread)
+	t2 = Thread(target=webserver_thread)
+
+    t1.start()
+    t2.start()
