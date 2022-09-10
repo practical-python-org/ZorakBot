@@ -41,6 +41,8 @@ class Args:
     log_file: Path | None
     err_file: Path | None
     discord_token: str | None
+    flask_host: str | None
+    flask_port: int | None
     log_level: int = logging.INFO
     console_log: bool = True
 
@@ -69,6 +71,20 @@ def parse_args() -> Args:
         type=str,
         dest="discord_token",
         help="Token for the discord bot connection. If not included the TOKEN env variable is used.",
+    )
+    arg_parser.add_argument(
+        "-fh",
+        "--flask-host",
+        type=str,
+        dest="flask_host",
+        help="Host for the background API used for the healthcheck. Both host and port need to be included to launch a background API.",
+    )
+    arg_parser.add_argument(
+        "-fp",
+        "--flask-port",
+        type=int,
+        dest="flask_port",
+        help="Port for the background API used for the healthcheck. Both host and port need to be included to launch a background API.",
     )
     arg_parser.add_argument(
         "-lf",

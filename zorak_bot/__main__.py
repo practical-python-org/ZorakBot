@@ -1,9 +1,6 @@
 import logging
 import os
-import sys
-from flask import Flask
-from threading import Thread
-
+from zorak_bot.api import create_app
 import discord
 from discord import Member
 from discord.ext import commands
@@ -16,12 +13,6 @@ from zorak_bot.util.logging_util import setup_logger
 
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
-
-# This is a temporary workaround to a strange bug
-# see issue: https://github.com/django/asgiref/issues/143
-if sys.platform == "win32" and sys.version_info >= (3, 8, 0):
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 bot = Bot(command_prefix=["z.", "Z."])
 bot.remove_command("help")
@@ -31,9 +22,6 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="you..."))
 	print('{0.user}, ready to conquer the world.'.format(bot))
 
-@app.route('/')
-def index():
-    return 'Zorak, Ready to conquer the world.'
 
 #-----------------------------#  Administrator Commands
 @bot.command()
@@ -392,10 +380,6 @@ async def no_endpoint(ctx, error):
 			reference=ctx.message
 		)
 
-def main_thread():
-	main()
-def webserver_thread():
-	app.run(debug=False, port=80, host='0.0.0.0')
 
 def main() -> None:
 	args = parse_args()
@@ -407,6 +391,16 @@ def main() -> None:
     )
 	logger.info(f"Arguments Passed {args}")
 	logger.info("Logger initialised")
+
+	if args.flask_host and args.flask_port:
+		logger.info("Attempting to launch background Flask API.")
+		try:
+			app = create_app(seperate_thread = True)
+			app.run(host = args.flask_host, port = args.flask_port)
+			logger.info("Successful in launching background Flask API.")
+		except Exception as e:
+			logger.error(f"Failed launch of background Flask API with error: {str(e)}")
+
 	logger.info("Attempting to run Zorak")
 	if args.discord_token is not None:
 		bot.run(args.discord_token)
@@ -415,9 +409,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-
-	t1 = Thread(target=main_thread)
-	t2 = Thread(target=webserver_thread)
-
-	t1.start()
-	t2.start()
+	main()
