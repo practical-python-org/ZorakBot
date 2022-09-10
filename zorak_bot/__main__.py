@@ -17,6 +17,11 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
+# This is a temporary workaround to a strange bug
+# see issue: https://github.com/django/asgiref/issues/143
+if sys.platform == "win32" and sys.version_info >= (3, 8, 0):
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 bot = Bot(command_prefix=["z.", "Z."])
 bot.remove_command("help")
 
