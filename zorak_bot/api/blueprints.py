@@ -7,5 +7,5 @@ api_routes = Blueprint("api_routes", __name__)
 
 
 @api_routes.route("/healthcheck")
-def health() -> dict[str, str]:
+def health():
     return {"healthcheck": "Zorak, Ready to conquer the world."}
