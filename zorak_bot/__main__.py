@@ -11,8 +11,7 @@ import zorak_bot.util.general as general
 from zorak_bot.util.args_util import parse_args
 from zorak_bot.util.logging_util import setup_logger
 from zorak_bot.util import clean_path
-from discord.ext import tasks
-from itertools import cycle
+
 logger = logging.getLogger(__name__)
 
 
