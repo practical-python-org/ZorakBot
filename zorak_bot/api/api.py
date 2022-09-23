@@ -1,5 +1,4 @@
 import logging
-from posixpath import sep
 import threading
 
 from flask import Flask
