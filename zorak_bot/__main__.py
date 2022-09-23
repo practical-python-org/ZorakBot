@@ -20,15 +20,6 @@ bot = Bot(command_prefix=["z.", "Z."])
 bot.remove_command("help")
 
 
-#Quickfix to keep the bot running if the API is down 
-
-PERSIST = False
-status = cycle(["you...","you.."]) #Probably not needed but being careful, lets us see its working too
-@tasks.loop(seconds=10) #Could implement this in a way that it checks if the background thread is up
-async def auto_persist():
-	logger.info("I changed")
-	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=status))
-
 
 @bot.event
 async def on_ready():
