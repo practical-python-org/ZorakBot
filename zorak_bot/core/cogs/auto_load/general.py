@@ -65,6 +65,16 @@ class GeneralCog(commands.Cog):
         await ctx.send(embed=embed, reference=ctx.message)
 
     @commands.command()
+    async def embed(self, ctx, *, args):
+        text = ctx.message.content.split("\n")
+        embed = discord.Embed(title=text[0], timestamp=ctx.message.created_at)
+        text.pop(0)
+        [embed.add_field(name=f" ----- ", value=text[index], inline=False) for index, item in enumerate(text)]  # Nice
+        embed.set_footer(icon_url=ctx.message.author.avatar_url, text=ctx.message.author)
+        await ctx.message.delete()
+        await ctx.send(embed=embed)
+
+    @commands.command()
     async def suggest(self, ctx, *, string_input):
         await ctx.message.delete()
         embed = discord.Embed(description=string_input, timestamp=ctx.message.created_at)
