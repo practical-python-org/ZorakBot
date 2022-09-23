@@ -15,7 +15,7 @@ class PersistCog(commands.Cog):
 
     @tasks.loop(seconds=60.0)
     async def persist(self):
-        logger.info("I will persist")
+        logger.debug("I will persist") #Potentially not needed
         if self.bit == 0:
             self.bit = 1
         else:
