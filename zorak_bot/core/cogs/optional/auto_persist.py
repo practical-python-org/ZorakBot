@@ -13,7 +13,7 @@ class PersistCog(commands.Cog):
     async def stop_persist(self, ctx):
         self.persist.cancel()
 
-    @tasks.loop(seconds=60.0)
+    @tasks.loop(seconds=300.0)
     async def persist(self):
         logger.debug("I will persist") #Potentially not needed
         if self.bit == 0:
