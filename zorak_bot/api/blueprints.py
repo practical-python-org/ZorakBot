@@ -8,5 +8,5 @@ api_routes = Blueprint("api_routes", __name__)
 
 @api_routes.route("/healthcheck")
 def health():
-    logger.debug("I recieved a healthcheck ping!")
+    logger.debug("I have recieved a healthcheck ping!")
     return {"healthcheck": "Zorak, Ready to conquer the world."}
