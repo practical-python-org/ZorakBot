@@ -10,12 +10,25 @@ import zorak_bot.core.play as play
 import zorak_bot.util.general as general
 from zorak_bot.util.args_util import parse_args
 from zorak_bot.util.logging_util import setup_logger
-
+from zorak_bot.util import clean_path
+from discord.ext import tasks
+from itertools import cycle
 logger = logging.getLogger(__name__)
 
 
 bot = Bot(command_prefix=["z.", "Z."])
 bot.remove_command("help")
+
+
+#Quickfix to keep the bot running if the API is down 
+
+PERSIST = False
+status = cycle(["you...","you.."]) #Probably not needed but being careful, lets us see its working too
+@tasks.loop(seconds=10) #Could implement this in a way that it checks if the background thread is up
+async def auto_persist():
+	logger.info("I changed")
+	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=status))
+
 
 @bot.event
 async def on_ready():
@@ -381,6 +394,26 @@ async def no_endpoint(ctx, error):
 		)
 
 
+def load_cog(cog_name):
+	try:
+		bot.load_extension(cog_name)
+		logger.info(f'Loaded Extension {cog_name}')
+	except Exception as e:
+		exc = f'{type(e).__name__}: {e}'
+		logger.info(f'Failed to load extension {cog_name}: {exc}')
+
+def load_core_cogs():
+	"""
+		Simple sutoloader for our main cogs, all cogs under core/cogs/dependencies get auto loaded,
+		and we manually load the optional ones. Or can even load them via commands (only owner/admin functionalities.)
+	"""
+	logger.info("Attempting to load Cogs")
+	path = clean_path('zorak_bot/core/cogs/dependencies')
+	for file in os.listdir(path):
+		if file.endswith('.py'):
+			load_cog(f"core.cogs.dependencies.{file[:-3]}")
+
+
 def main() -> None:
 	args = parse_args()
 	setup_logger(
@@ -391,16 +424,23 @@ def main() -> None:
     )
 	logger.info(f"Arguments Passed {args}")
 	logger.info("Logger initialised")
-
+ 
+ 
+	auto_persist = True
 	if args.flask_host and args.flask_port:
 		logger.info("Attempting to launch background Flask API.")
 		try:
 			app = create_app(seperate_thread = True)
 			app.run(host = args.flask_host, port = args.flask_port)
+			auto_persist = False
 			logger.info("Successful in launching background Flask API.")
 		except Exception as e:
 			logger.error(f"Failed launch of background Flask API with error: {str(e)}")
-
+	if auto_persist:
+		logger.info("No Flask API config detectd - running in auto-persist mode.")
+		load_cog("core.cogs.optional.auto_persist")
+  
+	load_core_cogs()
 	logger.info("Attempting to run Zorak")
 	if args.discord_token is not None:
 		bot.run(args.discord_token)
