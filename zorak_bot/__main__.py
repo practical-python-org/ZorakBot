@@ -72,7 +72,7 @@ def load_core_cogs():
     and we manually load the optional ones. Or can even load them via commands (only owner/admin functionalities.)
     """
     logger.info("Attempting to load Cogs")
-    path = clean_path("zorak_bot/core/cogs/auto_load")
+    path = clean_path("./zorak_bot/core/cogs/auto_load")
     for file in os.listdir(path):
         if file.endswith(".py"):
             load_cog(f"core.cogs.auto_load.{file[:-3]}")

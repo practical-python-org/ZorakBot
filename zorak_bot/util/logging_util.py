@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -40,12 +41,16 @@ def setup_logger(
         handlers.append(stream_handler)
     
     if log_file is not None:
+        if not os.path.exists(log_file):
+            os.makedirs(log_file)
         handler = logging.FileHandler(log_file, mode="w")
         handler.setFormatter(log_formatter)
         handler.setLevel(level)
         handlers.append(handler)
 
     if err_file is not None:
+        if not os.path.exists(err_file):
+            os.makedirs(err_file)
         err_handler = logging.FileHandler(err_file, mode="w")
         err_handler.setFormatter(log_formatter)
         err_handler.setLevel(logging.ERROR)
