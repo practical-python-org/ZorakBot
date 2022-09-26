@@ -1,11 +1,8 @@
 version: "3.9"
-	
-	services:
-	 zorak:
-	    container_name: "zorak-service"
-      restart: always
-      ports:
-        - 5000:5000
-      #volumes:
-	    #  - ".:/code" #Allows for editing on the fly without a full rebuild
-	    build: .
+services:
+  zorak:
+    container_name: "zorak-service"
+    restart: always
+    ports:
+      - 5000:5000
+    build: .

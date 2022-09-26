@@ -7,6 +7,8 @@ import os
 
 from discord.ext import commands
 
+from zorak_bot.util import clean_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -17,7 +19,7 @@ class DailyChallengeCog(commands.Cog):
     @commands.command()
     @commands.has_role("Staff")
     async def dailychallenge(self, ctx, day):
-        with open(f"ZorakBot/Resources/DailyChallenges/day_{day}.txt", "r") as f:
+        with open(clean_path(f"./Resources/DailyChallenges/day_{day}.txt"), "r") as f:
             text = f.read()
         await ctx.send(text.get_challange(day=day))
 
@@ -25,7 +27,7 @@ class DailyChallengeCog(commands.Cog):
     @commands.has_role("Staff")
     async def add_challange(self, ctx, day, *, text):
         try:
-            with open(f'ZorakBot/Resources/DailyChallenges/day_{f"10{day}"}.txt', "w") as f:
+            with open(clean_path(f'./Resources/DailyChallenges/day_{f"10{day}"}.txt'), "w") as f:
                 f.write(text)
             await ctx.send("Added a new daily challenge."), await ctx.message.delete()
         except:
@@ -34,7 +36,7 @@ class DailyChallengeCog(commands.Cog):
     @commands.command()
     @commands.has_role("Staff")
     async def toc(self, ctx):
-        await ctx.send(os.listdir("ZorakBot/Resources/DailyChallenges")), await ctx.message.delete()
+        await ctx.send(os.listdir(clean_path("./Resources/DailyChallenges"))), await ctx.message.delete()
 
 
 def setup(bot):
