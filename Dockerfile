@@ -12,6 +12,6 @@ FROM python:3.9.12-buster
 	COPY . /code
 	RUN pip3 --no-cache-dir install .
    EXPOSE 5000
-	CMD [ "python3","-u", "build/lib/zorak_bot/__main__.py", "-dt", ""]
+	CMD [ "python3","-u", "build/lib/zorak_bot/__main__.py","-dt", "TOKEN","-ll","40","--log-file","./logs/logs.txt", "--err-file", "./logs/errors.txt", "--flask-host", "0.0.0.0", "--flask-port", "80"]
 
 

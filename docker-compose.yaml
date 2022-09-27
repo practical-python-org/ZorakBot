@@ -5,4 +5,6 @@ services:
     restart: always
     ports:
       - 5000:5000
+    volumes:
+    	- ".:/logs"
     build: .
