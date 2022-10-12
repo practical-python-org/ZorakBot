@@ -3,33 +3,53 @@
 ZorakBot is the House bot of the Practical Python discord server. Zorak is developed with features by the community. Anyone from our server can contribute. 
 
 
-## User Commands
-#### For-fun commands
-- z.hello
-- z.catfact
-- z.dogfact
-- z.pugfact
-- z.quote
-- z.joke
-- z.8ball [question]
-- z.taunt
-- z.rolldice
-- z.catpic
-- z.dogpic [breed] (Optional)
-- z.pokedex [pokemon]
-#### Utility Commands
-- z.google [question]
-- z.embed [title] [ content ]  
-- z.zeus [website]
-- z.fakeperson
-- z.userinfo/z.whois
-- z.avatar/z.av
-- z.ping
-- z.pipsearch/z.pypi/z.pip [package]
-- z.git/z.github [endpoint]
-#### Admin Commands
-- z.echo [message]
-- z.rules [title] [rules]
+# User Commands
+### For-fun commands
+- [X] - z.hello
+- [X] - z.catfact
+- [X] - z.dogfact
+- [X] - z.pugfact
+- [X] - z.quote
+- [X] - z.joke
+- [X] - z.8ball [question]
+- [X] - z.taunt
+- [X] - z.rolldice
+- [X] - z.catpic
+- [X] - z.dogpic [breed] (Optional)
+- [X] - z.pokedex [pokemon]
+- [X] - z.drawme "text" (Required string) [seed] (Optional int)
+
+### Utility Commands
+- [X] - z.codeblock
+- [X] - z.runcode
+- [X] - z.google [question]
+- [X] - z.embed </br>[title]</br>[content]
+- [X] - z.zeus [website]
+- [X] - z.fakeperson
+- [X] - z.poll </br>[title]</br>[options]
+- [X] - z.suggest [suggestion]
+- [X] - z.avatar/z.av [member] (default=author)
+- [X] - z.userinfo/z.whois [member] (Optional)
+- [X] - z.pipsearch/z.pypi/z.pip [package]
+- [X] - z.ping
+- [X] - z.git/z.github [endpoint]
+
+### Cool Tricks
+- [X] - When a link to a discord message is sent in a channel, Zorak will preview that message.
+
+### Admin Commands
+- [X] - z.echo [message]
+- [X] - z.rules [title] [rules]
+
+### To-do
+- [ ] - Fix z.pokedex command. (Just does not work.)
+- [ ] - Fix z.poll (Only sets one emoji.)
+- [ ] - Fix z.avatar (Message deleted, but nothing returned.)
+- [ ] - Fix z.userinfo/z.whois (Message deleted, but nothing returned.)
+- [ ] - Fix z.git/z.github (Does not find repos, or does not respond.)
+
+
+
 
 ## Deployment
 
