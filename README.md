@@ -47,6 +47,7 @@ ZorakBot is the House bot of the Practical Python discord server. Zorak is devel
 - [ ] - Fix z.avatar (Message deleted, but nothing returned.)
 - [ ] - Fix z.userinfo/z.whois (Message deleted, but nothing returned.)
 - [ ] - Fix z.git/z.github (Does not find repos, or does not respond.)
+- [ ] - Fix z.times (command is unrecognized)
 
 
 
