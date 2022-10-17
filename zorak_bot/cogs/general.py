@@ -1,12 +1,9 @@
-import logging
 from io import BytesIO
-
 import discord
 import matplotlib as mpl
 import requests
 from discord.ext import commands
 
-logger = logging.getLogger(__name__)
 mpl.rcParams["savefig.transparent"] = True
 mpl.rcParams["text.color"] = "white"
 
@@ -27,7 +24,7 @@ class GeneralCog(commands.Cog):
         )
 
     @commands.command()
-    async def help(self, ctx):
+    async def helpme(self, ctx):
         help_msg = """
         ***For-fun commands***
             - z.hello

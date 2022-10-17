@@ -1,16 +1,5 @@
-# Have some ideas for this, could dump test cases to a py file via discord command,
-# and set up another command to run code against the test case. Keep a json mapping of
-# all previous test cases, reference file locations, and descriptions.
-
-import logging
 import os
-
 from discord.ext import commands
-
-from zorak_bot.util import clean_path
-
-logger = logging.getLogger(__name__)
-
 
 class DailyChallengeCog(commands.Cog):
     def __init__(self, bot):  # Could set current dict representing todays challenge here

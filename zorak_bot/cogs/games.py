@@ -1,10 +1,5 @@
-import logging
 from random import choice
-
 from discord.ext import commands
-
-logger = logging.getLogger(__name__)
-
 
 class GamesCog(commands.Cog):
     def __init__(self, bot):

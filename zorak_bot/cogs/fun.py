@@ -1,17 +1,14 @@
+import discord
+from discord.ext import commands
+from bs4 import BeautifulSoup
+from io import BytesIO
 import datetime
 import json
 import logging
-from io import BytesIO
-
-import discord
 import pytz
 import requests
-from bs4 import BeautifulSoup
-from discord.ext import commands
 
 requests.packages.urllib3.disable_warnings()
-logger = logging.getLogger(__name__)
-
 
 class FunCog(commands.Cog):
     def __init__(self, bot):

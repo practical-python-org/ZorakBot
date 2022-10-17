@@ -1,14 +1,11 @@
-
-import logging
-
 import discord
 from discord.ext import commands
-
-logger = logging.getLogger(__name__)
 
 class AdminCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+
 
     @commands.command(aliases=["purge", "clr", "clean"])
     @commands.has_role("Staff")
