@@ -1,51 +1,46 @@
 import discord
 from discord.ext import commands
+from discord import default_permissions
 
-class AdminCog(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+class admin(commands.Cog, command_attrs=dict(hidden=True)):
+	def __init__(self, bot):
+		self.bot = bot
 
+	@commands.slash_command()
+	@commands.has_permissions(manage_messages=True)
+	async def test(self, ctx):
+		await ctx.respond(f"testing, {ctx.author.name}!")
 
+	@commands.slash_command()
+	@commands.has_permissions(manage_messages=True)
+	async def embed(self, ctx, title, content):
+		# text = ctx.message.content.split("\n")
+		embed = discord.Embed(title=title)
+		# text.pop(0)
+		# TODO: Fix this boi here
+		# [embed.add_field(name=f" ----- ", value=text[index], inline=False) for index, item in enumerate(text)]  # Nice
+		embed.add_field(name='Content', value=content)
+		# embed.set_footer(icon_url=ctx.author.avatar_url)
+		# await ctx.message.delete()
+		await ctx.send(embed=embed)
 
-    @commands.command(aliases=["purge", "clr", "clean"])
-    @commands.has_role("Staff")
-    @commands.cooldown(1, 500, commands.BucketType.user)
-    async def clear(self, ctx, amount, range=None):
-        audit = self.bot.get_channel(953545221260595280)
-        await ctx.message.delete() #Is this like a test?
-        try:
-            if amount >= 200: #bit of an odd function, need to ask what it's use case is exactly
-                source_server = self.bot.get_guild(ctx.guild.id)
-                source_channel = source_server.get_channel(ctx.channel.id)
-                start_message = await source_channel.fetch_message(amount)
-                if range != None:
-                    end_message = await source_channel.fetch_message(range)
-                    await ctx.channel.purge(after=start_message, before=end_message)
-                else:
-                    await ctx.channel.purge(after=start_message)
-                await audit.send(f"{ctx.author.mention} deleted some messages in {ctx.channel}")
-            if amount <= 50:
-                await ctx.channel.purge(limit=amount), await audit.send(f"{ctx.author} deleted {amount} messages in {ctx.channel}")
-
-        except:
-            embed = discord.Embed(title="ERROR", description="")
-            embed.add_field(name="Reason:", value="Plese either check the range or that the number is under 50!")
-            await ctx.channel.send(embed=embed)
-            
-    @commands.command() #Is this for admins to set rules?
-    async def rules(self, ctx, *, args): #Could save and load json and work with dicts, generally nicer to work with.
-        if ctx.message.author.guild_permissions.administrator: #Could use the has role wrapper
-            text = args.replace("!rules", "").split("\n")
-            
-            embed = discord.Embed(title=text[0], description="", timestamp=ctx.message.created_at) #there's a Embed.from_dict() function that can be pretty nice for generalising an embed format.
-            for index, content in enumerate(text, 1):   
-                if int(index) >= 2:
-                    embed.add_field(name='Rule #'+str(index-1) , value=content)
-            await ctx.message.delete()
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send(f"Permission denied: with little power comes... no responsibility?", reference=ctx.message)
+	@commands.slash_command()
+	@commands.has_permissions(manage_messages=True)
+	async def suggest(self, ctx, question: discord.Option(str)):
+		embed = discord.Embed(description=question)
+		embed.set_author(name=f"Suggestion by {ctx.author.name}")
+		msg = await ctx.send(embed=embed)
+		await msg.add_reaction("👍")
+		await msg.add_reaction("👎")
+	"""
+	Error handling for the entire Admin Cog
+	"""
+	async def cog_command_error(self, ctx: commands.Context, error: commands.CommandError):
+		if isinstance(error, commands.MissingPermissions):
+			await ctx.send(f"Sorry, {ctx.author.name}, you dont have permission to use this command!", reference=ctx.message)
+		else:
+			raise error
 
 
 def setup(bot):
-    bot.add_cog(AdminCog(bot))
+	bot.add_cog(admin(bot))
