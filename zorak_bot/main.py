@@ -10,6 +10,6 @@ if __name__ == "__main__":
             if f.endswith(".py"):
                 bot.load_extension("cogs." + f[:-3])
 
-    bot.run("Token")
+    bot.run("TOKEN")
 
 

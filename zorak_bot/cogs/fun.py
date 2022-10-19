@@ -135,7 +135,7 @@ class Fun(commands.Cog):
 		)
 		await ctx.respond(f"Question: {question}\n🎱 - {answer}")
 
-	@commands.slash_command()
+	@commands.slash_command(description='Generates an AI-made image from a prompt.')
 	async def drawme(self, ctx, prompt: discord.Option(str), seed: discord.Option(int)):
 		sanetized = prompt.replace(" ", "-")
 		gen_url = f"https://api.computerender.com/generate/{sanetized}"
@@ -143,6 +143,14 @@ class Fun(commands.Cog):
 			gen_url = gen_url + f"?seed={seed}"
 		await ctx.send(embed=discord.Embed.from_dict({"title": prompt, "color": 10848322, "image": {"url": gen_url}}))
 
+	@commands.slash_command(description='Gives you something to do.')
+	async def imbored(self, ctx):
+		data = requests.get('https://www.boredapi.com/api/activity/').json()
+		if data["price"] < 0.5:
+			price = 'and is not too expensive'
+		else:
+			price = 'and is a bit expensive'
+		await ctx.respond(f'Im bored too...\nLets do this: {data["activity"]}.\nIts {data["type"]} and you could involve {str(data["participants"])} people {price}')
 
 
 def setup(bot):
