@@ -3,7 +3,6 @@ from discord.ext import commands
 from bs4 import BeautifulSoup
 from io import BytesIO
 import json
-import logging
 import requests
 from random import choice
 

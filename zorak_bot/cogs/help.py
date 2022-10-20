@@ -12,7 +12,7 @@ class helpButtons(discord.ui.View):
 	async def first_button_callback(self, button, interaction):
 		embed=discord.Embed(
 			title="Pong!",
-			description=f"Zorak's current ping is **{round(bot.latency * 100)}ms**",
+			description=f"Zorak's current ping is **{round(bot.latency*100)}**ms",
 			color=discord.Color.green(),
 		)
 		await interaction.response.send_message(embed=embed)

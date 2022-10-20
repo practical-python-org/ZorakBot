@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  zorak:
+    container_name: "zorak-bot"
+    restart: always
+    ports:
+      - 5000:5000
+    build: .
