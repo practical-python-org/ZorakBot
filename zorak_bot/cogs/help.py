@@ -21,36 +21,36 @@ class helpButtons(discord.ui.View):
 	async def second_button_callback(self, button, interaction):
 		help_msg = """
 	  ***For-fun commands***
-		  - z.hello
-		  - z.catfact
-		  - z.dogfact
-		  - z.pugfact
-		  - z.quote
-		  - z.joke
-		  - z.8ball [question]
-		  - z.taunt
-		  - z.rolldice
-		  - z.owo [text]
-		  - z.catpic
-		  - z.dogpic [breed] (Optional)
-		  - z.pokedex [pokemon]
-		  - z.drawme "text" (Required string) [seed] (Optional int)
+		  - /hello
+		  - /catfact
+		  - /dogfact
+		  - /pugfact
+		  - /quote
+		  - /joke
+		  - /8ball [question]
+		  - /taunt
+		  - /rolldice
+		  - /owo [text]
+		  - /catpic
+		  - /dogpic [breed] (Optional)
+		  - /pokedex [pokemon]
+		  - /drawme arg:[text] arg:[seed]
 				
 	  ***Utility Commands***
-		  - z.codeblock
-		  - z.runcode
-		  - z.preview
-		  - z.google [question]
-		  - z.embed </br>[title]</br>[content]  
-		  - z.zeus [website]
-		  - z.fakeperson
-		  - z.poll </br>[title]</br>[options]
-		  - z.suggest [suggestion]
-		  - z.avatar/z.av [member] (default=author)
-		  - z.userinfo/z.whois [member] (Optional)
-		  - z.pipsearch/z.pypi/z.pip [package]
-		  - z.ping
-		  - z.git/z.github [endpoint]
+		  - /codeblock
+		  - /runcode
+		  - /preview
+		  - /google [question]
+		  - /embed [title] [content]  
+		  - /zeus [website]
+		  - /fakeperson
+		  - /poll [title] [options]
+		  - /suggest [suggestion]
+		  - /avatar [member] 
+		  - /whois [member] (Optional)
+		  - /pipsearch [package]
+		  - /ping
+		  - /github_search [endpoint]
 	  """
 		embed = discord.Embed(
 		  title="User-Commands"
@@ -59,11 +59,11 @@ class helpButtons(discord.ui.View):
 	
 	@discord.ui.button(label="Running code", row=0, style=discord.ButtonStyle.success)
 	async def third_button_callback(self, button, interaction):
-		await interaction.response.send_message("""To run python code in the chat, type: \./run python \`\`\`py Your code here \`\`\`""")
+		await interaction.response.send_message("""To run python code in the chat, type:\n \./run python \n\`\`\`py Your code here \`\`\`""")
 
 	@discord.ui.button(label="Code Blocks", row=0, style=discord.ButtonStyle.success)
 	async def fourth_button_callback(self, button, interaction):
-		await interaction.response.send_message("""To format your python code like this: ```py x = 'Hello World!' ``` Type this: \`\`\`py Your code here \`\`\`""")
+		await interaction.response.send_message("""To format your python code like this: \n```py x = 'Hello World!' ``` Type this: \`\`\`py Your code here \`\`\`""")
 
 class helper(commands.Cog):
 	def __init__(self, bot):
