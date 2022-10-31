@@ -20,38 +20,44 @@ class helpButtons(discord.ui.View):
 	@discord.ui.button(label="Commands", row=0, style=discord.ButtonStyle.success)
 	async def second_button_callback(self, button, interaction):
 		help_msg = """
-	  ***For-fun commands***
-		  - /hello
-		  - /catfact
-		  - /dogfact
-		  - /pugfact
-		  - /quote
-		  - /joke
-		  - /8ball [question]
-		  - /taunt
-		  - /rolldice
-		  - /owo [text]
-		  - /catpic
-		  - /dogpic [breed] (Optional)
-		  - /pokedex [pokemon]
-		  - /drawme arg:[text] arg:[seed]
-				
-	  ***Utility Commands***
-		  - /codeblock
-		  - /runcode
-		  - /preview
-		  - /google [question]
-		  - /embed [title] [content]  
-		  - /zeus [website]
-		  - /fakeperson
-		  - /poll [title] [options]
-		  - /suggest [suggestion]
-		  - /avatar [member] 
-		  - /whois [member] (Optional)
-		  - /pipsearch [package]
-		  - /ping
-		  - /github_search [endpoint]
-	  """
+			***Help***
+			- /help
+				- /ping
+				- /commands
+				- /run_code
+				- /code_blocks
+
+			***For-fun commands***
+			- /hello
+			- /taunt
+			- /catfact
+			- /dogfact
+			- /pugfact
+			- /catpic
+			- /dogpic arg:[breed]
+			- /joke
+			- /quote
+			- /fakeperson
+			- /google arg:[question]
+			x /pokedex arg:[pokemon]
+			- /rolldice
+			- /8ball arg:[question]
+			- /drawme arg:[text] arg:[seed]
+			x /imbored
+
+			***Utility Commands***
+			- /pip_search arg:[package]
+			- /github_search arg:[endpoint]
+			- /devtimes
+			- /zeus arg:[website]
+			x /latex arg:[formula]
+			x /avatar arg:[user]
+			x /poll arg:[title] arg:[option1] arg:[option2] arg:[option3]...
+			x /whois arg:[user]
+
+			***Cool Trickss***
+			x When a link to a discord message is sent in a channel, Zorak will preview that message.
+	  		"""
 		embed = discord.Embed(
 		  title="User-Commands"
 		  , description=help_msg)

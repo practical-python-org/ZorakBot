@@ -39,6 +39,16 @@ class Fun(commands.Cog):
 	async def catpic(self, ctx):
 		await ctx.respond(
 			file=discord.File(fp=BytesIO(requests.get("https://cataas.com/cat").content), filename="cat.png"))
+	
+	@commands.slash_command()
+	async def dogpic(self, ctx, *, breed=None):
+		embed = discord.Embed(title="Dog Pic!", description="A lovely dog pic just for you.")
+		if breed is None:
+			link = requests.get("https://dog.ceo/api/breeds/image/random").json()["message"]
+		elif breed is not None:
+			link = requests.get(f"https://dog.ceo/api/breed/{breed}/images/random").json()["message"]
+		embed.set_image(url=link)
+		await ctx.respond(embed=embed)
 
 	@commands.slash_command()
 	async def joke(self, ctx):
@@ -81,15 +91,6 @@ class Fun(commands.Cog):
 			embed.add_field(name="Error", value=pokemon.title() + " does not exist!")
 			await ctx.respond(embed=embed)
 
-	@commands.slash_command()
-	async def dogpic(self, ctx, *, breed=None):
-		embed = discord.Embed(title="Dog Pic!", description="A lovely dog pic just for you.")
-		if breed is None:
-			link = requests.get("https://dog.ceo/api/breeds/image/random").json()["message"]
-		elif breed is not None:
-			link = requests.get(f"https://dog.ceo/api/breed/{breed}/images/random").json()["message"]
-		embed.set_image(url=link)
-		await ctx.respond(embed=embed)
 
 	@commands.slash_command()
 	async def rolldice(self, ctx):
