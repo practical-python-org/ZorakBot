@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
+from __main__ import bot
+import math
 from io import BytesIO
 import matplotlib.pyplot as plt 
 import datetime
@@ -96,6 +98,40 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
         embed.add_field(name=f"Checked link: *{context[0]}*", value=f"STATUS: {context[1]}")
         embed.set_footer(text="Credits to: @777advait#6334")
         await ctx.respond(embed=embed)
+
+
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        text = message.content
+        link = text.replace(", ", " ")
+        if link.startswith("https://discord.com/channels/")== True:
+            link = link.split('/')
+            response = "-**---** **Let** **me** **preview** **that** **for** **you.** **---**- \n\n"
+            sourceServer = bot.get_guild(int(link[4]))
+            sourceChannel = sourceServer.get_channel(int(link[5]))
+            sourceMessage = await sourceChannel.fetch_message(int(link[6]))
+
+            if len(sourceMessage.content) <= 1000:
+                embed = discord.Embed(title=response, description="")
+                embed.add_field(name=f"Length: {len(sourceMessage.content)}", value=sourceMessage.content)
+                embed.set_footer(text=sourceMessage.author)
+                await message.channel.send(embed=embed)
+
+            elif len(sourceMessage.content) > 1000:
+                contents = sourceMessage.content
+                con2 = []
+                splitstr = math.ceil(len(contents)/1000)
+                embed1 = discord.Embed(title=response, description="")
+                while contents:
+                    con2.append(contents[:900])
+                    contents = contents[900:]
+                for feilds in range(0, splitstr):
+                    embed1.add_field(name="------", value=f"```py\n{con2[feilds]}\n```", inline=False)
+                embed1.set_footer(text=sourceMessage.author)
+                await message.channel.send(embed=embed1) 
+
+
 
 # # TODO: Hitting an import error in LaTeX
 # # AttributeError: module 'matplotlib.pyplot' has no attribute 'mathtext'

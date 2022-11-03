@@ -2,9 +2,9 @@ import os
 import sys
 import discord
 from discord.ext import commands
-from discord.commands import SlashCommandGroup
 
-bot = commands.Bot()
+
+bot = commands.Bot(intents=discord.Intents.all())
 
 def load_cogs():
         for f in os.listdir("./cogs"):

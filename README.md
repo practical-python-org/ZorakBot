@@ -47,19 +47,19 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 - [X] - /suggest arg:[suggestion]
 
 ### Cool Tricks
-- [ ] - When a link to a discord message is sent in a channel, Zorak will preview that message.
+- [X] - When a link to a discord message is sent in a channel, Zorak will preview that message.
 
 
 # To-do
 | Bugs | Features |
 |--|--|
-| Fix /pokedex command. (Just does not work.) | Fix preview |
+| Fix /pokedex command. (Just does not work.) | Fix /times (command is unrecognized) |
 | Fix /poll (Only sets one emoji.) | Fix /pokedex command. (Just does not work.) |
 | Fix /avatar (Message deleted, but nothing returned.) | Fix /poll (Only sets one emoji.) |
 | Fix /whois (Message deleted, but nothing returned.) | Fix /avatar (Message deleted, but nothing returned.) |
 | Fix /github (Does not find repos, or does not respond.) | Fix /userinfo//whois (Message deleted, but nothing returned.) |
 | Fix /times (command is unrecognized) | Fix /github (Does not find repos, or does not respond.) |
-|  | Fix /times (command is unrecognized) |
+|  |  |
 
 
 ### Features
