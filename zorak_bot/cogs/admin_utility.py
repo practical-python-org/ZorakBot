@@ -1,8 +1,9 @@
 import discord
 from discord.ext import commands
 from discord import default_permissions
+from __main__ import bot
 
-class admin(commands.Cog, command_attrs=dict(hidden=True)):
+class admin_utility(commands.Cog, command_attrs=dict(hidden=True)):
 	def __init__(self, bot):
 		self.bot = bot
 
@@ -32,6 +33,10 @@ class admin(commands.Cog, command_attrs=dict(hidden=True)):
 		msg = await ctx.send(embed=embed)
 		await msg.add_reaction("👍")
 		await msg.add_reaction("👎")
+
+
+
+
 	"""
 	Error handling for the entire Admin Cog
 	"""
@@ -43,4 +48,4 @@ class admin(commands.Cog, command_attrs=dict(hidden=True)):
 
 
 def setup(bot):
-	bot.add_cog(admin(bot))
+	bot.add_cog(admin_utility(bot))
