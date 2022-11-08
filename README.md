@@ -32,7 +32,7 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 - [ ] - /imbored
 
 ### Utility Commands
-- [X] - z.python \`\`\`py print('hello world')\`\`\`
+- [X] - /run \`\`\`py print('hello world')\`\`\`
 - [X] - /pip_search arg:[package]
 - [X] - /github_search arg:[endpoint]
 - [X] - /devtimes
@@ -49,7 +49,7 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 
 ### Cool Tricks
 - [X] - When a link to a discord message is sent in a channel, Zorak will preview that message.
-- [X] - Zorak utilizes Piston API to run code directly in the server. use the syntax 
+- [X] - Zorak utilizes Piston API to run code directly in the server.
 
 
 # To-do
