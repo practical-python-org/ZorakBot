@@ -4,7 +4,8 @@ import discord
 from discord.ext import commands
 
 
-bot = commands.Bot(intents=discord.Intents.all())
+bot = commands.Bot(command_prefix = 'z.', intents=discord.Intents.all())
+bot.remove_command('python')
 
 def load_cogs():
         for f in os.listdir("./cogs"):

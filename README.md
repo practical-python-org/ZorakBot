@@ -25,13 +25,14 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 - [X] - /quote
 - [X] - /fakeperson
 - [X] - /google arg:[question]
-- [ ] - /pokedex arg:[pokemon]
+- [X] - /pokedex arg:[pokemon]
 - [X] - /rolldice
 - [X] - /8ball arg:[question]
 - [X] - /drawme arg:[text] arg:[seed]
 - [ ] - /imbored
 
 ### Utility Commands
+- [X] - z.python \`\`\`py print('hello world')\`\`\`
 - [X] - /pip_search arg:[package]
 - [X] - /github_search arg:[endpoint]
 - [X] - /devtimes
@@ -48,24 +49,28 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 
 ### Cool Tricks
 - [X] - When a link to a discord message is sent in a channel, Zorak will preview that message.
+- [X] - Zorak utilizes Piston API to run code directly in the server. use the syntax 
 
 
 # To-do
-| Bugs | Features |
-|--|--|
-| Fix /pokedex command. (Just does not work.) | Fix /times (command is unrecognized) |
-| Fix /poll (Only sets one emoji.) | Fix /pokedex command. (Just does not work.) |
-| Fix /avatar (Message deleted, but nothing returned.) | Fix /poll (Only sets one emoji.) |
-| Fix /whois (Message deleted, but nothing returned.) | Fix /avatar (Message deleted, but nothing returned.) |
-| Fix /github (Does not find repos, or does not respond.) | Fix /userinfo//whois (Message deleted, but nothing returned.) |
-| Fix /times (command is unrecognized) | Fix /github (Does not find repos, or does not respond.) |
-|  |  |
+| Bugs |
+|--|
+| Fix /pokedex command. (Just does not work.) |
+| Fix /times (command is unrecognized) |
+| Fix /poll (Only sets one emoji.) | |
+| Fix /avatar (Message deleted, but nothing returned.) |
+| Fix /whois (Message deleted, but nothing returned.) | 
+| Fix /github (Does not find repos, or does not respond.) |
+| Fix /userinfo//whois (Message deleted, but nothing returned.) |
+| Fix /github (Does not find repos, or does not respond.) |
+
 
 
 ### Features
-- [ ] - Welcome message for new members.
-- [ ] - Welcome PM for new members.
-- [ ] - Role management for new members.
+- [X] - Welcome message for new members.
+- [X] - Welcome PM for new members.
+- [X] - Role management for new members.
+- [X] - Run code within the server.
 - [ ] - Word blacklist functionality
 - [ ] - Suspicious link detection and removal
 - [ ] - Muting spam messages across multiple channels

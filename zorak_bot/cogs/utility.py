@@ -4,10 +4,13 @@ from discord.utils import get
 from __main__ import bot
 import math
 from io import BytesIO
+from pistonapi import PistonAPI
 import matplotlib.pyplot as plt 
 import datetime
 import requests
 import pytz
+
+
 
 
 class util(commands.Cog, command_attrs=dict(hidden=True)):
@@ -170,6 +173,29 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
 #         except:
 #             pass
 #         await ctx.respond(embed=embed)
+
+    @commands.command()
+    async def run(self, ctx, *, codeblock):
+        piston = PistonAPI()
+        if codeblock.startswith("```py") == True:
+            if codeblock.endswith("```") == True:
+                codeblock = codeblock.replace('```py','').replace('```','').strip()
+            runCode = piston.execute(language="py", version="3.10.0", code=codeblock)
+            embed = discord.Embed(colour=discord.Colour.green(), title='Python 3.10')
+            embed.add_field(name="Output:", value=runCode)
+            await ctx.channel.send(embed=embed)
+
+        elif codeblock.startswith("\'\'\'") == True:
+            if codeblock.endswith("\'\'\'") == True:
+                embed = discord.Embed(colour=discord.Colour.red(), title='Oops...')
+                embed.add_field(name="Formatting error", value="Did you mean to use a ` instead of a '?\n\`\`\`py Your code here \`\`\`")
+                await ctx.channel.send(embed=embed)
+
+        else:
+            embed = discord.Embed(colour=discord.Colour.red(), title='Oops...')
+            embed.add_field(name="Formatting error", value='Please place your code in a code block.\n\nz.python \n\`\`\`py \nx = "like this"\nprint(x) \n\`\`\`', mention_author=True)
+            await ctx.channel.send(embed=embed)
+
 
     @commands.Cog.listener()
     async def on_message(self, message):

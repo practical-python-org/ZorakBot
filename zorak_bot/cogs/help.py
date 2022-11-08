@@ -46,6 +46,7 @@ class helpButtons(discord.ui.View):
 			x /imbored
 
 			***Utility Commands***
+			- z.python \`\`\`py print('hello world')\`\`\`
 			- /pip_search arg:[package]
 			- /github_search arg:[endpoint]
 			- /devtimes
@@ -65,7 +66,7 @@ class helpButtons(discord.ui.View):
 	
 	@discord.ui.button(label="Running code", row=0, style=discord.ButtonStyle.success)
 	async def third_button_callback(self, button, interaction):
-		await interaction.response.send_message("""To run python code in the chat, type:\n \./run python \n\`\`\`py Your code here \`\`\`""")
+		await interaction.response.send_message("""To run python code in the chat, type:\n z.run\n\`\`\`py\nx = 'hello world'\nprint(x) \`\`\`""")
 
 	@discord.ui.button(label="Code Blocks", row=0, style=discord.ButtonStyle.success)
 	async def fourth_button_callback(self, button, interaction):
