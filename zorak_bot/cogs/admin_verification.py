@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
-
 from __main__ import bot
 
 class admin_verification(discord.ui.View):
@@ -12,25 +11,52 @@ class admin_verification(discord.ui.View):
 		guild = interaction.guild
 		roles = guild.roles
 		role = discord.utils.get(roles, id=935466692316917770)
-		welcome = f"""
+
+		website = 'https://xarlos89.github.io/PracticalPython/'
+		website_emoji = discord.utils.get(bot.emojis, name='logo')
+		email = 'mailto:Practicalpython-staff@pm.me'
+		email_emoji = '<:email:1040342884240597122>'
+		review = 'https://disboard.org/review/create/900302240559018015'
+		review_emoji = '<:100:1040342353417863318>'
+		created = str(guild.created_at.timestamp())
+		created = created[:10]
+		created_emoji = '<:triangular_flag_on_post:1040343017204228217>'
+		owner = guild.owner.mention
+		owner_emoji = discord.utils.get(bot.emojis, name='xarlos')
+		invite = 'https://discord.gg/vgZmgNwuHw'
+		invite_emoji = '<:heart_hands:1040343137454915594>'
+
+		quicklinks = f'{website_emoji} [Website]({website})\n{email_emoji} [Practicalpython-staff@pm.me]({email})\n{review_emoji} [Vote for us on disboard!]({review})'
+		info = f'{created_emoji} Created: <t:{int(created)}:R>\n{owner_emoji} Owner: {owner}\n{invite_emoji} [discord.gg/vgZmgNwuHw]({invite})'
+		
+		embed = discord.Embed(title=f'Welcome to Practical Python'
+			, color=discord.Color.yellow())
+		embed.set_thumbnail(url="https://raw.githubusercontent.com/Xarlos89/PracticalPython/main/logo.png")
+		embed.add_field(name=f'You are member number {guild.member_count}!'
+			, value=f"""
 Awesome, {user.mention}. Thank you for verifying. 
 Allow me to introduce you {guild.name}.
 
-First, why dont you read over our {bot.get_channel(953583540044443689).mention}
-Next, why not add some {bot.get_channel(965927411273302076).mention}?
-After that, how about introducing yourself in {bot.get_channel(953543179133665380).mention}?
+1. Be sure to read our {bot.get_channel(953583540044443689).mention}.
+2. Why not set some {bot.get_channel(965927411273302076).mention}?
+3. Introduce yourself in {bot.get_channel(953543179133665380).mention}.
 
-We have awesome {bot.get_channel(953583598429171742).mention} that cover courses, IDE's and text editors, as well as project ideas and documentation.
-
+We keep a ton of awesome links to courses, cool tools, and popular software in {bot.get_channel(953583598429171742).mention}.
 If you have any questions, feel free to post your question in {bot.get_channel(903542455675260928).mention} or {bot.get_channel(903542494409674803).mention}
-I'm availible any time by typing /help
+
+I can run your code directly in the server!
+To learn how, type **/help** in any channel.
 
 Looking forward to having you here!
-"""
+""", inline=False)
+		embed.add_field(name='Quick Links'
+			, value=quicklinks)
+		embed.add_field(name='Information'
+			, value=info)
 
 		if 'Needs Approval' in [role.name for role in user.roles]:
 			await user.remove_roles(role)
-			await user.send(welcome)
+			await user.send(embed=embed)
 		else:
 			await user.send('You have already been Verified. Go away.')
 
