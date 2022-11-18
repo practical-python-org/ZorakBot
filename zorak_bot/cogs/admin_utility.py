@@ -25,18 +25,6 @@ class admin_utility(commands.Cog, command_attrs=dict(hidden=True)):
 		# await ctx.message.delete()
 		await ctx.send(embed=embed)
 
-	@commands.slash_command()
-	@commands.has_permissions(manage_messages=True)
-	async def suggest(self, ctx, question: discord.Option(str)):
-		embed = discord.Embed(description=question)
-		embed.set_author(name=f"Suggestion by {ctx.author.name}")
-		msg = await ctx.send(embed=embed)
-		await msg.add_reaction("👍")
-		await msg.add_reaction("👎")
-
-
-
-
 	"""
 	Error handling for the entire Admin Cog
 	"""

@@ -102,6 +102,14 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
         embed.set_footer(text="Credits to: @777advait#6334")
         await ctx.respond(embed=embed)
 
+    @commands.slash_command()
+    async def suggest(self, ctx, question: discord.Option(str)):
+        embed = discord.Embed(description=question)
+        embed.set_author(name=f"Suggestion by {ctx.author.name}")
+        msg = await ctx.send(embed=embed)
+        await msg.add_reaction("👍")
+        await msg.add_reaction("👎")
+
 # # TODO: Hitting an import error in LaTeX
 # # AttributeError: module 'matplotlib.pyplot' has no attribute 'mathtext'
 #     @commands.slash_command(description='Sends a latex image.')
