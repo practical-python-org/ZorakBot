@@ -141,7 +141,9 @@ class Fun(commands.Cog):
 		gen_url = f"https://api.computerender.com/generate/{sanetized}"
 		if seed:
 			gen_url = gen_url + f"?seed={seed}"
-		await ctx.send(embed=discord.Embed.from_dict({"title": prompt, "color": 10848322, "image": {"url": gen_url}}))
+		embed = embed=discord.Embed.from_dict({"title": prompt, "color": 10848322, "image": {"url": gen_url}})
+		embed.set_footer(text=f"Requested by {ctx.author.name}")
+		await ctx.respond(embed = embed)
 
 	@commands.slash_command(description='Gives you something to do.')
 	async def imbored(self, ctx):
