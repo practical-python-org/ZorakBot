@@ -31,11 +31,7 @@ After you do, all of {guild.name} is availibe to you. Have a great time :-)
 
 		#Send Welcome Message
 		await member.send(welcome_message)
-
-		guild = member.guild
-		channel = await bot.fetch_channel(953543179133665380)
-		await channel.send(f'Greetings, {member.mention}. You are human number {guild.member_count}.')
-
+		
 
 def setup(bot):
 	bot.add_cog(admin_moderation(bot))
