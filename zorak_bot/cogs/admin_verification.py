@@ -29,7 +29,7 @@ class admin_verification(discord.ui.View):
 		quicklinks = f'{website_emoji} [Website]({website})\n{email_emoji} [Practicalpython-staff@pm.me]({email})\n{review_emoji} [Vote for us on disboard!]({review})'
 		info = f'{created_emoji} Created: <t:{int(created)}:R>\n{owner_emoji} Owner: {owner}\n{invite_emoji} [discord.gg/vgZmgNwuHw]({invite})'
 		
-		embed = discord.Embed(title=f'Welcome to Practical Python'
+		embed = discord.Embed(title=f'Welcome to Practiscal Python'
 			, color=discord.Color.yellow())
 		embed.set_thumbnail(url="https://raw.githubusercontent.com/Xarlos89/PracticalPython/main/logo.png")
 		embed.add_field(name=f'You are member number {guild.member_count}!'
@@ -57,15 +57,6 @@ Looking forward to having you here!
 		if 'Needs Approval' in [role.name for role in user.roles]:
 			await user.remove_roles(role)
 			await user.send(embed=embed)
-
-
-			"""
-			Write to Welcome Log that user joined.
-			This ensures that only verified users get logged.
-			"""
-			logs_channel = await bot.fetch_channel(953543179133665380) # Welcome channel
-			embed = discord.Embed(title='', description=f'Greetings, {user.mention}. You are human number {guild.member_count}.', color=discord.Color.green())
-			await logs_channel.send(embed=embed)
 
 		else:
 			await user.send('You have already been Verified. Go away.')
