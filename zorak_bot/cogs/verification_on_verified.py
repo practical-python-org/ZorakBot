@@ -57,6 +57,11 @@ Looking forward to having you here!
 		if 'Needs Approval' in [role.name for role in user.roles]:
 			await user.remove_roles(role)
 			await user.send(embed=embed)
+			logs_channel = await bot.fetch_channel(1044302239616991242) # ADMIN user log
+			embed = discord.Embed(title=''
+				, description=f'{user.mention} has verified!'
+				, color=discord.Color.dark_green())
+			await logs_channel.send(embed=embed)
 
 		else:
 			await user.send('You have already been Verified. Go away.')
