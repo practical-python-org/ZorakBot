@@ -10,9 +10,6 @@ import datetime
 import requests
 import pytz
 
-
-
-
 class util(commands.Cog, command_attrs=dict(hidden=True)):
     def __init__(self, bot):
         self.bot = bot

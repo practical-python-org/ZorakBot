@@ -17,7 +17,7 @@ class logging_verification(commands.Cog):
 
 	@commands.Cog.listener()
 	###### On new join, do this
-	async def on_member_join(self, member):
+	async def on_member_join(self, member: discord.Member):
 		# Add verification role
 		await member.add_roles(member.guild.get_role(935466692316917770))
 

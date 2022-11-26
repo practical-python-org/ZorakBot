@@ -2,7 +2,6 @@ import discord
 from discord import Member
 from discord.ext import commands
 from datetime import datetime
-from asyncio import sleep
 from __main__ import bot
 
 class logging_message_delete(commands.Cog):
@@ -24,8 +23,9 @@ class logging_message_delete(commands.Cog):
 			, color=discord.Color.dark_red()
 			, timestamp=datetime.utcnow())
 		embed.set_thumbnail(url=author.avatar)
+
 		embed.add_field(name='Message: '
-			, value=message.content
+			, value=message.content # ToDo: This throws an error when deleting an embed. 
 			, inline=True)
 
 		logs_channel = await bot.fetch_channel(954023390375710751) # ADMIN message log

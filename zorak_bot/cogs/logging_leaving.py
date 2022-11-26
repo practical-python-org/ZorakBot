@@ -9,18 +9,12 @@ class logging_leaving(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
-#-------------------------------#
-#								#
-#    channel_user_log_public	#
-#								#
-#-------------------------------#
 
 	@commands.Cog.listener()
 	async def on_member_remove(self, member):
 		if 'Needs Approval' in [role.name for role in member.roles]:
 			return
 		else:
-			# logs_channel = await bot.fetch_channel(953543179133665380) # Welcome channel
 			logs_channel = await bot.fetch_channel(953543179133665380) # Welcome channel
 			embed = discord.Embed(title='', description=f'{member.name} has left us.', color=discord.Color.red())
 			await logs_channel.send(embed=embed)

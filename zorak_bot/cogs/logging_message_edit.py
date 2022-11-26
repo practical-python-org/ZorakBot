@@ -2,18 +2,11 @@ import discord
 from discord import Member
 from discord.ext import commands
 from datetime import datetime
-from asyncio import sleep
 from __main__ import bot
 
-class logging(commands.Cog):
+class logging_messages(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-
-#-------------------------------#
-#								#
-#      channel_message_log	    #
-#								#
-#-------------------------------#
 
 	@commands.Cog.listener()
 	async def on_message_edit(self, message_before, message_after):
@@ -37,4 +30,4 @@ class logging(commands.Cog):
 			await logs_channel.send(embed=embed)
 
 def setup(bot):
-	bot.add_cog(logging(bot))
+	bot.add_cog(logging_messages(bot))

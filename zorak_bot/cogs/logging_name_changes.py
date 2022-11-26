@@ -2,18 +2,11 @@ import discord
 from discord import Member
 from discord.ext import commands
 from datetime import datetime
-from asyncio import sleep
 from __main__ import bot
 
 class logging_nameChanges(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-
-#-------------------------------#
-#								#
-#    channel_user_log_admin	    #
-#								#
-#-------------------------------#
 
 	@commands.Cog.listener()
 	async def on_member_update(self, before, after):
