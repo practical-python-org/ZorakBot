@@ -24,7 +24,7 @@ class logging_verification(commands.Cog):
 		# Log unverified join
 		logs_channel = await bot.fetch_channel(1044302239616991242) # ADMIN user log
 		embed = discord.Embed(title=''
-			, description=f'{member.mention} joined, but has not verified.'
+			, description=f'<@{member.id}> joined, but has not verified.'
 			, color=discord.Color.yellow())
 		await logs_channel.send(embed=embed)
 
