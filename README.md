@@ -1,74 +1,99 @@
-# ZorakBot
 
+# ZorakBot
 ZorakBot is the House bot of the Practical Python discord server. Zorak is developed with features by the community. Anyone from our server can contribute. 
 
+Zorak uses PyCord and slash commands. 
+Currently, the bot is "fun" and utility heavy, Admin features are planned. 
 
-# User Commands
+# Commands and Features
+### Help
+- [X] - /help
+	- [X] - /ping
+	- [X] - /commands
+	- [X] - /run_code
+	- [X] - /code_blocks
+
 ### For-fun commands
-- [X] - z.hello
-- [X] - z.catfact
-- [X] - z.dogfact
-- [X] - z.pugfact
-- [X] - z.quote
-- [X] - z.joke
-- [X] - z.8ball [question]
-- [X] - z.taunt
-- [X] - z.rolldice
-- [X] - z.catpic
-- [X] - z.dogpic [breed] (Optional)
-- [X] - z.pokedex [pokemon]
-- [X] - z.drawme "text" (Required string) [seed] (Optional int)
+- [X] - /hello
+- [X] - /taunt
+- [X] - /catfact
+- [X] - /dogfact
+- [X] - /pugfact
+- [X] - /catpic
+- [X] - /dogpic arg:[breed]
+- [X] - /joke
+- [X] - /quote
+- [X] - /fakeperson
+- [X] - /google arg:[question]
+- [X] - /pokedex arg:[pokemon]
+- [X] - /rolldice
+- [X] - /8ball arg:[question]
+- [X] - /drawme arg:[text] arg:[seed]
+- [ ] - /imbored
 
 ### Utility Commands
-- [X] - z.codeblock
-- [X] - z.runcode
-- [X] - z.google [question]
-- [X] - z.embed </br>[title]</br>[content]
-- [X] - z.zeus [website]
-- [X] - z.fakeperson
-- [X] - z.poll </br>[title]</br>[options]
-- [X] - z.suggest [suggestion]
-- [X] - z.avatar/z.av [member] (default=author)
-- [X] - z.userinfo/z.whois [member] (Optional)
-- [X] - z.pipsearch/z.pypi/z.pip [package]
-- [X] - z.ping
-- [X] - z.git/z.github [endpoint]
+- [X] - /run \`\`\`py print('hello world')\`\`\`
+- [X] - /pip_search arg:[package]
+- [X] - /github_search arg:[endpoint]
+- [X] - /devtimes
+- [X] - /zeus arg:[website]
+- [ ] - /latex arg:[formula]
+- [ ] - /avatar arg:[user]
+- [ ] - /poll arg:[title] arg:[option1] arg:[option2] arg:[option3]...
+- [ ] - /whois arg:[user]
+
+### Admin-Only Commands
+- [X] - /test
+- [X] - /embed arg:[title] arg:[content]
+- [X] - /suggest arg:[suggestion]
 
 ### Cool Tricks
 - [X] - When a link to a discord message is sent in a channel, Zorak will preview that message.
-
-### Admin Commands
-- [X] - z.echo [message]
-- [X] - z.rules [title] [rules]
-
-### To-do
-- [ ] - Fix z.pokedex command. (Just does not work.)
-- [ ] - Fix z.poll (Only sets one emoji.)
-- [ ] - Fix z.avatar (Message deleted, but nothing returned.)
-- [ ] - Fix z.userinfo/z.whois (Message deleted, but nothing returned.)
-- [ ] - Fix z.git/z.github (Does not find repos, or does not respond.)
-- [ ] - Fix z.times (command is unrecognized)
+- [X] - Zorak utilizes Piston API to run code directly in the server.
 
 
+# To-do
+| Bugs |
+|--|
+| Fix /pokedex command. (Just does not work.) |
+| Fix /times (command is unrecognized) |
+| Fix /poll (Only sets one emoji.) | |
+| Fix /avatar (Message deleted, but nothing returned.) |
+| Fix /whois (Message deleted, but nothing returned.) | 
+| Fix /github (Does not find repos, or does not respond.) |
+| Fix /userinfo//whois (Message deleted, but nothing returned.) |
+| Fix /github (Does not find repos, or does not respond.) |
 
 
-## Deployment
 
-Run 'pip install .' in the root directory to pull all dependencies and create a build of zorak_module. Build is then runnable via a call to  zorak_bot/__main__.py script.
+### Features
+- [X] - Welcome message for new members.
+- [X] - Welcome PM for new members.
+- [X] - Role management for new members.
+- [X] - Run code within the server.
+- [ ] - Word blacklist functionality
+- [ ] - Suspicious link detection and removal
+- [ ] - Muting spam messages across multiple channels
+- [ ] - Server lockdown feature
 
-If you're developing on the project you won't want to rebuild the module each time you make a change, so you can do this once to set up your enviroment before running 'pip uninstall zorak_bot' and then continuing to run zorak_bot/__main__.py. Alternitevely if using VSCode install the Jupyter extension and you can add '#%%' at the top of __main__.py (or anywhere for that matter) to run/debug the below code as a Jupyter cell.
 
-Optional arguments: 
 
-| Parameter |   Long Parameter   |                                     Default                                     | Description                                               |
-| :-------- | :----------------: | :-----------------------------------------------------------------------------: | :-------------------------------------------------------- |
-| -dt       |    --discord_token |                                      None                                       | Token for the connection to discord. If not icluded TOKEN env variable is used. |
-| -lf       |    --log_file      |                                      None                                       | .log file to output logs to. No output if left as default |
-| -ef       |    --err_file      |                                      None                                       | .log file to output errs to. No output if left as default |
-| -ll       |    --log-level     | INFO [(Enum 20)](https://docs.python.org/3/library/logging.html#logging-levels) | Logger level                                              |
 
-Optional flags:
+# Deployment
+Clone the bot into a folder of your choice. 
 
-| True Flag     |    False Flag    | Default | Description                 |
-| :------------ | :--------------: | :-----: | :-------------------------- |
-| --console-log | --no-console-log |  True   | Flag for logging to console |
+```
+git clone https://github.com/Xarlos89/ZorakBot
+```
+### Docker
+The bot is deployed using docker. Replace the YOUR_BOT_TOKEN with your discord bot token. 
+```
+cd /zorak_bot
+
+docker build -t zorak_bot .
+docker run -d zorak_bot YOUR_BOT_TOKEN
+docker rename CONTAINER Zorak
+
+docker start Zorak
+docker stop Zorak
+```
