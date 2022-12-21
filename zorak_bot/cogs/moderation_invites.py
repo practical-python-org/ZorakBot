@@ -14,10 +14,12 @@ class moderation_invites(commands.Cog):
 
 		txt = message.content
 		current_channel = message.channel
-		logs_channel = await bot.fetch_channel(1043607758685089932)
+		logs_channel = await bot.fetch_channel(954023390375710751)
 
 		def is_invite(arg_message):
 			#invitation types
+			#Official covers official invites "discord.gg/s7s8df9a"
+			#unofficial covers urls that start with d and end with letter numbers "dxxxx.gg/23bn2u2"
 			official = re.search("(?:https?://)?(?:www\.|ptb\.|canary\.)?(?:discord(?:app)?\.(?:(?:com|gg)/invite/[a-z0-9-_]+)|discord\.gg/[a-z0-9-_]+)", arg_message) 
 			unofficial = re.search("(?:https?://)?(?:www\.)?(?:dsc\.gg|invite\.gg+|discord\.link)/[a-z0-9-_]+", arg_message)
 			if official is not None or unofficial is not None:
