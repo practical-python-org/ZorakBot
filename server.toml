@@ -1,0 +1,40 @@
+[channels]
+	[moderation]
+	verification_channel = 953545059888930816
+	quarantine_channel = 953647309609132102
+	role_channel = 965927411273302076
+	[normal_channels]
+	general_channel = 953576255435997234
+
+	[log_channels]
+	# Changes by users
+	chat_log = 954023390375710751
+	# Moderation actions
+	mod_log = 1055501831800889454
+	# Join/leave log
+	join_log = 953543179133665380
+	# changes to users (Merge with chat?)
+	user_log = 953552502937243679
+	# verification logs
+	verification_log = 1044302239616991242
+	# Server changes
+	server_change_log = 953545221260595280
+
+[roles]
+	[admin]
+	owner = 920312909110853642
+	staff = 960232134356901959
+	bot = 1024923612966309990
+
+	[elevated]
+	community_contributor = 1025032149679755264
+	helpful = 940547307194179644
+	challenger = 1048940634779689062
+	active_participant = 954308504708075570
+
+	[unverified]
+	needs_approval = 935466692316917770
+
+	[moderation]
+	muted = 996770748825870376
+	naughty = 930832647742185472

@@ -13,7 +13,7 @@ class _challenges(commands.Cog, command_attrs=dict(hidden=True)):
 	async def challenge(self, ctx, day: discord.Option(str)):
 		isAdmin = ctx.author
 		if 'Staff' in [role.name for role in isAdmin.roles]:
-			with open('50 Days of Python.txt', encoding='utf-8') as file:
+			with open('50-Days-of-Python.txt', encoding='utf-8') as file:
 				file = file.read()
 				file = file.replace('Day ','$$$$$Day ')
 				all_days = file.split('$$$$$')
