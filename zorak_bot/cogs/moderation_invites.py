@@ -3,7 +3,7 @@ import discord
 from discord import Member
 from datetime import datetime
 from discord.ext import commands
-from __main__ import bot
+from __main__ import bot, logging
 
 class moderation_invites(commands.Cog):
 	def __init__(self, bot):
@@ -14,7 +14,7 @@ class moderation_invites(commands.Cog):
 
 		txt = message.content
 		current_channel = message.channel
-		logs_channel = await bot.fetch_channel(954023390375710751)
+		logs_channel = await bot.fetch_channel(logging['mod_log'])
 
 		def is_invite(arg_message):
 			#invitation types

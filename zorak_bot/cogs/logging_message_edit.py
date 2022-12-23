@@ -2,7 +2,7 @@ import discord
 from discord import Member
 from discord.ext import commands
 from datetime import datetime
-from __main__ import bot
+from __main__ import bot, logging
 
 class logging_messages(commands.Cog):
 	def __init__(self, bot):
@@ -26,7 +26,7 @@ class logging_messages(commands.Cog):
 				, value=message_after.content
 				, inline=True)
 
-			logs_channel = await bot.fetch_channel(954023390375710751) # ADMIN message log
+			logs_channel = await bot.fetch_channel(logging['chat_log']) # ADMIN message log
 			await logs_channel.send(embed=embed)
 
 def setup(bot):

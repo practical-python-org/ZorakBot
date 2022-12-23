@@ -3,7 +3,7 @@ from discord import Member
 from discord.ext import commands
 from datetime import datetime
 from asyncio import sleep
-from __main__ import bot
+from __main__ import bot, logging
 
 class logging_avatars(commands.Cog):
 	def __init__(self, bot):
@@ -21,7 +21,7 @@ class logging_avatars(commands.Cog):
 				, value=before.mention
 				, inline=True)
 
-			logs_channel = await bot.fetch_channel(953552502937243679) # ADMIN user log
+			logs_channel = await bot.fetch_channel(logging['user_log'])
 			await logs_channel.send(embed=embed)
 
 def setup(bot):
