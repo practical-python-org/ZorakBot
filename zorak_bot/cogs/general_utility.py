@@ -1,11 +1,8 @@
 import discord
 from discord.ext import commands
-from discord.utils import get
 from __main__ import bot
 import math
-from io import BytesIO
 from pistonapi import PistonAPI
-import matplotlib.pyplot as plt 
 import datetime
 import requests
 import pytz

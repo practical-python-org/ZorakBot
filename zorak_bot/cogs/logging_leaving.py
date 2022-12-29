@@ -1,8 +1,5 @@
 import discord
-from discord import Member
 from discord.ext import commands
-from datetime import datetime
-from asyncio import sleep
 from __main__ import bot
 
 class logging_leaving(commands.Cog):

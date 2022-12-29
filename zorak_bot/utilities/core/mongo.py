@@ -3,7 +3,7 @@ from typing import Dict, List
 
 import pymongo
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('discord')
 
 
 class MongoDB:

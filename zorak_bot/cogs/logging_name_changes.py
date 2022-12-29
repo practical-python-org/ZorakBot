@@ -1,5 +1,4 @@
 import discord
-from discord import Member
 from discord.ext import commands
 from datetime import datetime
 from __main__ import bot

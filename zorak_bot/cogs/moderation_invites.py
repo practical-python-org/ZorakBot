@@ -1,6 +1,5 @@
 import re
 import discord
-from discord import Member
 from datetime import datetime
 from discord.ext import commands
 from __main__ import bot

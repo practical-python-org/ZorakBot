@@ -7,7 +7,7 @@ from discord.ext import commands
 from utilities.core.args_utils import parse_args
 from utilities.core.logging_utils import setup_logger
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("discord")
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
 bot.remove_command("python")
 

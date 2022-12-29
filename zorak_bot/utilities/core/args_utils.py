@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import OrderedDict
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('discord')
 
 
 def add_boolean_arg(parser: ArgumentParser, name: str, desc: str, default: bool = False) -> None:

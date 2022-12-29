@@ -1,10 +1,8 @@
 from __future__ import annotations
-
+import discord
 import logging
-import os
-from pathlib import Path
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('discord')
 
 LOGGER_FORMAT = "%(asctime)s %(levelname)s %(name)s %(message)s"
 
@@ -25,7 +23,7 @@ def setup_logger(
         Format the logger will log in, by default LOGGER_FORMAT
     """
     log_formatter = logging.Formatter(logger_format)
-
+    
     handlers: list[logging.Handler] = []
     if stream_logs:
         stream_handler = logging.StreamHandler()
