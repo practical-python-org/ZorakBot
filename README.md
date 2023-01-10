@@ -29,7 +29,7 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 - [X] - /rolldice
 - [X] - /8ball arg:[question]
 - [X] - /drawme arg:[text] arg:[seed]
-- [ ] - /imbored
+- [X] - /imbored
 
 ### Utility Commands
 - [X] - /run \`\`\`py print('hello world')\`\`\`
@@ -50,19 +50,15 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 ### Cool Tricks
 - [X] - When a link to a discord message is sent in a channel, Zorak will preview that message.
 - [X] - Zorak utilizes Piston API to run code directly in the server.
+- [X] - Verifies new users with a verification button. 
 
 
 # To-do
 | Bugs |
 |--|
-| Fix /pokedex command. (Just does not work.) |
-| Fix /times (command is unrecognized) |
-| Fix /poll (Only sets one emoji.) | |
 | Fix /avatar (Message deleted, but nothing returned.) |
 | Fix /whois (Message deleted, but nothing returned.) | 
-| Fix /github (Does not find repos, or does not respond.) |
 | Fix /userinfo//whois (Message deleted, but nothing returned.) |
-| Fix /github (Does not find repos, or does not respond.) |
 
 
 
@@ -72,7 +68,7 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 - [X] - Role management for new members.
 - [X] - Run code within the server.
 - [ ] - Word blacklist functionality
-- [ ] - Suspicious link detection and removal
+- [X] - Suspicious link detection and removal
 - [ ] - Muting spam messages across multiple channels
 - [ ] - Server lockdown feature
 
