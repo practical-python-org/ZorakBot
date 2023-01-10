@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord import default_permissions
 import datetime
 from discord.ext import tasks
-from __main__ import bot
+from __main__ import bot, channels
 
 class _challenges(commands.Cog, command_attrs=dict(hidden=True)):
 	def __init__(self, bot):
@@ -32,12 +32,12 @@ class _challenges(commands.Cog, command_attrs=dict(hidden=True)):
 						await ctx.respond(embed=embed)
 
 						# Open the thread
-						channel = await bot.fetch_channel(1045104938071633994) # CHALLENGES channel
+						channel = await bot.fetch_channel(channels['normal_channels']['challenges_channel']) # CHALLENGES channel
 						thread = await ctx.channel.create_thread(name=f'Challenge #{day}'
 								, type=discord.ChannelType.public_thread)
 
-						help1 = await bot.fetch_channel(903542455675260928)
-						help2 = await bot.fetch_channel(903542494409674803)
+						help1 = await bot.fetch_channel(channels['help_channels']['python_help_1'])
+						help2 = await bot.fetch_channel(channels['help_channels']['python_help_2'])
 						await thread.send(f"Please place only **finished answers** for **Day {day}** in this thread.\nAny challenge related discussions should happen in {help1.mention} or {help2.mention}.")
 		else:
 			await ctx.respond('Only a member of the <@&960232134356901959> can launch a challenge.'

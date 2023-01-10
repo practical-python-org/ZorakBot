@@ -1,11 +1,15 @@
 import os
 import sys
+import toml
 import discord
 from discord.ext import commands
 
-
 bot = commands.Bot(command_prefix = '/', intents=discord.Intents.all())
-bot.remove_command('python')
+
+channels = toml.load('test_server.toml')['channels']
+logging = channels['log_channels']
+user_roles = toml.load('test_server.toml')['user_roles']
+
 
 def load_cogs():
         for f in os.listdir("./cogs"):
@@ -18,7 +22,6 @@ def load_key_and_run():
         bot.run(TOKEN)
     else:
         print('ERROR: You must include a bot token.')
-
 
 if __name__ == "__main__":
     load_cogs()

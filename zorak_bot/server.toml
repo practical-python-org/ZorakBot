@@ -1,0 +1,44 @@
+############
+# Channels #
+############
+[channels.moderation]
+verification_channel = 953545059888930816
+quarantine_channel = 953647309609132102
+role_channel = 965927411273302076
+rules_channel = 953583540044443689
+
+
+[normal_channels]
+general_channel = 953576255435997234
+resources_channel = 953583598429171742
+new_to_python = 1031558238971379813
+python_help_1 = 903542455675260928
+
+[channels.log_channels]
+server_change_log = 953545221260595280
+verification_log = 1044302239616991242
+chat_log = 954023390375710751
+mod_log = 1055501831800889454
+join_log = 953543179133665380
+user_log = 953552502937243679
+
+#############
+#   Roles   #
+#############
+[user_roles.admin]
+owner = 920312909110853642
+staff = 960232134356901959
+bot = 1024923612966309990
+
+[user_roles.elevated]
+community_contributor = 1025032149679755264
+helpful = 940547307194179644
+challenger = 1048940634779689062
+active_participant = 954308504708075570
+
+[user_roles.unverified]
+needs_approval = 935466692316917770
+
+[user_roles.moderation]
+muted = 996770748825870376
+naughty = 930832647742185472
