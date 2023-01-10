@@ -5,10 +5,11 @@ import discord
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix = '/', intents=discord.Intents.all())
-bot.remove_command('python')
-channels = toml.load('server.toml')['channels']
+
+channels = toml.load('test_server.toml')['channels']
 logging = channels['log_channels']
-roles = toml.load('server.toml')['roles']
+user_roles = toml.load('test_server.toml')['user_roles']
+
 
 def load_cogs():
         for f in os.listdir("./cogs"):

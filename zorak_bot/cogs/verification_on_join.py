@@ -3,7 +3,7 @@ from discord import Member
 from discord.ext import commands
 from datetime import datetime
 from asyncio import sleep
-from __main__ import bot, logging, roles
+from __main__ import bot, logging, channels, user_roles
 
 class logging_verification(commands.Cog):
 	def __init__(self, bot):
@@ -13,14 +13,11 @@ class logging_verification(commands.Cog):
 	###### On new join, do this
 	async def on_member_join(self, member: discord.Member):
 		# Add verification role
-		await member.add_roles(member.guild.get_role(roles['unverified']['needs_approval']))
+		await member.add_roles(member.guild.get_role(user_roles['unverified']['needs_approval']))
 
 		# Log unverified join
 		logs_channel = await bot.fetch_channel(logging['verification_log']) # ADMIN user log
-		embed = discord.Embed(title=''
-			, description=f'<@{member.id}> joined, but has not verified.'
-			, color=discord.Color.yellow())
-		await logs_channel.send(embed=embed)
+		await logs_channel.send(f'<@{member.id}> joined, but has not verified.')
 
 		# Send Welcome
 		guild = member.guild
@@ -47,11 +44,7 @@ After you do, all of {guild.name} is availibe to you. Have a great time :-)
 
 			if 'Needs Approval' in [role.name for role in member.roles]:
 				# Log the kick
-				embed = discord.Embed(title=''
-					, description=f'{member.mention} did not verify, auto-removed. ({(time_unverified_kick/3600)} hour/s)'
-					, color=discord.Color.red())
-				await logs_channel.send(embed=embed)
-
+				await logs_channel.send(f'{member.mention} did not verify, auto-removed. ({(time_unverified_kick/3600)} hour/s)')
 				await member.kick(reason="Did not verify.")
 
 def setup(bot):

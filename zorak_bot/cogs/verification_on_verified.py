@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
-from __main__ import bot, roles, logging
+from __main__ import bot, user_roles, logging, channels
 
 class admin_verification(discord.ui.View):
 
@@ -10,7 +10,7 @@ class admin_verification(discord.ui.View):
 		user = interaction.user
 		guild = interaction.guild
 		roles = guild.roles
-		role = discord.utils.get(roles, id=roles['unverified']['needs_approval'])
+		role = discord.utils.get(roles, id=user_roles['unverified']['needs_approval'])
 
 		website = 'https://xarlos89.github.io/PracticalPython/'
 		website_emoji = discord.utils.get(bot.emojis, name='logo')
@@ -37,12 +37,12 @@ class admin_verification(discord.ui.View):
 Awesome, {user.mention}. Thank you for verifying. 
 Allow me to introduce you {guild.name}.
 
-1. Be sure to read our {bot.get_channel(channels['moderation']['moderation']).mention}.
+1. Be sure to read our {bot.get_channel(channels['moderation']['rules_channel']).mention}.
 2. Why not set some {bot.get_channel(channels['moderation']['role_channel']).mention}?
 3. Introduce yourself in {bot.get_channel(channels['normal_channels']['general_channel']).mention}.
 
-We keep a ton of awesome links to courses, cool tools, and popular software in {bot.get_channel([channels['normal_channels']['resources_channel']]).mention}.
-If you have any questions, feel free to post your question in {bot.get_channel(channels['help_channels']['new_to_python']).mention} or {bot.get_channel(channels['help_channels']['python_help_1']).mention}
+We keep a ton of awesome links to courses, cool tools, and popular software in {bot.get_channel(channels['normal_channels']['resources_channel']).mention}.
+If you have any questions, feel free to post your question in {bot.get_channel(channels['normal_channels']['new_to_python']).mention} or {bot.get_channel(channels['normal_channels']['python_help_1']).mention}
 
 I can run your code directly in the server!
 To learn how, type **/help** in any channel.
@@ -57,11 +57,9 @@ Looking forward to having you here!
 		if 'Needs Approval' in [role.name for role in user.roles]:
 			await user.remove_roles(role)
 			await user.send(embed=embed)
+			
 			logs_channel = await bot.fetch_channel(logging['verification_log']) # ADMIN user log
-			embed = discord.Embed(title=''
-				, description=f'{user.mention} has verified!'
-				, color=discord.Color.dark_green())
-			await logs_channel.send(embed=embed)
+			await logs_channel.send(f'{user.mention} has verified!')
 
 		else:
 			await user.send('You have already been Verified. Go away.')

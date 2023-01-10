@@ -16,8 +16,7 @@ class logging_leaving(commands.Cog):
 			return
 		else:
 			logs_channel = await bot.fetch_channel(logging['join_log']) # Welcome channel
-			embed = discord.Embed(title='', description=f'<@{member.id}> has left us.', color=discord.Color.red())
-			await logs_channel.send(embed=embed)
+			await logs_channel.send(f'<@{member.id}> has left us.')
 
 
 def setup(bot):

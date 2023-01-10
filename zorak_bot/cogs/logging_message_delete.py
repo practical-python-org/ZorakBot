@@ -16,10 +16,16 @@ class logging_message_delete(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message_delete(self, message):
+
+		if message.author.nick is None:
+			username = message.author
+		else:
+			username = message.author.nick
+			
 		author = message.author
 
 		embed = discord.Embed(title=f'<:red_circle:1043616578744357085> Deleted Message'
-			, description=f'Deleted by {message.author.mention}\nIn {message.channel.mention}'
+			, description=f'Deleted by {username}\nIn {message.channel.mention}'
 			, color=discord.Color.dark_red()
 			, timestamp=datetime.utcnow())
 		embed.set_thumbnail(url=author.avatar)
@@ -29,7 +35,7 @@ class logging_message_delete(commands.Cog):
 			, inline=True)
 
 		logs_channel = await bot.fetch_channel(logging['chat_log'])
-		await logs_channel.send(embed=embed)
+		await logs_channel.send(f'{username.mention}', embed=embed)
 
 
 def setup(bot):
