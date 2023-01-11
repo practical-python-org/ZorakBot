@@ -2,7 +2,7 @@ import discord
 from discord import Member
 from discord.ext import commands
 from datetime import datetime
-from __main__ import bot, logging
+from __main__ import bot, log_channels
 
 class logging_message_delete(commands.Cog):
 	def __init__(self, bot):
@@ -34,7 +34,7 @@ class logging_message_delete(commands.Cog):
 			, value=message.content # ToDo: This throws an error when deleting an embed. 
 			, inline=True)
 
-		logs_channel = await bot.fetch_channel(logging['chat_log'])
+		logs_channel = await bot.fetch_channel(log_channels['chat_log'])
 		await logs_channel.send(f'{username.mention}', embed=embed)
 
 

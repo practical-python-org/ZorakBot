@@ -3,7 +3,7 @@ from discord import Member
 from discord.ext import commands
 from datetime import datetime
 from asyncio import sleep
-from __main__ import bot, logging, channels, user_roles
+from __main__ import bot, log_channels, mod_channels, unverified_role
 
 class logging_verification(commands.Cog):
 	def __init__(self, bot):
@@ -13,10 +13,10 @@ class logging_verification(commands.Cog):
 	###### On new join, do this
 	async def on_member_join(self, member: discord.Member):
 		# Add verification role
-		await member.add_roles(member.guild.get_role(user_roles['unverified']['needs_approval']))
+		await member.add_roles(member.guild.get_role(unverified_role['needs_approval']))
 
 		# Log unverified join
-		logs_channel = await bot.fetch_channel(logging['verification_log']) # ADMIN user log
+		logs_channel = await bot.fetch_channel(log_channels['verification_log']) # ADMIN user log
 		await logs_channel.send(f'<@{member.id}> joined, but has not verified.')
 
 		# Send Welcome
@@ -27,7 +27,7 @@ I'm Zorak, the moderatior of {guild.name}.
 
 We are very happy that you have decided to join us.
 Before you are allowed to chat, you need to verify that you aren't a bot.
-Dont worry, it's easy. Just go to {bot.get_channel(channels['moderation']['verification_channel']).mention} and click the green button.
+Dont worry, it's easy. Just go to {bot.get_channel(mod_channels['verification_channel']).mention} and click the green button.
 
 After you do, all of {guild.name} is availibe to you. Have a great time :-)
 """

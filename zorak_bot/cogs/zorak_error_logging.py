@@ -2,7 +2,7 @@ import discord
 from discord import Member
 from discord.ext import commands
 from datetime import datetime
-from __main__ import bot, logging
+from __main__ import bot, log_channels
 
 class error_logging(commands.Cog):
 	def __init__(self, bot):
@@ -19,7 +19,7 @@ class error_logging(commands.Cog):
 				, value=args
 				, inline=True) 
 
-			logs_channel = await bot.fetch_channel(logging['zorak_log']) # Zorak Error Log
+			logs_channel = await bot.fetch_channel(log_channels['zorak_log']) # Zorak Error Log
 			await logs_channel.send(embed=embed)
 
 def setup(bot):

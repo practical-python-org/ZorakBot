@@ -9,11 +9,6 @@ class admin_utility(commands.Cog, command_attrs=dict(hidden=True)):
 
 	@commands.slash_command()
 	@commands.has_permissions(manage_messages=True)
-	async def test(self, ctx):
-		await ctx.respond(f"testing, {ctx.author.name}!")
-
-	@commands.slash_command()
-	@commands.has_permissions(manage_messages=True)
 	async def embed(self, ctx, title, content):
 		# text = ctx.message.content.split("\n")
 		embed = discord.Embed(title=title)
