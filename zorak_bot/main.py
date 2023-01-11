@@ -6,9 +6,16 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix = '/', intents=discord.Intents.all())
 
-channels = toml.load('test_server.toml')['channels']
-logging = channels['log_channels']
-user_roles = toml.load('test_server.toml')['user_roles']
+channels = toml.load('server.toml')['channels']
+mod_channels = channels['moderation']
+log_channels = channels['log_channels']
+normal_channels = channels['normal_channels']
+
+user_roles = toml.load('server.toml')['user_roles']
+admin_roles = user_roles['admin']
+elevated_roles = user_roles['elevated']
+badboi_role = user_roles['bad']
+unverified_role = user_roles['unverified']
 
 
 def load_cogs():
