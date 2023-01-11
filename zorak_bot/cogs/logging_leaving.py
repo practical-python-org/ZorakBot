@@ -3,7 +3,7 @@ from discord import Member
 from discord.ext import commands
 from datetime import datetime
 from asyncio import sleep
-from __main__ import bot, logging
+from __main__ import bot, log_channels
 
 class logging_leaving(commands.Cog):
 	def __init__(self, bot):
@@ -15,7 +15,7 @@ class logging_leaving(commands.Cog):
 		if 'Needs Approval' in [role.name for role in member.roles]:
 			return
 		else:
-			logs_channel = await bot.fetch_channel(logging['join_log']) # Welcome channel
+			logs_channel = await bot.fetch_channel(log_channels['join_log']) # Welcome channel
 			await logs_channel.send(f'<@{member.id}> has left us.')
 
 
