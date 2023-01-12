@@ -1,4 +1,15 @@
 ############
+#  Server  #
+############
+[server.info]
+name = 'Practical Python'
+website = 'https://xarlos89.github.io/PracticalPython/'
+email = 'Practicalpython-staff@pm.me'
+review = 'https://disboard.org/review/create/900302240559018015'
+invite = 'https://discord.gg/vgZmgNwuHw'
+logo = "https://raw.githubusercontent.com/Xarlos89/PracticalPython/main/logo.png"
+
+############
 # Channels #
 ############
 [channels.moderation]

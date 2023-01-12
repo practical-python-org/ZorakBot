@@ -1,7 +1,9 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
-from __main__ import bot, unverified_role, log_channels, mod_channels, normal_channels
+from __main__ import bot
+from ._settings import *
+
 
 class admin_verification(discord.ui.View):
 
@@ -10,7 +12,7 @@ class admin_verification(discord.ui.View):
 		user = interaction.user
 		guild = interaction.guild
 		roles = guild.roles
-		role = discord.utils.get(roles, id=unverified_role['needs_approval'])
+		role = discord.utils.get(roles, id=user_roles['unverified']['needs_approval'])
 
 		website = 'https://xarlos89.github.io/PracticalPython/'
 		website_emoji = discord.utils.get(bot.emojis, name='logo')
@@ -29,7 +31,7 @@ class admin_verification(discord.ui.View):
 		quicklinks = f'{website_emoji} [Website]({website})\n{email_emoji} [Practicalpython-staff@pm.me]({email})\n{review_emoji} [Vote for us on disboard!]({review})'
 		info = f'{created_emoji} Created: <t:{int(created)}:R>\n{owner_emoji} Owner: {owner}\n{invite_emoji} [discord.gg/vgZmgNwuHw]({invite})'
 		
-		embed = discord.Embed(title=f'Welcome to Practiscal Python'
+		embed = discord.Embed(title=f'Welcome to Practical Python'
 			, color=discord.Color.yellow())
 		embed.set_thumbnail(url="https://raw.githubusercontent.com/Xarlos89/PracticalPython/main/logo.png")
 		embed.add_field(name=f'You are member number {guild.member_count}!'
