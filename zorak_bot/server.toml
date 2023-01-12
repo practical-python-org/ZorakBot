@@ -1,6 +1,6 @@
 ############
 #  Server  #
-############
+############  
 [server.info]
 name = 'Practical Python'
 website = 'https://xarlos89.github.io/PracticalPython/'
@@ -18,7 +18,7 @@ quarantine_channel = 953647309609132102
 role_channel = 965927411273302076
 rules_channel = 953583540044443689
 
-[channels.normal_channels]
+[channels.normal_channel]
 general_channel = 953576255435997234
 resources_channel = 953583598429171742
 new_to_python = 1031558238971379813
@@ -26,7 +26,7 @@ python_help_1 = 903542455675260928
 python_help_2 = 903542494409674803
 challenges_channel = 1045104938071633994
 
-[channels.log_channels]
+[channels.log_channel]
 server_change_log = 953545221260595280
 verification_log = 1044302239616991242
 chat_log = 954023390375710751
