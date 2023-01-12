@@ -2,7 +2,9 @@ import discord
 from discord import Member
 from discord.ext import commands
 from datetime import datetime
-from __main__ import bot, log_channels
+from __main__ import bot
+from ._settings import log_channel
+
 
 class logging_nameChanges(commands.Cog):
 	def __init__(self, bot):
@@ -29,12 +31,12 @@ class logging_nameChanges(commands.Cog):
 			embed.add_field(name='Before', value=username_before, inline=True)
 			embed.add_field(name='After', value=username_after, inline=True)
 
-			logs_channel = await bot.fetch_channel(log_channels['user_log']) # ADMIN user log
+			logs_channel = await bot.fetch_channel(log_channel['user_log']) # ADMIN user log
 			await logs_channel.send(f'{username_after.mention}', embed=embed)
 
 		# Verification success logging	
 		elif 'Needs Approval' in [role.name for role in before.roles] and 'Needs Approval' not in [role.name for role in after.roles]:
-			logs_channel = await bot.fetch_channel(log_channels['join_log']) # user join logs
+			logs_channel = await bot.fetch_channel(log_channel['join_log']) # user join logs
 			embed = discord.Embed(title='', description=f'{username_after}, human number {after.guild.member_count} has joined.', color=discord.Color.dark_green())
 			await logs_channel.send(f'{username_after.mention}', embed=embed)
 
