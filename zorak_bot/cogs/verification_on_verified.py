@@ -41,7 +41,7 @@ Allow me to introduce you {guild.name}.
 
 1. Be sure to read our {bot.get_channel(mod_channel['rules_channel']).mention}.
 2. Why not set some {bot.get_channel(mod_channel['role_channel']).mention}?
-3. Introduce yourself in {bot.get_channel(mod_channel['general_channel']).mention}.
+3. Introduce yourself in {bot.get_channel(normal_channel['general_channel']).mention}.
 
 We keep a ton of awesome links to courses, cool tools, and popular software in {bot.get_channel(normal_channel['resources_channel']).mention}.
 If you have any questions, feel free to post your question in {bot.get_channel(normal_channel['new_to_python']).mention} or {bot.get_channel(normal_channel['python_help_1']).mention}
