@@ -13,8 +13,8 @@ class admin_utility(commands.Cog, command_attrs=dict(hidden=True)):
 		# text = ctx.message.content.split("\n")
 		embed = discord.Embed(title=title)
 		# text.pop(0)
-		# TODO: Fix this boi here
-		# [embed.add_field(name=f" ----- ", value=text[index], inline=False) for index, item in enumerate(text)]  # Nice
+		# TODO: Fix this boi here  (didn't fix much but changed slightly)
+		# [embed.add_field(name=f" ----- ", value=item, inline=False) for item in text]  # Nice
 		embed.add_field(name='Content', value=content)
 		# embed.set_footer(icon_url=ctx.author.avatar_url)
 		# await ctx.message.delete()
