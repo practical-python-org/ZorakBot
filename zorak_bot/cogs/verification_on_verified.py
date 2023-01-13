@@ -39,12 +39,12 @@ class admin_verification(discord.ui.View):
 Awesome, {user.mention}. Thank you for verifying. 
 Allow me to introduce you {guild.name}.
 
-1. Be sure to read our {bot.get_channel(mod_channels['rules_channel']).mention}.
-2. Why not set some {bot.get_channel(mod_channels['role_channel']).mention}?
-3. Introduce yourself in {bot.get_channel(normal_channels['general_channel']).mention}.
+1. Be sure to read our {bot.get_channel(mod_channel['rules_channel']).mention}.
+2. Why not set some {bot.get_channel(mod_channel['role_channel']).mention}?
+3. Introduce yourself in {bot.get_channel(mod_channel['general_channel']).mention}.
 
-We keep a ton of awesome links to courses, cool tools, and popular software in {bot.get_channel(normal_channels['resources_channel']).mention}.
-If you have any questions, feel free to post your question in {bot.get_channel(normal_channels['new_to_python']).mention} or {bot.get_channel(normal_channels['python_help_1']).mention}
+We keep a ton of awesome links to courses, cool tools, and popular software in {bot.get_channel(normal_channel['resources_channel']).mention}.
+If you have any questions, feel free to post your question in {bot.get_channel(normal_channel['new_to_python']).mention} or {bot.get_channel(normal_channel['python_help_1']).mention}
 
 I can run your code directly in the server!
 To learn how, type **/help** in any channel.
@@ -60,8 +60,8 @@ Looking forward to having you here!
 			await user.remove_roles(role)
 			await user.send(embed=embed)
 			
-			logs_channel = await bot.fetch_channel(log_channels['verification_log']) # ADMIN user log
-			await logs_channel.send(f'{user.mention} has verified!')
+			log_channels = await bot.fetch_channel(log_channel['verification_log']) # ADMIN user log
+			await log_channels.send(f'{user.mention} has verified!')
 
 		else:
 			await user.send('You have already been Verified. Go away.')
