@@ -10,7 +10,8 @@ class admin_utility(commands.Cog, command_attrs=dict(hidden=True)):
 	@commands.slash_command()
 	@commands.has_permissions(manage_messages=True)
 	async def embed(self, ctx, title, content):
-		text = ctx.message.content.split("\n")
+		#text = ctx.message.content.split("\n")
+		text = ["a"*1020, "b"*1020] # for testing
 		embed = discord.Embed(title=title)
 		text.pop(0)
 		# TODO: Fix this boi here  (didn't fix much but changed slightly)
