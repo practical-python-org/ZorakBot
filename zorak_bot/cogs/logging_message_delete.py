@@ -3,7 +3,7 @@ from discord import Member
 from discord.ext import commands
 from datetime import datetime
 from __main__ import bot
-from ._settings import log_channel
+from ._settings import log_channel, admin_roles
 
 
 class logging_message_delete(commands.Cog):
@@ -31,7 +31,12 @@ class logging_message_delete(commands.Cog):
 			, inline=True)
 
 		logs_channel = await bot.fetch_channel(log_channel['chat_log'])
-		await logs_channel.send(f'{username.mention}', embed=embed)
+
+		for role in message.author.roles:
+			if role.id in admin_roles.values():
+				await logs_channel.send(embed=embed)
+				return
+		await logs_channel.send(f'{username.mention}',embed=embed)
 
 
 def setup(bot):

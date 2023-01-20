@@ -8,6 +8,7 @@ email = 'Practicalpython-staff@pm.me'
 review = 'https://disboard.org/review/create/900302240559018015'
 invite = 'https://discord.gg/vgZmgNwuHw'
 logo = "https://raw.githubusercontent.com/Xarlos89/PracticalPython/main/logo.png"
+id = 1031644670436061324
 
 ############
 # Channels #
@@ -41,6 +42,7 @@ zorak_log = 1062754277543645324
 [user_roles.admin]
 owner = 1054762426614157354
 staff = 1031903615310385232
+project_manager = 1065909282496847882
 bot = 1054763353538576437
 
 [user_roles.elevated]
