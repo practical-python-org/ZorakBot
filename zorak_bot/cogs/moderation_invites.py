@@ -3,6 +3,8 @@ import discord
 from datetime import datetime
 from discord.ext import commands
 from __main__ import bot
+from ._settings import log_channel
+
 
 class moderation_invites(commands.Cog):
 	def __init__(self, bot):
@@ -13,7 +15,8 @@ class moderation_invites(commands.Cog):
 
 		txt = message.content
 		current_channel = message.channel
-		logs_channel = await bot.fetch_channel(954023390375710751)
+		logs_channel = await bot.fetch_channel(log_channel['mod_log'])
+
 
 		def is_invite(arg_message):
 			#invitation types
@@ -29,7 +32,7 @@ class moderation_invites(commands.Cog):
 		def log_message(arg_message):
 			author = arg_message.author
 			embed = discord.Embed(title=f'<:red_circle:1043616578744357085> Invite removed'
-				, description=f'Posted by {arg_message.author.mention}\nIn {arg_message.channel.mention}'
+				, description=f'Posted by {arg_message.author}\nIn {arg_message.channel.mention}'
 				, color=discord.Color.dark_red()
 				, timestamp=datetime.utcnow())
 			embed.set_thumbnail(url=author.avatar)
@@ -42,7 +45,7 @@ class moderation_invites(commands.Cog):
 		def embed_warning(arg_message):
 			author = arg_message.author
 			embed = discord.Embed(title=f'<:x:1055080113336762408> External Invites are not allowed here!'
-				, description=f'{arg_message.author.mention}, your message was removed because it contained an external invite.\nIf this was a mistake, contact the @staff'
+				, description=f'{arg_message.author}, your message was removed because it contained an external invite.\nIf this was a mistake, contact the @staff'
 				, color=discord.Color.dark_red()
 				, timestamp=datetime.utcnow())
 			return embed	
