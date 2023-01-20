@@ -33,9 +33,11 @@ class admin_purge(commands.Cog, command_attrs=dict(hidden=True)):
 	"""
 	async def cog_command_error(self, ctx: commands.Context, error: commands.CommandError):
 		if isinstance(error, commands.MissingPermissions):
-			await ctx.send(f"Sorry, {ctx.author.name}, you dont have permission to use this command!", reference=ctx.message)
-		else:
-			raise error
+			await ctx.channel.send(f"Sorry, {ctx.author.name}, you dont have the correct permissions to use this command!", reference=ctx.message)
+
+
+		if isinstance(error, commands.MissingRole):
+			await ctx.channel.send(f"Sorry, {ctx.author.name}, you must be a memeber of Staff to use this command!", reference=ctx.message)
 
 
 def setup(bot):
