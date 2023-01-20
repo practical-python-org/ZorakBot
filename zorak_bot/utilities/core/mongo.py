@@ -2,13 +2,15 @@ import logging
 from typing import Dict, List
 
 import pymongo
+from discord.ext.commands import Bot
 
-logger = logging.getLogger('discord')
+logger = logging.getLogger("discord")
 
 
 class MongoDB:
     """
     A class that provides a simple interface for performing common operations with MongoDB using the PyMongo library.
+    This is a standard interface that can be used to implement any sort of database functionality.
     """
 
     def __init__(self, host: str, port: int, database: str):
@@ -35,6 +37,10 @@ class MongoDB:
         if validators:
             for validator in validators:
                 self.configure_validation(collection_name, validator)
+
+    def get_all_collection_names(self):
+        """Get all collection names in the database."""
+        return self.db.list_collection_names()
 
     def drop_collection(self, collection_name: str):
         """
@@ -168,3 +174,78 @@ class MongoDB:
             The query to use to find the documents.
         """
         self.db[collection].delete_many(query)
+
+    def backup_db(self, database_name: str, output_dir: str = "."):
+        """Backup the MongoDB instance."""
+        self.db.client.admin.command("backup", to=f"{output_dir}/{database_name}.gz")
+        logger.info("Database backed up.")
+
+
+class PointsDBClient:
+    """A further extension ontop of the earlier MongoDB class to abstract functions to be able to more easily
+    interact with a database focussed around assigning points to users. This is only intended to handle a single
+    guild, but could be extended to handle multiple guilds by adding a guild_id field to the user table, or adding
+    a new table for each guild."""
+
+    def __init__(self, host: str, port: int, database: str):
+        super(PointsDBClient, self).__init__(host=host, port=port, database=database)
+
+    def initialise_user_table(self):
+        """Initialise the user table."""
+        self.db.create_collection("users", validators=[{"user_id": 1}])
+        logger.info("User table initialised.")
+
+    def create_table_from_members(self, members: List):
+        """Create a table from a list of members if it does not already exist. If it does it adds all unnadded members"""
+        for member in members:
+            self.db.insert_one("users", {"user_id": member.id})
+
+    def add_user_to_table(self, member):
+        """Add a user to the user table if they are not already in it."""
+        self.db.insert_one("users", {"user_id": member.id})
+
+    def remove_user_from_table(self, member):
+        """Remove a user from the user table."""
+        self.db.delete_one("users", {"user_id": member.id})
+
+    def add_points_to_user(self, user_id: int, points: int):
+        """Add points to a user."""
+        self.db.update_one(
+            "users", {"user_id": user_id}, {"$inc": {"points": points}}
+        )  # The $inc operator increments a field by a specified value.
+
+    def add_points_to_all_users(self, points: int):
+        """Add points to all users."""
+        self.db.update_many("users", {}, {"$inc": {"points": points}})
+
+    def remove_points_from_user(self, user_id: int, points: int):  # Not really needed, but here for completeness.
+        """Remove points from a user."""
+        self.db.update_one("users", {"user_id": user_id}, {"$inc": {"points": -points}})
+
+    def remove_points_from_all_users(self, points: int):
+        """Remove points from all users."""
+        self.db.update_many("users", {}, {"$inc": {"points": -points}})
+
+    def set_user_points(self, user_id: int, points: int):
+        """Update the points of a user."""
+        self.db.update_one(
+            "users", {"user_id": user_id}, {"$set": {"points": points}}
+        )  # The $set operator replaces the value of a field with the specified value.
+
+    def set_all_user_points(self, points: int):
+        """Update the points of all users."""
+        self.db.update_many("users", {}, {"$set": {"points": points}})
+
+    def get_user_points(self, user_id: int):
+        """Get the points of a user."""
+        user = self.db.find_one("users", {"user_id": user_id})
+        if user:
+            return user["points"]
+        return None
+
+
+def initialise_points_database(bot: Bot):
+    """Initialise the database."""
+    bot.db_client = PointsDBClient(host="localhost", port=27017, database="points")
+    bot.db_client.initialise_user_table()
+    return bot

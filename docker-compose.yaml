@@ -1,0 +1,18 @@
+version: '2'
+services:
+  zorak:
+    build: .
+    container_name: zorak
+    restart: always
+  mongo:
+    image: mongo
+    container_name: Mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    restart: always
+    depends_on:
+      - zorak
+
+  
