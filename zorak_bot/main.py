@@ -5,10 +5,12 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix = '/', intents=discord.Intents.all())
 
+
 def load_cogs():
-        for f in os.listdir("./cogs"):
-            if f.endswith(".py") and (f.startswith('_') is False):
-                bot.load_extension("cogs." + f[:-3])
+    for f in os.listdir("./cogs"):
+        if f.endswith(".py") and (f.startswith('_') is False):
+            bot.load_extension("cogs." + f[:-3])
+
 
 def load_key_and_run():
     if len(sys.argv) > 1:
@@ -16,6 +18,7 @@ def load_key_and_run():
         bot.run(TOKEN)
     else:
         print('ERROR: You must include a bot token.')
+
 
 if __name__ == "__main__":
     load_cogs()

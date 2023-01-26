@@ -22,55 +22,15 @@ class helpButtons(discord.ui.View):
 							**- Questions? -**\nContact the {staff_role.mention}, or send us an email.",
 			color=discord.Color.yellow())
 		embed.set_thumbnail(url=server_info['logo'])
-		await interaction.response.send_message(embed=embed)
-
-	@discord.ui.button(label="Command List", row=0, style=discord.ButtonStyle.success)
-	async def second_button_callback(self, button, interaction):
-		fun = """
-			- /hello
-			- /taunt
-			- /catfact
-			- /dogfact
-			- /pugfact
-			- /catpic
-			- /dogpic arg:[breed]
-			- /joke
-			- /quote
-			- /fakeperson
-			- /google arg:[question]
-			- /pokedex arg:[pokemon]
-			- /rolldice
-			- /8ball arg:[question]
-			- /drawme arg:[text] arg:[seed]
-			- /imbored
-			"""
-		utility = """
-			- /run \`\`\`py print('hello world')\`\`\`
-			- /pip_search arg:[package]
-			- /github_search arg:[endpoint]
-			- /devtimes
-			- /zeus arg:[website] """
-
-		tricks ="""
-			- When a link to a discord message is sent in a channel, Zorak will preview that message.
-	  		"""
-		embed=discord.Embed(
-			title='Command List',
-			description=f"A public list of current Zorak commands.",
-			color=discord.Color.green())
-		embed.add_field(name='Fun Commands', value=fun, inline=True)
-		embed.add_field(name='Utility Commands', value=utility, inline=True)
-		embed.add_field(name='Cool Tricks', value=tricks, inline=True)
-		embed.set_thumbnail(url=server_info['logo'])
-		await interaction.response.send_message(embed=embed)
+		await interaction.response.send_message(embed=embed, ephermal=True)
 
 	@discord.ui.button(label="Running code", row=0, style=discord.ButtonStyle.success)
 	async def third_button_callback(self, button, interaction):
-		await interaction.response.send_message("""To run python code in the chat, type:\n\n/run\n\`\`\`py\nx = 'hello world'\nprint(x) \`\`\`""")
+		await interaction.response.send_message("""To run python code in the chat, type:\n\n/run\n\`\`\`py\nx = 'hello world'\nprint(x) \`\`\`""", ephermal=True)
 
 	@discord.ui.button(label="Code Blocks", row=0, style=discord.ButtonStyle.success)
 	async def fourth_button_callback(self, button, interaction):
-		await interaction.response.send_message("""To format your python code like this: \n```py x = 'Hello World!' ``` Type this: \`\`\`py Your code here \`\`\`""")
+		await interaction.response.send_message("""To format your python code like this: \n```py x = 'Hello World!' ``` Type this: \`\`\`py Your code here \`\`\`""", ephermal=True)
 
 
 class helper(commands.Cog):
@@ -80,7 +40,7 @@ class helper(commands.Cog):
 
 	@commands.slash_command(description='Various help topics.')# Create a slash command
 	async def help(self, ctx):
-		await ctx.respond("What do you want, earthling?", view=helpButtons(timeout=10))
+		await ctx.respond("What do you want, earthling?", view=helpButtons(timeout=120), ephermal=True)
 
 
 def setup(bot):
