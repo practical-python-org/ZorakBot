@@ -249,11 +249,11 @@ def initialise_bot_db(bot: Bot):
     """Initialise the database."""
     connected = False
     attempts = 0
-    while connected == False and attempts < 10:
+    while connected == False and attempts < 5:
         logger.info(f"Connecting to database... Attempt {str(attempts+1)} of 10")
-        db_client = PointsDBClient(host="localhost", port=27017)
+        db_client = PointsDBClient(host="mongo", port=27017)
         try:
-            time.sleep(30)
+            time.sleep(10)
             db_client.client.admin.command('ping')
             connected = True
         except Exception as e:

@@ -7,6 +7,7 @@ from discord.ext import commands
 from utilities.core.args_utils import parse_args
 from utilities.core.logging_utils import setup_logger
 from utilities.core.mongo import initialise_bot_db
+from utilities.core import clean_path
 
 logger = logging.getLogger("discord")
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
@@ -14,9 +15,9 @@ bot.remove_command("python")
 
 
 def load_cogs(bot):
-    for f in os.listdir("./cogs"):
+    for f in os.listdir("zorak_bot/cogs"):
         if f.endswith(".py"):
-            if not "_init_" in f:
+            if not f.startswith("_"):
                 bot.load_extension("cogs." + f[:-3])
     return bot
 
