@@ -62,7 +62,7 @@ class Points(commands.Cog):
         """Remove points from a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.remove_points_from_user(user.id, points)
-        await ctx.respond(f"{points} points removed from {mention}.", )
+        await ctx.respond(f"{points} points removed from {mention}.")
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
