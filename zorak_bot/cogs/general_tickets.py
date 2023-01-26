@@ -23,7 +23,7 @@ class make_a_ticket(discord.ui.View):
                 await ticket.add_user(person)
 
         await ticket.add_user(interaction.user)
-        await ticket.send(f'**{interaction.user}, we have received your ticket.**')
+        await ticket.send(f'**{interaction.user.mention}, we have received your ticket.**')
         await ticket.send(f'To better help you, please describe your issue.')
         await mod_log.send(f'{interaction.user} created a Support ticket: <#{ticket.id}>')
 
