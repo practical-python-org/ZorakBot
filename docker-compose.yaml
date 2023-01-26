@@ -6,13 +6,13 @@ services:
     restart: always
   mongo:
     image: mongo
-    container_name: Mongo
+    container_name: mongo
     ports:
       - "27017:27017"
     volumes:
       - ./data:/data/db
-    restart: always
-    depends_on:
-      - zorak
+#    restart: always
+#    depends_on:
+#      - zorak
 
   

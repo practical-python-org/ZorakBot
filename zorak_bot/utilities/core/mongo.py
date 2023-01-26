@@ -2,6 +2,7 @@ import logging
 from typing import Dict, List
 
 import pymongo
+import time
 from discord.ext.commands import Bot
 
 logger = logging.getLogger("discord")
@@ -243,8 +244,27 @@ class PointsDBClient(MongoDBClient):
             return user["Points"]
         return None
 
-def initialise_points_database(bot: Bot):
+
+def initialise_bot_db(bot: Bot):
     """Initialise the database."""
-    bot.db_client = PointsDBClient(host="localhost", port=27017)
-    bot.db_client.initialise_user_table()
+    connected = False
+    attempts = 0
+    while connected == False and attempts < 10:
+        logger.info(f"Connecting to database... Attempt {str(attempts+1)} of 10")
+        db_client = PointsDBClient(host="localhost", port=27017)
+        try:
+            time.sleep(30)
+            db_client.client.admin.command('ping')
+            connected = True
+        except Exception as e:
+            logger.error("Connecting to database...")
+            logger.error(e)
+            if attempts < 9:
+                logger.info("Retrying...")
+            else:
+                logger.info("Failed to connect to database.")
+            attempts += 1
+    if connected:
+        logger.info("Connected to database.")
+        bot.db_client = db_client
     return bot
