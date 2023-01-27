@@ -144,3 +144,7 @@ es_mappings
 .Trashes
 ehthumbs.db
 Thumbs.db
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/vcs.xml
+.idea/workspace.xml

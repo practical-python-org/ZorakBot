@@ -1,14 +1,15 @@
 import toml
-
+prod = 'server.toml'
+test = 'test_server.toml'
 ############
 #  Server  #
 ############
-server_info = toml.load('server.toml')['server']['info']
+server_info = toml.load(prod)['server']['info']
 
 ############
 # Channels #
 ############
-channels = toml.load('server.toml')['channels']
+channels = toml.load(prod)['channels']
 
 mod_channel = channels['moderation']
 log_channel = channels['log_channel']
@@ -17,7 +18,7 @@ normal_channel = channels['normal_channel']
 #############
 #   Roles   #
 #############
-user_roles = toml.load('server.toml')['user_roles']
+user_roles = toml.load(prod)['user_roles']
 
 admin_roles = user_roles['admin']
 elevated_roles = user_roles['elevated']

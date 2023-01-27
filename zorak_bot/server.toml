@@ -18,6 +18,7 @@ verification_channel = 953545059888930816
 quarantine_channel = 953647309609132102
 role_channel = 965927411273302076
 rules_channel = 953583540044443689
+server_support = 1068489441527730196
 
 [channels.normal_channel]
 general_channel = 953576255435997234
