@@ -9,13 +9,30 @@ class logging_threads(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+
+    @commands.Cog.listener()
+    async def on_thread_create(self, thread):
+        current_guild = bot.get_guild(server_info['id'])
+
+        audit_log = [entry async for entry in current_guild.audit_logs(limit=1)]
+        entry = audit_log[0]
+
+        if str(entry.action) == 'AuditLogAction.thread_create':
+            mod_log = await bot.fetch_channel(log_channel['mod_log'])
+            embed = discord.Embed(title=f'{str(entry.user)} opened a ticket.'
+                                  , description=f'Ticket: {entry.target.mention}'
+                                  , color=discord.Color.green()
+                                  , timestamp=datetime.utcnow())
+            await mod_log.send(embed=embed)
+            return
+
+
     @commands.Cog.listener()
     async def on_thread_update(self, before, after):
         current_guild = bot.get_guild(server_info['id'])
 
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)]
         entry = audit_log[0]
-
         if str(entry.action) == 'AuditLogAction.thread_update':
             logs_channel = await bot.fetch_channel(log_channel['mod_log'])
             embed = discord.Embed(title=f'{str(entry.user)} closed a ticket.'
