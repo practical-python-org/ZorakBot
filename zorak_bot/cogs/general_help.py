@@ -19,18 +19,20 @@ class helpButtons(discord.ui.View):
 							**- Email -**\n{server_info['email']}\n\n \
 							**- Invite Link -**\n{server_info['invite']}\n\n \
 							**- Leave a reveiw -**\n{server_info['review']}\n\n \
-							**- Questions? -**\nContact the {staff_role.mention}, or send us an email.",
+							**- Questions? -**\nMake a ticket using /ticket, or send us an email.",
 			color=discord.Color.yellow())
 		embed.set_thumbnail(url=server_info['logo'])
-		await interaction.response.send_message(embed=embed, ephermal=True)
+		await interaction.response.send_message(embed=embed)
+
 
 	@discord.ui.button(label="Running code", row=0, style=discord.ButtonStyle.success)
 	async def third_button_callback(self, button, interaction):
-		await interaction.response.send_message("""To run python code in the chat, type:\n\n/run\n\`\`\`py\nx = 'hello world'\nprint(x) \`\`\`""", ephermal=True)
+		await interaction.response.send_message("""To run python code in the chat, type:\n\n/run\n\`\`\`py\nx = 'hello world'\nprint(x) \`\`\`""")
+
 
 	@discord.ui.button(label="Code Blocks", row=0, style=discord.ButtonStyle.success)
 	async def fourth_button_callback(self, button, interaction):
-		await interaction.response.send_message("""To format your python code like this: \n```py x = 'Hello World!' ``` Type this: \`\`\`py Your code here \`\`\`""", ephermal=True)
+		await interaction.response.send_message("""To format your python code like this: \n```py x = 'Hello World!' ``` Type this: \`\`\`py Your code here \`\`\`""")
 
 
 class helper(commands.Cog):
@@ -38,9 +40,9 @@ class helper(commands.Cog):
 		self.bot = bot
 
 
-	@commands.slash_command(description='Various help topics.')# Create a slash command
+	@commands.slash_command(description='Ask Zorak for help.')
 	async def help(self, ctx):
-		await ctx.respond("What do you want, earthling?", view=helpButtons(timeout=120), ephermal=True)
+		await ctx.respond("What do you want, human?", view=helpButtons(timeout=120))
 
 
 def setup(bot):
