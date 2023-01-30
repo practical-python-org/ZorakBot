@@ -146,3 +146,7 @@ ehthumbs.db
 Thumbs.db
 debug.ipynb
 data/
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/vcs.xml
+.idea/workspace.xml
