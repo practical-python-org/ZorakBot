@@ -1,32 +1,14 @@
 import toml
-<<<<<<< HEAD
-
-# Should probably find a place to put this in utilities.core, will leave it to you tho! - Masz
-
-
+test = '../../Resources/test_server.toml'
 ############
 #  Server  #
 ############
-toml_data = toml.load("Resources/server.toml")
-
-server_info = toml_data["server"]["info"]
-=======
-prod = 'server.toml'
-test = 'test_server.toml'
-############
-#  Server  #
-############
-server_info = toml.load(prod)['server']['info']
->>>>>>> Main
+server_info = toml.load('../../Resources/server.toml')['server']['info']
 
 ############
 # Channels #
 ############
-<<<<<<< HEAD
-channels = toml_data["channels"]
-=======
-channels = toml.load(prod)['channels']
->>>>>>> Main
+channels = toml.load('../../Resources/server.toml')['channels']
 
 mod_channel = channels["moderation"]
 log_channel = channels["log_channel"]
@@ -35,11 +17,7 @@ normal_channel = channels["normal_channel"]
 #############
 #   Roles   #
 #############
-<<<<<<< HEAD
-user_roles = toml_data["user_roles"]
-=======
-user_roles = toml.load(prod)['user_roles']
->>>>>>> Main
+user_roles = toml.load('../../Resources/server.toml')['user_roles']
 
 admin_roles = user_roles["admin"]
 elevated_roles = user_roles["elevated"]

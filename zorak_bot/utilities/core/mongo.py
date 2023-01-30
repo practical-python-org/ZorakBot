@@ -196,14 +196,15 @@ class PointsDBClient(MongoDBClient):
         self.db.create_collection("UserPoints", validators=[{"UserID": 1}])
         logger.info("User table initialised.")
 
+    def add_user_to_table(self, member):
+        """Add a user to the user table if they are not already in it."""
+        if not self.find_one("UserPoints", {"UserID": member.id}):
+            self.insert_one("UserPoints", {"UserID": member.id})
+
     def create_table_from_members(self, members: List):
         """Create a table from a list of members if it does not already exist. If it does it adds all unnadded members"""
         for member in members:
-            self.insert_one("UserPoints", {"UserID": member.id})
-
-    def add_user_to_table(self, member):
-        """Add a user to the user table if they are not already in it."""
-        self.insert_one("UserPoints", {"UserID": member.id})
+            self.add_user_to_table(member)
 
     def remove_user_from_table(self, member):
         """Remove a user from the user table."""

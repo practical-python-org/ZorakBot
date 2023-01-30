@@ -39,7 +39,7 @@ class Points(commands.Cog):
     async def add_all_members_to_db(self, ctx):
         """Add all members to the database."""
         self.bot.db_client.create_table_from_members(ctx.guild.members)
-        await ctx.respond("All members added to database.")
+        await ctx.send("All members added to database.")
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
@@ -93,6 +93,7 @@ class Points(commands.Cog):
         await ctx.respond(f"You have {points} points.")
 
     @commands.slash_command()
+    @commands.has_any_role("Staff", "Owner", "Project Manager")
     async def get_points_for_user(self, ctx, mention: discord.Option(str)):
         """Get points for a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))

@@ -7,7 +7,6 @@ from discord.ext import commands
 from utilities.core.args_utils import parse_args
 from utilities.core.logging_utils import setup_logger
 from utilities.core.mongo import initialise_bot_db
-from utilities.core import clean_path
 
 logger = logging.getLogger("discord")
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
