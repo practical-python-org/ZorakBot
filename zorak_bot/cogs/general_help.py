@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from __main__ import bot
 from ._settings import server_info, admin_roles
 
 class helpButtons(discord.ui.View):
