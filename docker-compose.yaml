@@ -3,6 +3,7 @@ services:
   zorak:
     build: .
     container_name: zorak
+    entrypoint: python3 zorak_bot/__main__.py -dt TOKEN
     #restart: always
   mongo:
     image: mongo
@@ -14,5 +15,3 @@ services:
 #    restart: always
     depends_on:
       - zorak
-
-  
