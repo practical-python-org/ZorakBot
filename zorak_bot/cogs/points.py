@@ -25,7 +25,7 @@ class Points(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
         mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
-        await mod_log.send(f"point removed from {message.author} for deleting a message.")
+        await mod_log.send(f"1 Point removed from {message.author} for deleting a message.")
         self.bot.db_client.remove_points_from_user(message.author.id, 1)
 
     @commands.slash_command()
@@ -49,7 +49,7 @@ class Points(commands.Cog):
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.add_points_to_user(user.id, points)
         mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
-        await mod_log.send(f"{points} points added to {mention}.")
+        await mod_log.send(f"{points} points added to {mention} by {ctx.author}.")
         await ctx.respond(f"{points} points added to {mention}.")
 
     @commands.slash_command()
@@ -58,7 +58,7 @@ class Points(commands.Cog):
         """Add points to all users."""
         self.bot.db_client.add_points_to_all_users(points)
         mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
-        await mod_log.send(f"{points} points added to all users.")
+        await mod_log.send(f"{points} points added to all users by {ctx.author}.")
         await ctx.respond(f"{points} points added to all users.")
 
     @commands.slash_command()
@@ -68,7 +68,7 @@ class Points(commands.Cog):
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.remove_points_from_user(user.id, points)
         mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
-        await mod_log.send(f"{points} points removed from {mention}.")
+        await mod_log.send(f"{points} points removed from {mention} by {ctx.author}.")
         await ctx.respond(f"{points} points removed from {mention}.")
 
     @commands.slash_command()
@@ -77,7 +77,7 @@ class Points(commands.Cog):
         """Remove points from all users."""
         self.bot.db_client.remove_points_from_all_users(points)
         mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
-        await mod_log.send(f"{points} points removed from all users.")
+        await mod_log.send(f"{points} points removed from all users by {ctx.author}.")
         await ctx.respond(f"{points} points removed from all users.")
 
     @commands.slash_command()
@@ -87,7 +87,7 @@ class Points(commands.Cog):
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.set_user_points(user.id, 0)
         mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
-        await mod_log.send(f"Points reset for {mention}.")
+        await mod_log.send(f"Points reset for {mention} by {ctx.author}.")
         await ctx.respond(f"Points reset for {mention}.")
 
     @commands.slash_command()
@@ -96,7 +96,7 @@ class Points(commands.Cog):
         """Reset points for all users."""
         self.bot.db_client.set_all_user_points(0)
         mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
-        await mod_log.send("Points reset for all users.")
+        await mod_log.send(f"Points reset for all users by {ctx.author}.")
         await ctx.respond("Points reset for all users.")
 
     @commands.slash_command()
