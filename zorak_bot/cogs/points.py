@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
-# Here I'm going to use the new MongoDB database to create some infrastructure to allow users to accumalate
-# points for actions taken in the server. This will be used to create a leaderboard and to reward users
-# for their activity in the server.
+from ._settings import log_channel
+
 
 class Points(commands.Cog):
     def __init__(self, bot):
@@ -25,6 +24,8 @@ class Points(commands.Cog):
     # Small abuse stopper. If a user deletes a message, they lose a point.
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
+        mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
+        await mod_log.send(f"point removed from {message.author} for deleting a message.")
         self.bot.db_client.remove_points_from_user(message.author.id, 1)
 
     @commands.slash_command()
@@ -39,7 +40,7 @@ class Points(commands.Cog):
     async def add_all_members_to_db(self, ctx):
         """Add all members to the database."""
         self.bot.db_client.create_table_from_members(ctx.guild.members)
-        await ctx.send("All members added to database.")
+        await ctx.respond("All members added to database.")
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
@@ -47,6 +48,8 @@ class Points(commands.Cog):
         """Add points to a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.add_points_to_user(user.id, points)
+        mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
+        await mod_log.send(f"{points} points added to {mention}.")
         await ctx.respond(f"{points} points added to {mention}.")
 
     @commands.slash_command()
@@ -54,6 +57,8 @@ class Points(commands.Cog):
     async def add_points_to_all_users(self, ctx, points: discord.Option(int)):
         """Add points to all users."""
         self.bot.db_client.add_points_to_all_users(points)
+        mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
+        await mod_log.send(f"{points} points added to all users.")
         await ctx.respond(f"{points} points added to all users.")
 
     @commands.slash_command()
@@ -62,6 +67,8 @@ class Points(commands.Cog):
         """Remove points from a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.remove_points_from_user(user.id, points)
+        mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
+        await mod_log.send(f"{points} points removed from {mention}.")
         await ctx.respond(f"{points} points removed from {mention}.")
 
     @commands.slash_command()
@@ -69,6 +76,8 @@ class Points(commands.Cog):
     async def remove_points_from_all_users(self, ctx, points: discord.Option(int)):
         """Remove points from all users."""
         self.bot.db_client.remove_points_from_all_users(points)
+        mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
+        await mod_log.send(f"{points} points removed from all users.")
         await ctx.respond(f"{points} points removed from all users.")
 
     @commands.slash_command()
@@ -77,6 +86,8 @@ class Points(commands.Cog):
         """Reset points for a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.set_user_points(user.id, 0)
+        mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
+        await mod_log.send(f"Points reset for {mention}.")
         await ctx.respond(f"Points reset for {mention}.")
 
     @commands.slash_command()
@@ -84,6 +95,8 @@ class Points(commands.Cog):
     async def reset_points_for_all_users(self, ctx):
         """Reset points for all users."""
         self.bot.db_client.set_all_user_points(0)
+        mod_log = await self.bot.fetch_channel(log_channel['mod_log'])
+        await mod_log.send("Points reset for all users.")
         await ctx.respond("Points reset for all users.")
 
     @commands.slash_command()
