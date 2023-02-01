@@ -114,5 +114,17 @@ class Points(commands.Cog):
         await ctx.respond(f"{mention} has {points} points.")
 
 
+    async def cog_command_error(self, ctx: commands.Context, error: commands.CommandError):
+        if isinstance(error, commands.MissingAnyRole):
+            await ctx.channel.send(
+                f"Sorry, {ctx.author.name}, you dont have permission to use this command!"
+                , reference=ctx.message)
+
+        if isinstance(error, commands.MissingRole):
+            await ctx.channel.send(
+                f"Sorry, {ctx.author.name}, you dont have permission to use this command!"
+                , reference=ctx.message)
+
+
 def setup(bot):
 	bot.add_cog(Points(bot))
