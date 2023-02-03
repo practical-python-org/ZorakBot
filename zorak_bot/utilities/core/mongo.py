@@ -196,6 +196,7 @@ class PointsDBClient(MongoDBClient):
         self.db.create_collection("UserPoints", validators=[{"UserID": 1}])
         logger.info("User table initialised.")
 
+
     def add_user_to_table(self, member):
         """Add a user to the user table if they are not already in it."""
         if not self.find_one("UserPoints", {"UserID": member.id}):
@@ -243,6 +244,26 @@ class PointsDBClient(MongoDBClient):
         user = self.find_one("UserPoints", {"UserID": user_id})
         if user:
             return user["Points"]
+        return None
+
+
+    """Used for the RSS_feeds cog"""
+
+    def initialise_news_table(self):
+        """Initialise the news table."""
+        self.db.create_collection("newsIDs", validators=[{"entryID": 1}])
+        logger.info("News table initialised.")
+
+    def add_story_to_table(self, story: str):
+        """Add a story to the news table if they are not already in it."""
+        if not self.find_one("newsIDs", {"entryID": story}):
+            self.insert_one("newsIDs", {"entryID": story})
+
+    def get_all_stories(self):
+        """Get all story IDs."""
+        stories = self.find("newsIDs")
+        if stories:
+            return stories
         return None
 
 

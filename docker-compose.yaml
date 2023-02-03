@@ -4,6 +4,7 @@ services:
     build: .
     container_name: zorak
     entrypoint: python3 zorak_bot/__main__.py -dt TOKEN
+
     #restart: always
   mongo:
     image: mongo

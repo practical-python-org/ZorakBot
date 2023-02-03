@@ -27,6 +27,7 @@ new_to_python = 1062300791324553256
 python_help_1 = 1062302503351365632
 python_help_2 = 12345
 challenges_channel = 1045104938071633994
+news_channel = 1071095960538718261
 
 [channels.log_channel]
 server_change_log = 1062269270047862884
@@ -58,3 +59,10 @@ needs_approval = 1043624460168728606
 [user_roles.bad]
 muted = 1062270105339301938
 naughty = 1062270109839790110
+
+#############
+# RSS Feeds #
+#############
+[rss_feeds.links]
+jetbrains = 'https://blog.jetbrains.com/pycharm/feed/'
+Python_Software_foundation = 'https://feeds.feedburner.com/PythonSoftwareFoundationNews'
