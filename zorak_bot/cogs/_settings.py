@@ -4,7 +4,7 @@ test = "../../Resources/test_server.toml"
 prod = "../../Resources/server.toml"
 
 # Set's the current stage throughout the TOML.
-stage = test
+stage = prod
 
 
 ############
