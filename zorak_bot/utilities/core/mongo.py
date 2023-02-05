@@ -1,4 +1,5 @@
 import logging
+import subprocess
 import time
 from typing import Dict, List
 
@@ -176,10 +177,11 @@ class MongoDBClient:
         """
         self.db[collection].delete_many(query)
 
-    def backup_db(self, database_name: str, output_dir: str = "."):
-        """Backup the MongoDB instance."""
-        self.db.client.admin.command("backup", to=f"{output_dir}/{database_name}.gz")
-        logger.info("Database backed up.")
+    # def backup_db(self):
+    #     """Backup the MongoDB instance."""
+
+    #     subprocess.run(["docker", "exec", "mongo", "sh", "-c", "'mongodump", "--archive'", ">", "db.dump"])
+    #     logger.info("Database backed up.")
 
 
 class CustomMongoDBClient(MongoDBClient):
