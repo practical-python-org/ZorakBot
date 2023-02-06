@@ -93,3 +93,10 @@ docker rename CONTAINER Zorak
 docker start Zorak
 docker stop Zorak
 ```
+
+#### ENV example:
+
+```ini
+# General Settings
+DISCORD_TOKEN=Some_Junk_Here #secret token found here https://discord.com/developers/applications
+```
