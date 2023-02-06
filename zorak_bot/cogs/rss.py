@@ -111,7 +111,7 @@ class RSS(commands.Cog):
                     await news_channel.send(embed=send_news(entry))
                     self.bot.db_client.add_story_to_table(entry)
 
-            wait_time_in_seconds = 3600  # 1 hour
+            wait_time_in_seconds = 86400  # 24 hour
             await sleep(wait_time_in_seconds)
 
 
