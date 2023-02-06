@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  zorak:
+    build: .
+    container_name: zorak
+    entrypoint: python3 zorak_bot/__main__.py
+    env_file:
+      - .env
+    #restart: always
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./db_data:/data/db
+    restart: always
+    depends_on:
+      - zorak
