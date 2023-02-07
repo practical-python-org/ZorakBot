@@ -1,10 +1,14 @@
 import toml
+import os
 
 test = "./Resources/test_server.toml"
 prod = "./Resources/server.toml"
 
 # Set's the current stage throughout the TOML.
-stage = test
+if os.getenv("DEV_SETTINGS"):
+    stage = test
+else:
+    stage = prod
 
 
 ############

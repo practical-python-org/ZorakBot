@@ -1,22 +1,23 @@
 version: "3.8"
 services:
-  zorak:
-    build: .
-    container_name: zorak
-    volumes:
-      - ./src:/src
-    entrypoint: tail -f /dev/null &&
-    command: python3 zorak_bot/__main__.py
-    env_file:
-      - .env
-
   mongo:
     image: mongo:6.0.4
-    container_name: mongo
-    ports:
-      - "27017:27017"
+    container_name: zorak_mongo
     volumes:
       - ./db:/data/db
     restart: always
+
+  zorak:
+    build: .
+    image: zorak:${TAG}
+    container_name: zorak_bot
+    volumes:
+      - ./src:/src
+    entrypoint: tail -f /dev/null
+    env_file: .env # this shouldnt be necessary by my computer is being dumb
+    environment:
+      - DEV_SETTINGS=True
+    links:
+      - "mongo:mongo"
     depends_on:
-      - zorak
+      - mongo
