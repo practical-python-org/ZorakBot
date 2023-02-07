@@ -14,7 +14,7 @@ bot.remove_command("python")
 
 
 def load_cogs(bot):
-    for f in os.listdir("zorak_bot/cogs"):
+    for f in os.listdir("cogs"):
         if f.endswith(".py"):
             if not f.startswith("_"):
                 bot.load_extension("cogs." + f[:-3])

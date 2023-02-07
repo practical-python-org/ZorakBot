@@ -10,4 +10,4 @@ WORKDIR /src
 # make sure all messages always reach console
 ENV PYTHONUNBUFFERED=1
 
-ENTRYPOINT ["python3", "zorak_bot/__main__.py"]
+ENTRYPOINT ["python3", "__main__.py"]
