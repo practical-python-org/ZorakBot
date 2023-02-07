@@ -5,8 +5,8 @@ services:
     container_name: zorak
     volumes:
       - ./src:/src
-    command: tail -F anything
-    # entrypoint: python3 zorak_bot/__main__.py
+    entrypoint: tail -f /dev/null &&
+    command: python3 zorak_bot/__main__.py
     env_file:
       - .env
 
@@ -16,7 +16,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ./db_data:/data/db
+      - ./db:/data/db
     restart: always
     depends_on:
       - zorak

@@ -35,4 +35,4 @@ def run_bot(bot, discord_token):
 if __name__ == "__main__":
     args = parse_args()
     setup_logger(level=args.log_level, stream_logs=args.console_log)
-    run_bot(load_cogs(initialise_bot_db(bot)), args.discord_token)  # If args.discord_token is None, it will use the TOKEN env variable.
+    run_bot(load_cogs(initialise_bot_db(bot)), os.getenv("TOKEN"))

@@ -14,7 +14,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ./db_data:/data/db
+      - ./db:/data/db
     restart: always
     depends_on:
       - zorak
