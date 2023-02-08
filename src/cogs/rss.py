@@ -13,7 +13,7 @@ class RSS(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_ready(self):
+    async def rss_on_ready(self):
         def get_IDs():
             """Grabs the most recent article ID from each URL in
             the TOML, so that we can check what we have already sent"""

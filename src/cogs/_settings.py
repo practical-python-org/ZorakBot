@@ -1,15 +1,19 @@
-import toml
+import logging
 import os
 
-test = "./Settings/server.toml"
-prod = "./Settings/test_server.toml"
+import toml
+
+logger = logging.getLogger(__name__)
+
+prod = "./Settings/server.toml"
+test = "./Settings/test_server.toml"
 
 # Set's the current stage throughout the TOML.
 if os.getenv("DEV_SETTINGS"):
     stage = test
 else:
     stage = prod
-
+logger.info(f"using settings at: {stage}")
 
 ############
 #  Server  #

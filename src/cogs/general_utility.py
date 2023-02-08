@@ -29,7 +29,7 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
                         title='Oops...'
                         , description="Invalid package name - " + package
                         , colour=discord.Colour.red()))
-    
+
     @commands.slash_command(description='Search Github for a repo.')
     async def github_search(self, ctx, username: discord.Option(str),repo: discord.Option(str) ):
         try:

@@ -1,22 +1,30 @@
 import logging
 import os
 import sys
+from datetime import datetime
 
 import discord
 from discord.ext import commands
+
 from utilities.core.args_utils import parse_args
 from utilities.core.logging_utils import setup_logger
 from utilities.core.mongo import initialise_bot_db
 
-logger = logging.getLogger("discord")
+logger = logging.getLogger(__name__)
+if os.getenv("DEBUG") == "True":
+    logger.setLevel(logging.DEBUG)
+else:
+    logger.setLevel(logging.INFO)
+
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
 bot.remove_command("python")
 
 
 def load_cogs(bot):
-    for f in os.listdir("cogs"):
+    for f in os.listdir("/src/cogs"):
         if f.endswith(".py"):
             if not f.startswith("_"):
+                logger.info(f"Loading Cog: {f}")
                 bot.load_extension("cogs." + f[:-3])
     return bot
 
@@ -30,7 +38,6 @@ def run_bot(bot, discord_token):
             bot.run(TOKEN)
         else:
             raise Exception("ERROR: You must include a bot token.")
-
 
 if __name__ == "__main__":
     args = parse_args()
