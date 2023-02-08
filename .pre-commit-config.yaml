@@ -1,0 +1,24 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+
+-   repo: https://github.com/psf/black
+    rev: 22.12.0
+    hooks:
+    -   id: black
+
+# disabling until I can resolve: https://discord.com/channels/691841117775462441/1068631950329384981
+# -   repo: https://github.com/pre-commit/mirrors-mypy
+#     rev: 'v0.991'  # Use the sha / tag you want to point at
+#     hooks:
+#     -   id: mypy
+
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  # Ruff version.
+  rev: 'v0.0.236'
+  hooks:
+    - id: ruff

@@ -1,7 +1,6 @@
 import logging
 import os
 import sys
-from datetime import datetime
 
 import discord
 from discord.ext import commands
@@ -38,6 +37,7 @@ def run_bot(bot, discord_token):
             bot.run(TOKEN)
         else:
             raise Exception("ERROR: You must include a bot token.")
+
 
 if __name__ == "__main__":
     args = parse_args()

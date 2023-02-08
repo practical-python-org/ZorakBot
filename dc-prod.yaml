@@ -16,3 +16,4 @@ services:
       - "mongo:mongo"
     depends_on:
       - mongo
+    restart: always

@@ -47,13 +47,19 @@ class RSS(commands.Cog):
                     )
 
                     embed.add_field(
-                        name=f"Preview: ", value=f"{html_reader.handle(NewsFeed['entries'][0]['summary'])[0:1015]} ...", inline=False
+                        name="Preview: ",
+                        value=f"{html_reader.handle(NewsFeed['entries'][0]['summary'])[0:1015]} ...",
+                        inline=False,
                     )
 
                     embed.add_field(
-                        name=f"Read more: ", value=f"[{NewsFeed['entries'][0]['link']}]({NewsFeed['entries'][0]['link']})", inline=False
+                        name="Read more: ",
+                        value=f"[{NewsFeed['entries'][0]['link']}]({NewsFeed['entries'][0]['link']})",
+                        inline=False,
                     )
-                    embed.set_thumbnail(url="https://www.python.org/static/img/python-logo@2x.png")
+                    embed.set_thumbnail(
+                        url="https://www.python.org/static/img/python-logo@2x.png"
+                    )
 
                     return embed
                 else:
@@ -78,9 +84,13 @@ class RSS(commands.Cog):
                     )
 
                     summary_text = f"{NewsFeed['entries'][0]['summary'][0:1015]} ..."
-                    embed.add_field(name=f"**Preview: **", value=summary_text, inline=False)
                     embed.add_field(
-                        name=f"**Read more: **", value=f"[{NewsFeed['entries'][0]['link']}]({NewsFeed['entries'][0]['link']})", inline=False
+                        name="**Preview: **", value=summary_text, inline=False
+                    )
+                    embed.add_field(
+                        name="**Read more: **",
+                        value=f"[{NewsFeed['entries'][0]['link']}]({NewsFeed['entries'][0]['link']})",
+                        inline=False,
                     )
                     embed.set_thumbnail(url=NewsFeed["entries"][0]["featuredimage"])
                     return embed
@@ -106,7 +116,9 @@ class RSS(commands.Cog):
 
             for entry in story_queue:
                 if entry not in sent_ID_list:
-                    news_channel = await self.bot.fetch_channel(normal_channel["news_channel"])
+                    news_channel = await self.bot.fetch_channel(
+                        normal_channel["news_channel"]
+                    )
 
                     await news_channel.send(embed=send_news(entry))
                     self.bot.db_client.add_story_to_table(entry)

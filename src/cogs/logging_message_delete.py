@@ -6,37 +6,41 @@ from ._settings import log_channel, admin_roles
 
 
 class logging_message_delete(commands.Cog):
-	def __init__(self, bot):
-		self.bot = bot
+    def __init__(self, bot):
+        self.bot = bot
 
-	@commands.Cog.listener()
-	async def on_message_delete(self, message):
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
 
-		if message.author.nick is None:
-			username = message.author
-		else:
-			username = message.author.nick
-			
-		author = message.author
+        if message.author.nick is None:
+            username = message.author
+        else:
+            username = message.author.nick
 
-		embed = discord.Embed(title=f'<:red_circle:1043616578744357085> Deleted Message'
-			, description=f'Deleted by {username}\nIn {message.channel.mention}'
-			, color=discord.Color.dark_red()
-			, timestamp=datetime.utcnow())
-		embed.set_thumbnail(url=author.avatar)
+        author = message.author
 
-		embed.add_field(name='Message: '
-			, value=message.content # ToDo: This throws an error when deleting an embed. 
-			, inline=True)
+        embed = discord.Embed(
+            title="<:red_circle:1043616578744357085> Deleted Message",
+            description=f"Deleted by {username}\nIn {message.channel.mention}",
+            color=discord.Color.dark_red(),
+            timestamp=datetime.utcnow(),
+        )
+        embed.set_thumbnail(url=author.avatar)
 
-		logs_channel = await bot.fetch_channel(log_channel['chat_log'])
+        embed.add_field(
+            name="Message: ",
+            value=message.content,  # ToDo: This throws an error when deleting an embed.
+            inline=True,
+        )
 
-		for role in message.author.roles:
-			if role.id in admin_roles.values():
-				await logs_channel.send(embed=embed)
-				return
-		await logs_channel.send(f'{username.mention}',embed=embed)
+        logs_channel = await bot.fetch_channel(log_channel["chat_log"])
+
+        for role in message.author.roles:
+            if role.id in admin_roles.values():
+                await logs_channel.send(embed=embed)
+                return
+        await logs_channel.send(f"{username.mention}", embed=embed)
 
 
 def setup(bot):
-	bot.add_cog(logging_message_delete(bot))
+    bot.add_cog(logging_message_delete(bot))

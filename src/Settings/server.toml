@@ -1,6 +1,6 @@
 ############
 #  Server  #
-############  
+############
 [server.info]
 name = 'Practical Python'
 website = 'https://xarlos89.github.io/PracticalPython/'

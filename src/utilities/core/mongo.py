@@ -1,5 +1,4 @@
 import logging
-import subprocess
 import time
 from typing import Dict, List
 
@@ -63,7 +62,9 @@ class MongoDBClient:
         try:
             self.db.command("collMod", collection, validator={"$jsonSchema": validator})
         except pymongo.errors.OperationFailure:
-            logger.warning(f"Validation rule already exists for collection {collection}.")
+            logger.warning(
+                f"Validation rule already exists for collection {collection}."
+            )
 
     def insert_one(self, collection: str, document: Dict):
         """
@@ -121,7 +122,9 @@ class MongoDBClient:
         """
         return self.db[collection].find(query)
 
-    def update_one(self, collection: str, query: Dict, update: Dict, upsert: bool = False):
+    def update_one(
+        self, collection: str, query: Dict, update: Dict, upsert: bool = False
+    ):
         """Update a single document in a collection.
 
         Parameters
@@ -137,7 +140,9 @@ class MongoDBClient:
         """
         self.db[collection].update_one(query, update, upsert=upsert)
 
-    def update_many(self, collection: str, query: Dict, update: Dict, upsert: bool = False):
+    def update_many(
+        self, collection: str, query: Dict, update: Dict, upsert: bool = False
+    ):
         """Update multiple documents in a collection.
 
         Parameters
@@ -235,9 +240,13 @@ class CustomMongoDBClient(MongoDBClient):
         """Add points to all users."""
         self.update_many("UserPoints", {}, {"$inc": {"Points": points}})
 
-    def remove_points_from_user(self, user_id: int, points: int):  # Not really needed, but here for completeness.
+    def remove_points_from_user(
+        self, user_id: int, points: int
+    ):  # Not really needed, but here for completeness.
         """Remove points from a user."""
-        self.update_one("UserPoints", {"UserID": user_id}, {"$inc": {"Points": -points}})
+        self.update_one(
+            "UserPoints", {"UserID": user_id}, {"$inc": {"Points": -points}}
+        )
 
     def remove_points_from_all_users(self, points: int):
         """Remove points from all users."""
@@ -288,18 +297,22 @@ class CustomMongoDBClient(MongoDBClient):
         return self.find("News", {})
 
 
-def initialise_bot_db(bot: Bot):  # This is called in the main bot file and is the bit of code that connects to the database.
+def initialise_bot_db(
+    bot: Bot,
+):  # This is called in the main bot file and is the bit of code that connects to the database.
     """Initialise the database."""
     connected = False
     attempts = 0
-    while connected == False and attempts < 5:
+    while connected is False and attempts < 5:
         logger.info(f"Connecting to database... Attempt {str(attempts+1)} of 10")
         db_client = CustomMongoDBClient(
             host="mongo", port=27017
         )  # It creates a new instance of the CustomMongoDBClient class, which abstracts our database interactions.
         try:
             time.sleep(10)
-            db_client.client.admin.command("ping")  # This is a test to see if the database is up and running.
+            db_client.client.admin.command(
+                "ping"
+            )  # This is a test to see if the database is up and running.
             connected = True
         except Exception as e:
             logger.error("Connecting to database...")

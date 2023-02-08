@@ -26,7 +26,9 @@ class Points(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
         mod_log = await self.bot.fetch_channel(log_channel["mod_log"])
-        await mod_log.send(f"1 Point removed from {message.author} for deleting a message.")
+        await mod_log.send(
+            f"1 Point removed from {message.author} for deleting a message."
+        )
         self.bot.db_client.remove_points_from_user(message.author.id, 1)
 
     # @commands.slash_command()
@@ -45,7 +47,9 @@ class Points(commands.Cog):
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
-    async def add_points_to_user(self, ctx, mention: discord.Option(str), points: discord.Option(int)):
+    async def add_points_to_user(
+        self, ctx, mention: discord.Option(str), points: discord.Option(int)
+    ):
         """Add points to a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.add_points_to_user(user.id, points)
@@ -64,7 +68,9 @@ class Points(commands.Cog):
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
-    async def remove_points_from_user(self, ctx, mention: discord.Option(str), points: discord.Option(int)):
+    async def remove_points_from_user(
+        self, ctx, mention: discord.Option(str), points: discord.Option(int)
+    ):
         """Remove points from a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.remove_points_from_user(user.id, points)

@@ -1,6 +1,6 @@
-import discord
-from __main__ import bot
-from discord import default_permissions
+# import discord
+# from __main__ import bot
+# from discord import default_permissions
 from discord.ext import commands
 
 

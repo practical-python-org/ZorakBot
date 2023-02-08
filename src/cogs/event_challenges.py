@@ -1,9 +1,6 @@
-import datetime
-
 import discord
 from __main__ import bot
-from discord import default_permissions
-from discord.ext import commands, tasks
+from discord.ext import commands
 
 
 class _challenges(commands.Cog, command_attrs=dict(hidden=True)):
@@ -14,7 +11,9 @@ class _challenges(commands.Cog, command_attrs=dict(hidden=True)):
     async def challenge(self, ctx, day: discord.Option(str)):
         isAdmin = ctx.author
         if "Staff" in [role.name for role in isAdmin.roles]:
-            with open("50-Days-of-Python.txt", encoding="utf-8") as file: # TODO verify this isn't broken
+            with open(
+                "50-Days-of-Python.txt", encoding="utf-8"
+            ) as file:  # TODO verify this isn't broken
                 file = file.read()
                 file = file.replace("Day ", "$$$$$Day ")
                 all_days = file.split("$$$$$")
@@ -23,18 +22,30 @@ class _challenges(commands.Cog, command_attrs=dict(hidden=True)):
 
                         # Make the embed
                         embed = discord.Embed(
-                            title=f"Practical Python's 50 days of code",
-                            description=f"Please place only **finished answers** in the thread. Any challenge related discussions should happen in the help channels.",
+                            title="Practical Python's 50 days of code",
+                            description="Please place only **finished answers** in the thread. Any challenge related discussions should happen in the help channels.",
                             color=discord.Color.dark_green(),
                         )
-                        embed.set_thumbnail(url="https://raw.githubusercontent.com/Xarlos89/PracticalPython/main/logo.png")
-                        embed.add_field(name=f"Challenge #{day}:", value=current_day, inline=True)
-                        embed.set_footer(text=f"Brought to you by: Benjamin Bennett Alexander's 50 Days of Python ")
+                        embed.set_thumbnail(
+                            url="https://raw.githubusercontent.com/Xarlos89/PracticalPython/main/logo.png"
+                        )
+                        embed.add_field(
+                            name=f"Challenge #{day}:", value=current_day, inline=True
+                        )
+                        embed.set_footer(
+                            text="Brought to you by: Benjamin Bennett Alexander's 50 Days of Python "
+                        )
                         await ctx.respond(embed=embed)
 
+                        # FIXME this was never used
                         # Open the thread
-                        channel = await bot.fetch_channel(1045104938071633994)  # CHALLENGES channel
-                        thread = await ctx.channel.create_thread(name=f"Challenge #{day}", type=discord.ChannelType.public_thread)
+                        # channel = await bot.fetch_channel(
+                        #     1045104938071633994
+                        # )  # CHALLENGES channel
+                        thread = await ctx.channel.create_thread(
+                            name=f"Challenge #{day}",
+                            type=discord.ChannelType.public_thread,
+                        )
 
                         help1 = await bot.fetch_channel(903542455675260928)
                         help2 = await bot.fetch_channel(903542494409674803)
@@ -42,7 +53,10 @@ class _challenges(commands.Cog, command_attrs=dict(hidden=True)):
                             f"Please place only **finished answers** for **Day {day}** in this thread.\nAny challenge related discussions should happen in {help1.mention} or {help2.mention}."
                         )
         else:
-            await ctx.respond("Only a member of the <@&960232134356901959> can launch a challenge.", ephemeral=True)
+            await ctx.respond(
+                "Only a member of the <@&960232134356901959> can launch a challenge.",
+                ephemeral=True,
+            )
 
 
 def setup(bot):

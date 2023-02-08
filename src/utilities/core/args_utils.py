@@ -3,13 +3,14 @@ from __future__ import annotations
 import logging
 from argparse import ArgumentParser
 from dataclasses import dataclass
-from pathlib import Path
 from typing import OrderedDict
 
-logger = logging.getLogger('discord')
+logger = logging.getLogger("discord")
 
 
-def add_boolean_arg(parser: ArgumentParser, name: str, desc: str, default: bool = False) -> None:
+def add_boolean_arg(
+    parser: ArgumentParser, name: str, desc: str, default: bool = False
+) -> None:
     """Adds a boolean arg to the arg parser allowing --arg and --no-arg for True and False respectively
     Parameters
     ----------
@@ -25,7 +26,9 @@ def add_boolean_arg(parser: ArgumentParser, name: str, desc: str, default: bool 
     dest = name.replace("-", "_")
     group = parser.add_argument_group(f"{name} options:", desc)
     me_group = group.add_mutually_exclusive_group(required=False)
-    me_group.add_argument(f"--{name}", dest=dest, action="store_true", help="(default)" if default else "")
+    me_group.add_argument(
+        f"--{name}", dest=dest, action="store_true", help="(default)" if default else ""
+    )
     me_group.add_argument(
         f"--no-{name}",
         dest=dest,
