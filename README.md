@@ -81,22 +81,33 @@ Clone the bot into a folder of your choice.
 ```
 git clone https://github.com/Xarlos89/ZorakBot
 ```
-### Docker
+## Docker
 The bot is deployed using docker. Replace the YOUR_BOT_TOKEN with your discord bot token.
-```
-cd /zorak_bot
 
-docker build -t zorak_bot .
-docker run -d zorak_bot YOUR_BOT_TOKEN
-docker rename CONTAINER Zorak
-
-docker start Zorak
-docker stop Zorak
+### Development Workflow
+```zsh
+docker-compose -f dc-dev.yaml up -d
+docker-compose -f dc-dev.yaml exec zorak python __main__.py
+docker-compose -f dc-dev.yaml down --rmi local
 ```
 
-#### ENV example:
+<p class="callout warning"> Note: If you make changes to the .env variables you will need to bring down the docker stack and back up</p>
+
+### Production Deployment
+
+```zsh
+docker-compose -f dc-prod.yaml up -d
+```
+
+## ENV example:
 
 ```ini
 # General Settings
 DISCORD_TOKEN=Some_Junk_Here #secret token found here https://discord.com/developers/applications
+TAG=0.2
+DEV_SETTINGS=TRUE
+
+# Logging
+LOGGING_LEVEL=20 #DEBUG 10
+STREAM_LOGS=FALSE
 ```
