@@ -15,7 +15,7 @@ class onStartup(commands.Cog, command_attrs=dict(hidden=True)):
             f"Successfully logged in as {self.bot.user}/ ID: {self.bot.user.id}"
         )
         logger.info(f"Started at: {datetime.now()}")
-        print("Greetings, puny earth-creature.")
+        logger.info("Greetings, puny earth-creature.")
 
 
 def setup(bot):
