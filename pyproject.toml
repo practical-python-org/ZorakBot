@@ -2,11 +2,6 @@
 requires = ['setuptools']
 build-backend = 'setuptools.build_meta'
 
-[project]
-name = 'cogs'
-version = '0.0.1'
-dependencies = []
-
 [tool.ruff]
 # Enable Pyflakes `E` and `F` codes by default.
 select = ["E", "F"]
