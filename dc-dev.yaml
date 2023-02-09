@@ -14,7 +14,7 @@ services:
     volumes:
       - ./src:/src
     entrypoint: tail -f /dev/null
-    env_file: .env # this shouldnt be necessary by my computer is being dumb
+    env_file: .env # this shouldnt be necessary but my computer is being dumb
     environment:
       - DEV_SETTINGS=True
     links:
