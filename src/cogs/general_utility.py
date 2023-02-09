@@ -105,7 +105,7 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
             inline=False,
         )
         embed.add_field(
-            name="America (Minus):",
+            name="America (Minus, Richardphi):",
             value=f"{tz_america_ny.strftime('%m/%d/%Y %I:%M %p')}",
             inline=False,
         )
