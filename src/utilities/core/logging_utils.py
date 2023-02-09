@@ -1,8 +1,6 @@
 from __future__ import annotations
 import logging
 
-logger = logging.getLogger("discord")
-
 LOGGER_FORMAT = "%(asctime)s %(levelname)s %(name)s %(message)s"
 
 

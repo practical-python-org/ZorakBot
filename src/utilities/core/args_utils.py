@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 from dataclasses import dataclass
 from typing import OrderedDict
 
-logger = logging.getLogger("discord")
+logger = logging.getLogger(__name__)
 
 
 def add_boolean_arg(

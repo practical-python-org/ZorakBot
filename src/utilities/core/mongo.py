@@ -5,7 +5,7 @@ from typing import Dict, List
 import pymongo
 from discord.ext.commands import Bot
 
-logger = logging.getLogger("discord")
+logger = logging.getLogger(__name__)
 
 
 class MongoDBClient:
