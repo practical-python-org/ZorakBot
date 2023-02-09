@@ -91,7 +91,7 @@ docker-compose -f dc-dev.yaml exec zorak python __main__.py
 docker-compose -f dc-dev.yaml down --rmi local
 ```
 
-<p class="callout warning"> Note: If you make changes to the .env variables you will need to bring down the docker stack and back up</p>
+> :warning:  If you make changes to the .env variables you will need to bring down the docker stack and back
 
 ### Production Deployment
 
