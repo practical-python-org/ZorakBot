@@ -1,4 +1,4 @@
-FROM python:3.9.12-buster AS builder-image
+FROM python:3.9.16-slim-buster AS builder-image
 
 # install requirements
 COPY requirements.txt .
