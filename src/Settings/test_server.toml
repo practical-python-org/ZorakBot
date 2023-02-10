@@ -23,7 +23,6 @@ server_support = 1068103243734994964
 [channels.normal_channel]
 general_channel = 1031644670436061327
 resources_channel = 1062300735338983485
-new_to_python = 1062300791324553256
 python_help_1 = 1062302503351365632
 python_help_2 = 12345
 challenges_channel = 1045104938071633994

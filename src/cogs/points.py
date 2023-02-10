@@ -54,8 +54,8 @@ class Points(commands.Cog):
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.add_points_to_user(user.id, points)
         mod_log = await self.bot.fetch_channel(log_channel["mod_log"])
-        await mod_log.send(f"{points} points added to {mention} by {ctx.author}.")
-        await ctx.respond(f"{points} points added to {mention}.")
+        await mod_log.send(f"{points} point{('s','')[abs(points)==1]} added to {mention} by {ctx.author}.")
+        await ctx.respond(f"{points} point{('s','')[abs(points)==1]} added to {mention}.")
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
@@ -63,8 +63,8 @@ class Points(commands.Cog):
         """Add points to all users."""
         self.bot.db_client.add_points_to_all_users(points)
         mod_log = await self.bot.fetch_channel(log_channel["mod_log"])
-        await mod_log.send(f"{points} points added to all users by {ctx.author}.")
-        await ctx.respond(f"{points} points added to all users.")
+        await mod_log.send(f"{points} point{('s','')[abs(points)==1]} added to all users by {ctx.author}.")
+        await ctx.respond(f"{points} point{('s','')[abs(points)==1]} added to all users.")
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
@@ -75,8 +75,8 @@ class Points(commands.Cog):
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.remove_points_from_user(user.id, points)
         mod_log = await self.bot.fetch_channel(log_channel["mod_log"])
-        await mod_log.send(f"{points} points removed from {mention} by {ctx.author}.")
-        await ctx.respond(f"{points} points removed from {mention}.")
+        await mod_log.send(f"{points} point{('s','')[abs(points)==1]} removed from {mention} by {ctx.author}.")
+        await ctx.respond(f"{points} point{('s','')[abs(points)==1]} removed from {mention}.")
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
@@ -84,8 +84,8 @@ class Points(commands.Cog):
         """Remove points from all users."""
         self.bot.db_client.remove_points_from_all_users(points)
         mod_log = await self.bot.fetch_channel(log_channel["mod_log"])
-        await mod_log.send(f"{points} points removed from all users by {ctx.author}.")
-        await ctx.respond(f"{points} points removed from all users.")
+        await mod_log.send(f"{points} point{('s','')[abs(points)==1]} removed from all users by {ctx.author}.")
+        await ctx.respond(f"{points} point{('s','')[abs(points)==1]} removed from all users.")
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
@@ -110,7 +110,7 @@ class Points(commands.Cog):
     async def my_points(self, ctx):
         """Get your points."""
         points = self.bot.db_client.get_user_points(ctx.author.id)
-        await ctx.respond(f"You have {points} points.")
+        await ctx.respond(f"You have {points} point{('s','')[abs(points)==1]}.")
 
     @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
@@ -118,7 +118,7 @@ class Points(commands.Cog):
         """Get points for a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         points = self.bot.db_client.get_user_points(user.id)
-        await ctx.respond(f"{mention} has {points} points.")
+        await ctx.respond(f"{mention} has {points} point{('s','')[abs(points)==1]}.")
 
 
 def setup(bot):
