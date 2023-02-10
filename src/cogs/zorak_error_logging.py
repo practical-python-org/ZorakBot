@@ -8,7 +8,8 @@ class error_handler(commands.Cog, command_attrs=dict(hidden=True)):
     def __init__(self, bot):
         self.bot = bot
 
-    @bot.event
+        
+    @commands.Cog.listener()
     async def on_application_command_error(
         ctx: discord.ApplicationContext, error: discord.DiscordException
     ):
