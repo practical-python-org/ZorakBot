@@ -4,6 +4,10 @@ from ._settings import log_channel, mod_channel, normal_channel, user_roles
 
 
 class admin_verification(discord.ui.View):
+    def __init__(self, bot):
+        self.bot = bot
+        super().__init__(timeout=None)
+
     @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.success)
     async def verify_button_callback(self, button, interaction):
         user = interaction.user
@@ -70,6 +74,7 @@ Looking forward to having you here!
             await user.send("You have already been Verified. Go away.")
 
 
+
 class verify_helper(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -80,10 +85,8 @@ class verify_helper(commands.Cog):
     )  # Create a slash command
     async def add_verify_button(self, ctx):
         await ctx.respond(
-            "Please Verify that you are not a bot.",
-            view=admin_verification(timeout=None),
-        )
-
+            f"Please Verify that you are not a bot.", view=admin_verification(self.bot)
+            )
     """
 	Error handling for the entire Admin Cog
 	"""
