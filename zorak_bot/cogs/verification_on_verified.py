@@ -43,7 +43,7 @@ Allow me to introduce you {guild.name}.
 3. Introduce yourself in {bot.get_channel(normal_channel['general_channel']).mention}.
 
 We keep a ton of awesome links to courses, cool tools, and popular software in {bot.get_channel(normal_channel['resources_channel']).mention}.
-If you have any questions, feel free to post your question in {bot.get_channel(normal_channel['new_to_python']).mention} or {bot.get_channel(normal_channel['python_help_1']).mention}
+If you have any questions, feel free to post your question in {bot.get_channel(normal_channel['python_help_1']).mention}
 
 I can run your code directly in the server!
 To learn how, type **/help** in any channel.
