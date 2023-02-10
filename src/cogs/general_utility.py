@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from __main__ import bot
 import math
 from pistonapi import PistonAPI
 import datetime
@@ -207,7 +206,7 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
     #         if member is None:
     #             member = ctx.author
 
-    #         roles = [role for role in bot.member.roles]
+    #         roles = [role for role in self.bot.member.roles]
     #         embed = discord.Embed(colour=discord.Colour.orange(), title=str(member.display_name))
     #         # embed.set_thumbnail(url=member.avatar_url)
     #         embed.set_footer(text=f"Requested by {ctx.author}")
@@ -259,7 +258,7 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
             if word.startswith("https://discord.com/channels/") is True:
 
                 link = word.split("/")
-                sourceServer = bot.get_guild(int(link[4]))
+                sourceServer = self.bot.get_guild(int(link[4]))
                 sourceChannel = sourceServer.get_channel(int(link[5]))
                 sourceMessage = await sourceChannel.fetch_message(int(link[6]))
 

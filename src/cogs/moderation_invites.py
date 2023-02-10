@@ -2,7 +2,6 @@ import re
 import discord
 from datetime import datetime
 from discord.ext import commands
-from __main__ import bot
 from ._settings import log_channel
 
 
@@ -15,7 +14,7 @@ class moderation_invites(commands.Cog):
 
         txt = message.content
         current_channel = message.channel
-        logs_channel = await bot.fetch_channel(log_channel["mod_log"])
+        logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
 
         def is_invite(arg_message):
             # invitation types

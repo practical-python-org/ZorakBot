@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
-from __main__ import bot
 from ._settings import log_channel
 
 
@@ -22,7 +21,7 @@ class logging_unbans(commands.Cog):
             name=f"{member.name} was un-banned.", value="Welcome back.", inline=True
         )
 
-        logs_channel = await bot.fetch_channel(
+        logs_channel = await self.bot.fetch_channel(
             log_channel["mod_log"]
         )  # Welcome channel
         await logs_channel.send(embed=embed)

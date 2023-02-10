@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from __main__ import bot
 from ._settings import log_channel, server_info
 from datetime import datetime
 
@@ -11,7 +10,7 @@ class logging_leaving(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        current_guild = bot.get_guild(server_info["id"])
+        current_guild = self.bot.get_guild(server_info["id"])
 
         # Dont log kicks for unapproved people.
         if "Needs Approval" in [role.name for role in member.roles]:
@@ -23,7 +22,7 @@ class logging_leaving(commands.Cog):
         if str(entry.action) == "AuditLogAction.kick":
             if entry.target == member:
 
-                logs_channel = await bot.fetch_channel(log_channel["mod_log"])
+                logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
                 embed = discord.Embed(
                     title=f"{member} was kicked",
                     description=f"By: {entry.user}",
@@ -37,7 +36,7 @@ class logging_leaving(commands.Cog):
         elif str(entry.action) == "AuditLogAction.ban":
             if entry.target == member:
 
-                logs_channel = await bot.fetch_channel(log_channel["mod_log"])
+                logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
                 embed = discord.Embed(
                     title=f"{member} was banned",
                     description=f"By: {entry.user}",
@@ -49,7 +48,7 @@ class logging_leaving(commands.Cog):
                 return
 
         else:
-            logs_channel = await bot.fetch_channel(
+            logs_channel = await self.bot.fetch_channel(
                 log_channel["join_log"]
             )  # Welcome channel
             await logs_channel.send(f"<@{member.id}> has left us.")

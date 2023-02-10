@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
-from __main__ import bot
 from ._settings import log_channel, admin_roles
 
 
@@ -34,7 +33,7 @@ class logging_messages(commands.Cog):
                 name="After editing: ", value=message_after.content, inline=True
             )
 
-            logs_channel = await bot.fetch_channel(
+            logs_channel = await self.bot.fetch_channel(
                 log_channel["chat_log"]
             )  # ADMIN message log
 

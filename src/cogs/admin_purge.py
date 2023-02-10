@@ -1,7 +1,5 @@
 import discord
-from __main__ import bot
 from discord.ext import commands
-
 from ._settings import log_channel
 
 
@@ -16,7 +14,7 @@ class admin_purge(commands.Cog, command_attrs=dict(hidden=True)):
 
         # removes the need for a response
         await ctx.defer()
-        logs_channel = await bot.fetch_channel(
+        logs_channel = await self.bot.fetch_channel(
             log_channel["mod_log"]
         )  # Welcome channel
 

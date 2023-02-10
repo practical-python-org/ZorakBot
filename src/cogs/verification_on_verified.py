@@ -1,8 +1,5 @@
 import discord
 from discord.ext import commands
-
-from __main__ import bot
-
 from ._settings import log_channel, mod_channel, normal_channel, user_roles
 
 
@@ -15,7 +12,7 @@ class admin_verification(discord.ui.View):
         role = discord.utils.get(roles, id=user_roles["unverified"]["needs_approval"])
 
         website = "https://xarlos89.github.io/PracticalPython/"
-        website_emoji = discord.utils.get(bot.emojis, name="logo")
+        website_emoji = discord.utils.get(self.bot.emojis, name="logo")
         email = "mailto:Practicalpython-staff@pm.me"
         email_emoji = "<:email:1040342884240597122>"
         review = "https://disboard.org/review/create/900302240559018015"
@@ -24,7 +21,7 @@ class admin_verification(discord.ui.View):
         created = created[:10]
         created_emoji = "<:triangular_flag_on_post:1040343017204228217>"
         owner = guild.owner.mention
-        owner_emoji = discord.utils.get(bot.emojis, name="xarlos")
+        owner_emoji = discord.utils.get(self.bot.emojis, name="xarlos")
         invite = "https://discord.gg/vgZmgNwuHw"
         invite_emoji = "<:heart_hands:1040343137454915594>"
 
@@ -43,12 +40,12 @@ class admin_verification(discord.ui.View):
 Awesome, {user.mention}. Thank you for verifying.
 Allow me to introduce you {guild.name}.
 
-1. Be sure to read our {bot.get_channel(mod_channel['rules_channel']).mention}.
-2. Why not set some {bot.get_channel(mod_channel['role_channel']).mention}?
-3. Introduce yourself in {bot.get_channel(normal_channel['general_channel']).mention}.
+1. Be sure to read our {self.bot.get_channel(mod_channel['rules_channel']).mention}.
+2. Why not set some {self.bot.get_channel(mod_channel['role_channel']).mention}?
+3. Introduce yourself in {self.bot.get_channel(normal_channel['general_channel']).mention}.
 
-We keep a ton of awesome links to courses, cool tools, and popular software in {bot.get_channel(normal_channel['resources_channel']).mention}.
-If you have any questions, feel free to post your question in {bot.get_channel(normal_channel['python_help_1']).mention}
+We keep a ton of awesome links to courses, cool tools, and popular software in {self.bot.get_channel(normal_channel['resources_channel']).mention}.
+If you have any questions, feel free to post your question in {self.bot.get_channel(normal_channel['python_help_1']).mention}
 
 I can run your code directly in the server!
 To learn how, type **/help** in any channel.
@@ -64,7 +61,7 @@ Looking forward to having you here!
             await user.remove_roles(role)
             await user.send(embed=embed)
 
-            log_channels = await bot.fetch_channel(
+            log_channels = await self.bot.fetch_channel(
                 log_channel["verification_log"]
             )  # ADMIN user log
             await log_channels.send(f"{user.mention} has verified!")
