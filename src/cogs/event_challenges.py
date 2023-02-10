@@ -1,5 +1,4 @@
 import discord
-from __main__ import bot
 from discord.ext import commands
 
 
@@ -39,7 +38,7 @@ class _challenges(commands.Cog, command_attrs=dict(hidden=True)):
 
                         # FIXME this was never used
                         # Open the thread
-                        # channel = await bot.fetch_channel(
+                        # channel = await self.bot.fetch_channel(
                         #     1045104938071633994
                         # )  # CHALLENGES channel
                         thread = await ctx.channel.create_thread(
@@ -47,8 +46,8 @@ class _challenges(commands.Cog, command_attrs=dict(hidden=True)):
                             type=discord.ChannelType.public_thread,
                         )
 
-                        help1 = await bot.fetch_channel(903542455675260928)
-                        help2 = await bot.fetch_channel(903542494409674803)
+                        help1 = await self.bot.fetch_channel(903542455675260928)
+                        help2 = await self.bot.fetch_channel(903542494409674803)
                         await thread.send(
                             f"Please place only **finished answers** for **Day {day}** in this thread.\nAny challenge related discussions should happen in {help1.mention} or {help2.mention}."
                         )

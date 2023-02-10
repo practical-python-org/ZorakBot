@@ -1,10 +1,8 @@
 from asyncio import sleep
-
 import discord
 import feedparser
 import html2text
 from discord.ext import commands
-
 from ._settings import normal_channel, rss_feed
 
 

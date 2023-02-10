@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
-from __main__ import bot
 from ._settings import log_channel
 
 
@@ -13,7 +12,7 @@ class error_handler(commands.Cog, command_attrs=dict(hidden=True)):
     async def on_application_command_error(
         ctx: discord.ApplicationContext, error: discord.DiscordException
     ):
-        error_channel = bot.get_channel(log_channel["zorak_log"])
+        error_channel = self.bot.get_channel(log_channel["zorak_log"])
 
         embed = discord.Embed(
             title="<:red_circle:1043616578744357085> Zorak error!",

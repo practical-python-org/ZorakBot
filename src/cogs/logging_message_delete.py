@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
-from __main__ import bot
 from ._settings import log_channel, admin_roles
 
 
@@ -33,7 +32,7 @@ class logging_message_delete(commands.Cog):
             inline=True,
         )
 
-        logs_channel = await bot.fetch_channel(log_channel["chat_log"])
+        logs_channel = await self.bot.fetch_channel(log_channel["chat_log"])
 
         for role in message.author.roles:
             if role.id in admin_roles.values():
