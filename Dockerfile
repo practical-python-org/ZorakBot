@@ -1,7 +1,13 @@
-FROM python:3.9.12-buster
-COPY . .
-RUN pip3 install --upgrade pip
-RUN pip3 install py-cord beautifulsoup4 requests matplotlib DateTime pytz pistonapi toml feedparser html2text pymongo
-EXPOSE 5000
-ENTRYPOINT ["python3", "zorak_bot/__main__.py", "-dt", ""]
-#CMD ["token", ""]
+FROM python:3.9.16-slim-buster AS builder-image
+
+# install requirements
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./src /src
+WORKDIR /src
+
+# make sure all messages always reach console
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python3", "__main__.py"]

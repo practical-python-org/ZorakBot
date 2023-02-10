@@ -150,3 +150,7 @@ data/
 .idea/misc.xml
 .idea/vcs.xml
 .idea/workspace.xml
+
+
+# ignore db data
+db/*
