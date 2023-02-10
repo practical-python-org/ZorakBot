@@ -45,6 +45,6 @@ async def log_message(message):
 
 initialise_bot_db(bot)
 try:
-    bot.run(os.getenv("TOKEN"))
+    bot.run(os.getenv("DISCORD_TOKEN"))
 except TypeError as e:
     print(e)
