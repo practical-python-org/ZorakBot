@@ -14,7 +14,7 @@ class moderation_invites(commands.Cog):
 
         txt = message.content
         current_channel = message.channel
-        logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
+
 
         def is_invite(arg_message):
             # invitation types
@@ -59,6 +59,7 @@ class moderation_invites(commands.Cog):
             return embed
 
         if is_invite(txt) is True:
+            logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
             await logs_channel.send(embed=log_message(message))
             await message.delete()
             await current_channel.send(embed=embed_warning(message))

@@ -40,7 +40,7 @@ async def log_interaction(interaction):
 async def log_message(message):
     if message.interaction is not None:
         logger.info(f"response: {str(message.content)}")
-        logger.info(f"url: {str(message.jump_url)}")
+        # logger.info(f"url: {str(message.jump_url)}")
 
 
 initialise_bot_db(bot)
