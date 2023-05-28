@@ -15,7 +15,7 @@ class logging_threads(commands.Cog):
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)]
         entry = audit_log[0]
 
-        if str(entry.action) == "AuditLogAction.thread_create":
+        if str(entry.action) == "AuditLogAction.thread_create" and str(entry.target).startswith('[Ticket]'):
             mod_log = await self.bot.fetch_channel(log_channel["mod_log"])
             embed = discord.Embed(
                 title=f"{str(entry.user)} opened a ticket.",
@@ -32,10 +32,10 @@ class logging_threads(commands.Cog):
 
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)]
         entry = audit_log[0]
-        if str(entry.action) == "AuditLogAction.thread_update":
+        if str(entry.action) == "AuditLogAction.thread_update" and str(entry.target).startswith('[Ticket]'):
             logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
             embed = discord.Embed(
-                title=f"{str(entry.user)} closed a ticket.",
+                title=f"{str(entry.user)} updated a ticket.",
                 description=f"Ticket: <#{before.id}>",
                 color=discord.Color.green(),
                 timestamp=datetime.utcnow(),
@@ -43,7 +43,7 @@ class logging_threads(commands.Cog):
             await logs_channel.send(embed=embed)
             return
 
-        elif str(entry.action) == "AuditLogAction.thread_delete":
+        elif str(entry.action) == "AuditLogAction.thread_delete" and str(entry.target).startswith('[Ticket]'):
             logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
             embed = discord.Embed(
                 title=f"{str(entry.user)} deleted a ticket.",
@@ -54,7 +54,7 @@ class logging_threads(commands.Cog):
             await logs_channel.send(embed=embed)
             return
 
-        elif str(entry.action) == "AuditLogAction.thread_remove":
+        elif str(entry.action) == "AuditLogAction.thread_remove" and str(entry.target).startswith('[Ticket]'):
             logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
             embed = discord.Embed(
                 title=f"{str(entry.user)} removed a ticket.",
