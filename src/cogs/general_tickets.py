@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from ._settings import mod_channel, admin_roles
-
+from __main__ import bot
 
 class add_ticket_button(commands.Cog):
     def __init__(self, bot):
@@ -27,7 +27,13 @@ class make_a_ticket(discord.ui.View):
         await interaction.edit_original_response(view=self)
 
         """ Create the thread, add members. """
-        support = await self.bot.fetch_channel(mod_channel["server_support"])
+        """
+        This is a crappy way of doing this.
+        We import bot from main, up in the imports, and then we use that here. 
+        We should pass bot from add_ticket_button into make_a_ticket, but
+        I cant really figure it out now.
+        """
+        support = await bot.fetch_channel(mod_channel["server_support"])
         staff = interaction.guild.get_role(admin_roles["staff"])
 
         ticket = await support.create_thread(
