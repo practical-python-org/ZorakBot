@@ -2,9 +2,6 @@
 This file holds all the discord embeds for the entire application.
 this is to clean up the cogs, and allow these embeds to be viewed
 in one place.
-TODO: See if we can pull config out of this file.
-      Should be possible by using ctx.guild.name
-      and passing it here in an arg.
 """
 from datetime import datetime
 import discord
