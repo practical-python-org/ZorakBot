@@ -9,6 +9,7 @@ from random import choice
 
 requests.packages.urllib3.disable_warnings()
 
+# TODO: Refactor this messy shit.
 
 class Fun(commands.Cog):
     def __init__(self, bot):

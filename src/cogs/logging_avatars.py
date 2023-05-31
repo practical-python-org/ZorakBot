@@ -1,27 +1,29 @@
-import discord
 from discord.ext import commands
-from datetime import datetime
 from ._settings import log_channel
+from utilities.cog_helpers._embeds import embed_avatar
 
 
-class logging_avatars(commands.Cog):
+class LoggingAvatars(commands.Cog):
+    """
+    Simple listener to on_user_update
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
+        """
+        if the avatar before is != to the avatar after, do stuff.
+        """
         if before.avatar != after.avatar:
+            embed = embed_avatar(before, after)
 
-            embed = discord.Embed(
-                title=f"{before} updated their profile picture!",
-                color=discord.Color.dark_grey(),
-                timestamp=datetime.utcnow(),
-            )
-            embed.set_thumbnail(url=after.avatar)
-
-            logs_channel = await self.bot.fetch_channel(log_channel["user_log"])
-            await logs_channel.send(f"<@{before.id}>", embed=embed)
+            logs_channel = await self.bot.fetch_channel(log_channel['mod_log'])
+            await logs_channel.send(embed=embed)
 
 
 def setup(bot):
-    bot.add_cog(logging_avatars(bot))
+    """
+    Necessary for loading the cog into the bot instance.
+    """
+    bot.add_cog(LoggingAvatars(bot))
