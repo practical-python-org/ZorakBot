@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 from ._settings import log_channel, server_info, admin_roles
 from datetime import datetime
