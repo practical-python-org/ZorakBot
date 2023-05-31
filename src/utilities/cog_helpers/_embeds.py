@@ -167,6 +167,19 @@ def embed_name_change(name_before, name_after, username_before, username_after):
     return embed
 
 
+def embed_verified_success(name, amount):
+    """
+    Embedding for user verification success, and therefore a join
+    """
+    embed = discord.Embed(
+        title="",
+        description=f"{name}, human number {amount} has joined.",
+        color=discord.Color.dark_green(),
+    )
+
+    return embed
+
+
 def embed_unban(some_member):
     """
     Embedding for user un-ban alerts.
@@ -186,60 +199,3 @@ def embed_unban(some_member):
     return embed
 
 
-def embed_leaderboard(name, logo):
-    """
-    Embedding for the leaderboard command.
-    """
-    embed = discord.Embed(
-        title=f"{name}'s Top Point earners"
-        , color=discord.Color.gold()
-        , timestamp=datetime.utcnow()
-    )
-
-    embed.set_thumbnail(
-        url=logo
-    )
-
-    return embed
-
-
-def embed_user_profile(some_member_info):
-    """
-    Embedding for user_info command.
-    """
-    member = some_member_info[0]
-    name = member[1] + str(member[2])
-    roles = member[5]
-    roles = roles.replace('[', '').replace(']', '').replace("'", "").split(',')
-    rolestr = ''
-    for i in roles:
-        rolestr = rolestr + i + '\n'
-    image = member[7]
-    joined_at = member[8]
-    points = member[9]
-
-    embed = discord.Embed(
-        title=f"{name}'s Profile"
-        , color=discord.Color.green()
-        , timestamp=datetime.utcnow()
-    )
-    embed.add_field(
-        name="Roles: "
-        , value=rolestr
-        , inline=False
-    )
-    embed.add_field(
-        name="Joined at: "
-        , value=joined_at
-        , inline=False
-    )
-    embed.add_field(
-        name="Points: "
-        , value=points
-        , inline=False
-    )
-
-    embed.set_thumbnail(
-        url=image
-    )
-    return embed
