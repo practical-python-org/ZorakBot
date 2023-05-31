@@ -180,6 +180,62 @@ def embed_verified_success(name, amount):
     return embed
 
 
+def embed_ticket_create(user, ticket_name):
+    """
+    Embed for creation of a new ticket.
+    """
+    embed = discord.Embed(
+        title=f"{str(user)} opened a ticket.",
+        description=f"Ticket: {ticket_name}",
+        color=discord.Color.green(),
+        timestamp=datetime.utcnow(),
+    )
+
+    return embed
+
+
+def embed_ticket_update(user, ticket_name):
+    """
+    Embed for update of a new ticket.
+    """
+    embed = discord.Embed(
+        title=f"{str(user)} updated a ticket.",
+        description=f"Ticket: <#{ticket_name}>",
+        color=discord.Color.green(),
+        timestamp=datetime.utcnow(),
+    )
+
+    return embed
+
+
+def embed_ticket_delete(user, ticket_name):
+    """
+    Embed for deletion of a new ticket.
+    """
+    embed = discord.Embed(
+        title=f"{str(entry.user)} deleted a ticket.",
+        description=f"Ticket: <#{before.id}>",
+        color=discord.Color.red(),
+        timestamp=datetime.utcnow(),
+    )
+
+    return embed
+
+
+def embed_ticket_remove(user, ticket_name):
+    """
+    Embed for removal of a new ticket.
+    """
+    embed = discord.Embed(
+        title=f"{str(user)} removed a ticket.",
+        description=f"Ticket: <#{ticket_name}>",
+        color=discord.Color.red(),
+        timestamp=datetime.utcnow(),
+    )
+
+    return embed
+
+
 def embed_unban(some_member):
     """
     Embedding for user un-ban alerts.

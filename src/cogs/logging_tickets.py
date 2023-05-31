@@ -1,7 +1,6 @@
-import discord
 from discord.ext import commands
 from ._settings import log_channel, server_info
-from datetime import datetime
+from utilities.cog_helpers._embeds import embed_ticket_create, embed_ticket_update, embed_ticket_delete, embed_ticket_remove
 
 
 class logging_threads(commands.Cog):
@@ -17,12 +16,7 @@ class logging_threads(commands.Cog):
 
         if str(entry.action) == "AuditLogAction.thread_create" and str(entry.target).startswith('[Ticket]'):
             mod_log = await self.bot.fetch_channel(log_channel["mod_log"])
-            embed = discord.Embed(
-                title=f"{str(entry.user)} opened a ticket.",
-                description=f"Ticket: {entry.target.mention}",
-                color=discord.Color.green(),
-                timestamp=datetime.utcnow(),
-            )
+            embed = embed_ticket_create(entry.user, entry.target.mention)
             await mod_log.send(embed=embed)
             return
 
@@ -34,34 +28,19 @@ class logging_threads(commands.Cog):
         entry = audit_log[0]
         if str(entry.action) == "AuditLogAction.thread_update" and str(entry.target).startswith('[Ticket]'):
             logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
-            embed = discord.Embed(
-                title=f"{str(entry.user)} updated a ticket.",
-                description=f"Ticket: <#{before.id}>",
-                color=discord.Color.green(),
-                timestamp=datetime.utcnow(),
-            )
+            embed = embed_ticket_update(entry.user, before.id)
             await logs_channel.send(embed=embed)
             return
 
         elif str(entry.action) == "AuditLogAction.thread_delete" and str(entry.target).startswith('[Ticket]'):
             logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
-            embed = discord.Embed(
-                title=f"{str(entry.user)} deleted a ticket.",
-                description=f"Ticket: <#{before.id}>",
-                color=discord.Color.red(),
-                timestamp=datetime.utcnow(),
-            )
+            embed = embed_ticket_delete(entry.user, before.id)
             await logs_channel.send(embed=embed)
             return
 
         elif str(entry.action) == "AuditLogAction.thread_remove" and str(entry.target).startswith('[Ticket]'):
             logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
-            embed = discord.Embed(
-                title=f"{str(entry.user)} removed a ticket.",
-                description=f"Ticket: <#{before.id}>",
-                color=discord.Color.red(),
-                timestamp=datetime.utcnow(),
-            )
+            embed = embed_ticket_remove(entry.user, before.id)
             await logs_channel.send(embed=embed)
             return
 
