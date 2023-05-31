@@ -213,8 +213,8 @@ def embed_ticket_delete(user, ticket_name):
     Embed for deletion of a new ticket.
     """
     embed = discord.Embed(
-        title=f"{str(entry.user)} deleted a ticket.",
-        description=f"Ticket: <#{before.id}>",
+        title=f"{str(user)} deleted a ticket.",
+        description=f"Ticket: <#{ticket_name}>",
         color=discord.Color.red(),
         timestamp=datetime.utcnow(),
     )
