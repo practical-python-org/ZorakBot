@@ -59,6 +59,11 @@ needs_approval = 1043624460168728606
 muted = 1062270105339301938
 naughty = 1062270109839790110
 
+[user_roles.fun]
+beginner = 1064259543250522112
+intermediate = 1064259555497877534
+professional = 1064259557049761863
+
 #############
 # RSS Feeds #
 #############
