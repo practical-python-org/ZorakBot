@@ -31,6 +31,7 @@ admin_roles = user_roles["admin"]
 elevated_roles = user_roles["elevated"]
 badboi_role = user_roles["bad"]
 unverified_role = user_roles["unverified"]
+fun_roles = user_roles["fun"]
 
 #############
 # RSS Feeds #
