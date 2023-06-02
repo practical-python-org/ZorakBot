@@ -155,3 +155,4 @@ data/
 # ignore db data
 db/*
 .idea/ZorakBot.iml
+.idea/Zorak.iml
