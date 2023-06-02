@@ -9,7 +9,8 @@ Each class consists of the Innit, which holds info on the button labels, and
 a callback, which holds the response when the option is selected.
 
 """
-
+# TODO: Apply the function logic that was created in the
+#  LocationRelatedRoles class to the SkillRelatedRoles class.
 import discord
 from discord.ext import commands
 from ._settings import fun_roles
@@ -165,13 +166,118 @@ class LocationRelatedRoles(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         """
         First we will define some variables to be used in all logic,
-        and then the logic begins. There needs to be a bit of logic for
-        each possibility in the options variable.
+        and then the logic begins.
+        We define two functions.
+
+        remove_role_if_exists - Removes the selected role if a user has it.
+        add_role_and_remove_others - If it does not exist, Add it, and remove
+                                    any other that DOES exist in the role grouping.
         """
-        await interaction.response.send_message(
-            content=f"Your choice is {self.values[0]}!"
-            , ephemeral=True
-        )
+        member = interaction.user
+        members_roles = member.roles
+        selection = self.values[0].lower()
+        north_america = discord.utils.get(member.guild.roles, id=fun_roles["north_america"])
+        europe = discord.utils.get(member.guild.roles, id=fun_roles["europe"])
+        asia = discord.utils.get(member.guild.roles, id=fun_roles["asia"])
+        africa= discord.utils.get(member.guild.roles, id=fun_roles["africa"])
+        south_america= discord.utils.get(member.guild.roles, id=fun_roles["south_america"])
+        oceana= discord.utils.get(member.guild.roles, id=fun_roles["oceana"])
+        relevant_roles = [
+            fun_roles["north_america"]
+            , fun_roles["europe"]
+            , fun_roles["asia"]
+            , fun_roles["africa"]
+            , fun_roles["south_america"]
+            , fun_roles["oceana"]
+            ]
+
+        async def remove_role_if_exists(
+                selected_role, target_role, all_members_roles
+        ):
+            """
+
+            Args:
+                selected_role: The role (string) selected in the dropdown menu.
+                target_role: The selected role's object.
+                all_members_roles: All roles that a member currently has. List of role IDs
+
+            Returns:
+                member.remove_roles
+                interaction.response.send_message
+
+
+            """
+            if str(selected_role) in str(all_members_roles):
+                # If the role exists on the person, simply remove it.
+                await member.remove_roles(target_role)
+                await interaction.response.send_message(
+                    f" - Removed role: <@&{selected_role}>"
+                    , ephemeral=True
+                )
+
+        async def add_role_and_remove_others(
+                selected_role, target_role, members_roles, all_relevant_roles
+        ):
+            """
+
+            Args:
+                selected_role: The role (string) that a user selected in the dropdown
+                target_role: The selected role object.
+                members_roles: All roles the user currently has. list of role IDs
+                all_relevant_roles: The role IDs that are relevant in this role gorup
+
+            Returns:
+                member.add_roles
+                interaction.response.send_message
+
+            """
+            if str(selected_role) not in str(members_roles):
+                # If the role is NOT in the users roles, add it, and
+                # remove the other related roles if they exist.
+                removals = ''
+                await member.add_roles(target_role)
+
+                for role in all_relevant_roles:
+                    if str(role) in str(members_roles):
+                        await member.remove_roles(discord.utils.get(member.guild.roles, id=role))
+                        removals = f"{removals}\n - Removed: <@&{fun_roles['intermediate']}>"
+
+                await interaction.response.send_message(
+                    f" - Added role: <@&{selected_role}>{removals}"
+                    , ephemeral=True
+                )
+
+
+        if selection == 'north america':
+            remove_role_if_exists(
+                fun_roles[selection], north_america, members_roles)
+            add_role_and_remove_others(
+                fun_roles[selection], north_america, members_roles, relevant_roles)
+        elif selection == 'europe':
+            remove_role_if_exists(
+                fun_roles[selection], europe, members_roles)
+            add_role_and_remove_others(
+                fun_roles[selection], europe, members_roles, relevant_roles)
+        elif selection == 'asia':
+            remove_role_if_exists(
+                fun_roles[selection], asia, members_roles)
+            add_role_and_remove_others(
+                fun_roles[selection], asia, members_roles, relevant_roles)
+        elif selection == 'africa':
+            remove_role_if_exists(
+                fun_roles[selection], africa, members_roles)
+            add_role_and_remove_others(
+                fun_roles[selection], africa, members_roles, relevant_roles)
+        elif selection == 'south america':
+            remove_role_if_exists(
+                fun_roles[selection], south_america, members_roles)
+            add_role_and_remove_others(
+                fun_roles[selection], south_america, members_roles, relevant_roles)
+        elif selection == 'oceana':
+            remove_role_if_exists(
+                fun_roles[selection], oceana, members_roles)
+            add_role_and_remove_others(
+                fun_roles[selection], oceana, members_roles, relevant_roles)
 
 
 class SelectView(discord.ui.View):
