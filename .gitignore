@@ -153,7 +153,7 @@ data/
 .idea/ZorakBot.iml
 .idea/modules.xml
 .idea/inspectionProfiles/Project_Default.xml
+.idea/Zorak.iml
 
 # ignore db data
 db/*
-
