@@ -359,7 +359,7 @@ class SelectView(discord.ui.View):
         self.add_item(EmploymentRoles())
 
 
-class TestRoles(commands.Cog):
+class Roles(commands.Cog):
     """
     This is the class that defines the actual slash command.
     It uses the view above to execute actual logic.
@@ -372,7 +372,7 @@ class TestRoles(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(description="Get new roles, or change the ones you have!")
-    async def test_roles(self, ctx):
+    async def roles(self, ctx):
         """
         The actual slash command itself. This is the same as all cogs.
         """
@@ -384,4 +384,4 @@ def setup(bot):
     This comment is literally just to boost the score on the linter.
     Why not make it a 2-liner, to appear like it has any meaning.
     """
-    bot.add_cog(TestRoles(bot))
+    bot.add_cog(Roles(bot))
