@@ -15,6 +15,7 @@ class LoggingRoles(commands.Cog):
     async def on_member_update(self, before, after):
         """
         On member update, check if the roles changes, and then report what changed.
+        """
         logs_channel = await self.bot.fetch_channel(log_channel["user_log"])  # user join logs
 
         for role in before.roles:
