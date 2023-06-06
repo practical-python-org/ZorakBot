@@ -1,9 +1,10 @@
 
 # ZorakBot
-ZorakBot is the House bot of the Practical Python discord server. Zorak is developed with features by the community. Anyone from our server can contribute.
+ZorakBot is the House bot of the Practical Python discord server, which was designed to be the standalone bot in the Server.
+Zorak uses Py-Cord with cogged slash commands, and ties into a Mongo Database.
+The bot features reaction roles, a points system, full server logging, spam prevention and raid protection.
 
-Zorak uses PyCord and slash commands.
-Currently, the bot is "fun" and utility heavy, Admin features are planned.
+Zorak is developed with features by the community. Anyone from our server can contribute.
 
 # Commands and Features
 ### Help
@@ -41,6 +42,8 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 - [ ] - /avatar arg:[user]
 - [ ] - /poll arg:[title] arg:[option1] arg:[option2] arg:[option3]...
 - [ ] - /whois arg:[user]
+- [ ] - /rolls
+- [ ] - /my_points
 
 ### Admin-Only Commands
 - [X] - /test
@@ -51,30 +54,12 @@ Currently, the bot is "fun" and utility heavy, Admin features are planned.
 - [X] - When a link to a discord message is sent in a channel, Zorak will preview that message.
 - [X] - Zorak utilizes Piston API to run code directly in the server.
 - [X] - Verifies new users with a verification button.
-
-
-# To-do
-| Bugs |
-|--|
-| Fix /avatar (Message deleted, but nothing returned.) |
-| Fix /whois (Message deleted, but nothing returned.) |
-| Fix /userinfo//whois (Message deleted, but nothing returned.) |
-
-
-
-### Features
-- [X] - Welcome message for new members.
-- [X] - Welcome PM for new members.
-- [X] - Role management for new members.
-- [X] - Run code within the server.
-- [ ] - Word blacklist functionality
 - [X] - Suspicious link detection and removal
-- [ ] - Muting spam messages across multiple channels
-- [ ] - Server lockdown feature
+- [X] - Welcome message for new members.
+- [X] - Run code within the server.
+- [X] - Every message gives a user 1 point. Deleting a message removed a point. 
 
-
-
-
+	
 # Deployment
 Clone the bot into a folder of your choice.
 
@@ -82,7 +67,7 @@ Clone the bot into a folder of your choice.
 git clone https://github.com/Xarlos89/ZorakBot
 ```
 ## Docker
-The bot is deployed using docker. Replace the YOUR_BOT_TOKEN with your discord bot token.
+The bot is deployed using docker. Replace the DISCORD_TOKEN env variable with your discord bot token.
 
 ### Development Workflow
 ```zsh
