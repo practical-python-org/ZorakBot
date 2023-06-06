@@ -11,7 +11,7 @@ class LoggingUnbans(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_member_unban(self, member: discord.Member):
+    async def on_member_unban(self, member):
         """
         Just listen for the event, embed it, and send it off.
         """

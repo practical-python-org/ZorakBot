@@ -1,50 +1,49 @@
+"""
+Logging for role changes. Logs the user who did the changing, the target user and the role.
+"""
 from discord.ext import commands
 from ._settings import log_channel, server_info
+from utilities.cog_helpers._embeds import embed_role_add, embed_role_remove
 
 
 class LoggingRoles(commands.Cog):
     """
     Simple listener to on_member_update
     """
+
     def __init__(self, bot):
         self.bot = bot
 
-
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-
+        """
+        Checks what roles were changed, and logs it in the log channel.
+        Can be quite spammy.
+        """
         current_guild = self.bot.get_guild(server_info['id'])
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
 
         if str(audit_log.action) == 'AuditLogAction.member_role_update':
-            print(audit_log)
-            member = audit_log.target
+            target_member = audit_log.target
+            responsible_member = audit_log.user
 
-            # This logic creates a list that contains the role that was changed.
             changed_roles = []
             if len(before.roles) > len(after.roles):
                 for role in before.roles:
                     if role not in after.roles:
                         changed_roles.append(role)
+                for item in changed_roles:
+                    embed = embed_role_remove(target_member, responsible_member, item)
 
             elif len(before.roles) < len(after.roles):
                 for role in after.roles:
                     if role not in before.roles:
                         changed_roles.append(role)
+                for item in changed_roles:
+                    embed = embed_role_add(target_member, responsible_member, item)
 
-            # TODO: Build the embed that takes in these values
-            #   Send that embed to the mod_log channel
-            for i in changed_roles:
-                print(i.id) # gives us the ID of the role from the audit log
-                print(i.name) # Gives us the string name of the role. <@{i.id}> to mention
-
-                # # Here is a template of what's next, but I'm out of time for now.
-                # embed = embed_kick(member, audit_log)
-                #
-                # logs_channel = await self.bot.fetch_channel(log_channel['mod_log'])
-                # await logs_channel.send(embed=embed)
-
-
+            logs_channel = await self.bot.fetch_channel(log_channel['mod_log'])
+            await logs_channel.send(embed=embed)
 
 
 def setup(bot):

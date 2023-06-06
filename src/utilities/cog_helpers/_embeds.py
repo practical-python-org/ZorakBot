@@ -255,3 +255,41 @@ def embed_unban(some_member):
     return embed
 
 
+def embed_role_add(some_member, member_who_did_action, role_obj):
+    """
+    Embedding for user kick alerts.
+    """
+    embed = discord.Embed(
+        title=':green_square: Role Update'
+        , description=f'<@{member_who_did_action.id}> added a role to <@{some_member.id}> '
+        , color=discord.Color.green()
+        , timestamp=datetime.utcnow()
+    )
+
+    embed.add_field(
+        name='Added role:'
+        , value=f'<@&{role_obj.id}>'
+        , inline=True
+    )
+    return embed
+
+
+def embed_role_remove(some_member, member_who_did_action, role_obj):
+    """
+    Embedding for user kick alerts.
+    """
+    embed = discord.Embed(
+        title=f':negative_squared_cross_mark: Role Update'
+        , description=f'<@{member_who_did_action.id}> removed a role from <@{some_member.id}>'
+        , color=discord.Color.red()
+        , timestamp=datetime.utcnow()
+    )
+
+    embed.add_field(
+        name='Removed role:'
+        , value=f'<@&{role_obj.id}>'
+        , inline=True
+    )
+    return embed
+
+
