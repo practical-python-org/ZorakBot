@@ -301,7 +301,7 @@ class EmploymentRoles(discord.ui.Select):
             ]
         super().__init__(
             placeholder="Are you open to work / Looking for a developer?!"
-            , min_values=0, max_values=2
+            , min_values=0, max_values=1
             , options=options
         )
 
