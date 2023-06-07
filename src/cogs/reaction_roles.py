@@ -27,6 +27,7 @@ class SkillRelatedRoles(discord.ui.Select):
 
     def __init__(self):
         options = [
+
             discord.SelectOption(label="Beginner"
                                  , emoji="🟢"
                                  , description="Have little to no Python Experience"),
@@ -36,10 +37,11 @@ class SkillRelatedRoles(discord.ui.Select):
             discord.SelectOption(label="Professional"
                                  , emoji="🔴"
                                  , description="Using Python in professional life.")
+
         ]
         super().__init__(
             placeholder="Select your skill level!"
-            , min_values=1, max_values=1
+            , min_values=0, max_values=1
             , options=options
         )
 
@@ -51,7 +53,7 @@ class SkillRelatedRoles(discord.ui.Select):
         """
         member = interaction.user
         members_roles = member.roles
-        selection = self.values[0].lower()
+        selection = self.values
 
         beginner_role = discord.utils.get(member.guild.roles, id=fun_roles["beginner"])
         intermediate_role = discord.utils.get(member.guild.roles, id=fun_roles["intermediate"])
@@ -81,9 +83,9 @@ class SkillRelatedRoles(discord.ui.Select):
             if str(selected_role) in str(all_members_roles):
                 # If the role exists on the person, simply remove it.
                 await member.remove_roles(target_role)
-                logger.info(f'Removed {selection} from {member}.')
+                logger.info(f'Removed {target_role.name} from {member}.')
                 await interaction.response.send_message(
-                    f" - Removed role: <@&{selected_role}>"
+                    f" - Removed role: <@&{target_role.id}>"
                     , ephemeral=True
                 )
 
@@ -108,12 +110,12 @@ class SkillRelatedRoles(discord.ui.Select):
                 # remove the other related roles if they exist.
                 removals = ''
                 await member.add_roles(target_role)
-                logger.info(f'Added {selection} to {member}.')
+                logger.info(f'Added {target_role.name} to {member}.')
 
                 for role in all_relevant_roles:
                     if str(role) in str(members_roles):
                         await member.remove_roles(discord.utils.get(member.guild.roles, id=role))
-                        logger.info(f'Removed {selection} from {member}.')
+                        logger.info(f'Removed {target_role.name} from {member}.')
                         removals = f"{removals}\n - Removed: <@&{role}>"
 
                 await interaction.response.send_message(
@@ -121,6 +123,16 @@ class SkillRelatedRoles(discord.ui.Select):
                     , ephemeral=True
                 )
 
+        if len(selection) == 0:
+            await remove_role_if_exists(
+                beginner_role.name, beginner_role, members_roles)
+            await remove_role_if_exists(
+                intermediate_role.name, intermediate_role, members_roles)
+            await remove_role_if_exists(
+                professional_role.name, professional_role, members_roles)
+            return
+
+        selection = selection[0].lower()
         if selection == 'beginner':
             await remove_role_if_exists(
                 fun_roles[selection], beginner_role, members_roles)
@@ -136,6 +148,14 @@ class SkillRelatedRoles(discord.ui.Select):
                 fun_roles[selection], professional_role, members_roles)
             await add_role_and_remove_others(
                 fun_roles[selection], professional_role, members_roles, relevant_roles)
+        elif len(selection) == 0:
+            await remove_role_if_exists(
+                beginner_role.name, beginner_role, members_roles)
+            await remove_role_if_exists(
+                intermediate_role.name, beginner_role, members_roles)
+            await remove_role_if_exists(
+                professional_role.name, beginner_role, members_roles)
+
 
 
 class LocationRelatedRoles(discord.ui.Select):
@@ -154,7 +174,7 @@ class LocationRelatedRoles(discord.ui.Select):
         ]
         super().__init__(
             placeholder="Select your continent!"
-            , min_values=1, max_values=1
+            , min_values=0, max_values=1
             , options=options
         )
 
@@ -170,7 +190,7 @@ class LocationRelatedRoles(discord.ui.Select):
         """
         member = interaction.user
         members_roles = member.roles
-        selection = self.values[0].lower()
+        selection = self.values
         north_america = discord.utils.get(member.guild.roles, id=fun_roles["north_america"])
         europe = discord.utils.get(member.guild.roles, id=fun_roles["europe"])
         asia = discord.utils.get(member.guild.roles, id=fun_roles["asia"])
@@ -205,9 +225,9 @@ class LocationRelatedRoles(discord.ui.Select):
             if str(selected_role) in str(all_members_roles):
                 # If the role exists on the person, simply remove it.
                 await member.remove_roles(target_role)
-                logger.info(f'Removed {selection} from {member}.')
+                logger.info(f'Removed {target_role.name} from {member}.')
                 await interaction.response.send_message(
-                    f" - Removed role: <@&{selected_role}>"
+                    f" - Removed role: <@&{target_role.id}>"
                     , ephemeral=True
                 )
 
@@ -227,17 +247,18 @@ class LocationRelatedRoles(discord.ui.Select):
                 interaction.response.send_message
 
             """
+
             if str(selected_role) not in str(members_roles):
                 # If the role is NOT in the users roles, add it, and
                 # remove the other related roles if they exist.
                 removals = ''
                 await member.add_roles(target_role)
-                logger.info(f'Added {selection} to {member}.')
+                logger.info(f'Added {target_role.name} to {member}.')
 
                 for role in all_relevant_roles:
                     if str(role) in str(members_roles):
                         await member.remove_roles(discord.utils.get(member.guild.roles, id=role))
-                        logger.info(f'Removed {selection} from {member}.')
+                        logger.info(f'Removed {target_role.name} from {member}.')
                         removals = f"{removals}\n - Removed: <@&{role}>"
 
                 await interaction.response.send_message(
@@ -245,6 +266,22 @@ class LocationRelatedRoles(discord.ui.Select):
                     , ephemeral=True
                 )
 
+        if len(selection) == 0:
+            await remove_role_if_exists(
+                north_america.name, north_america, members_roles)
+            await remove_role_if_exists(
+                europe.name, europe, members_roles)
+            await remove_role_if_exists(
+                asia.name, asia, members_roles)
+            await remove_role_if_exists(
+                africa.name, africa, members_roles)
+            await remove_role_if_exists(
+                south_america.name, south_america, members_roles)
+            await remove_role_if_exists(
+                oceana.name, oceana, members_roles)
+            return
+
+        selection = selection[0].lower()
         if selection == 'north america':
             selected_role = fun_roles[selection.replace(" ", "_")]
             await remove_role_if_exists(
@@ -279,6 +316,7 @@ class LocationRelatedRoles(discord.ui.Select):
                 fun_roles[selection], oceana, members_roles, relevant_roles)
 
 
+
 class EmploymentRoles(discord.ui.Select):
     """
     This is the third box in the command.
@@ -298,10 +336,10 @@ class EmploymentRoles(discord.ui.Select):
             discord.SelectOption(label="Employer"
                                  , emoji="👩‍💼"
                                  , description="You are looking to hiring a Python developer."),
-            ]
+        ]
         super().__init__(
             placeholder="Are you open to work / Looking for a developer?!"
-            , min_values=0, max_values=1
+            , min_values=0, max_values=2
             , options=options
         )
 
@@ -315,6 +353,7 @@ class EmploymentRoles(discord.ui.Select):
         members_roles = member.roles
         selection = self.values
 
+
         async def add_or_remove_roles(selected_role, users_roles):
             """
             If a selected role exists on a user, remove it.
@@ -325,23 +364,34 @@ class EmploymentRoles(discord.ui.Select):
                 member.guild.roles
                 , id=employment_roles[role_name]
             )
-
-            if str(employment_roles[role_name]) in str(users_roles):
-
-                await member.remove_roles(role_obj)
-                logger.info(f'Removed {selected_role} from {member}.')
-                return f"- Removed role: <@&{employment_roles[role_name]}>\n"
-            if str(employment_roles[role_name]) not in str(users_roles):
-                await member.add_roles(role_obj)
-                logger.info(f'Added {selected_role} to {member}.')
-                return f"- Added role: <@&{employment_roles[role_name]}>\n"
+            if len(selection) == 0:
+                if str(employment_roles[role_name]) in str(users_roles):
+                    await member.remove_roles(role_obj)
+                    logger.info(f'Removed {selected_role} from {member}.')
+                    return f"- Removed role: <@&{employment_roles[role_name]}>\n"
+                else:
+                    return ""
+            else:
+                if str(employment_roles[role_name]) in str(users_roles):
+                    await member.remove_roles(role_obj)
+                    logger.info(f'Removed {selected_role} from {member}.')
+                    return f"- Removed role: <@&{employment_roles[role_name]}>\n"
+                if str(employment_roles[role_name]) not in str(users_roles):
+                    await member.add_roles(role_obj)
+                    logger.info(f'Added {selected_role} to {member}.')
+                    return f"- Added role: <@&{employment_roles[role_name]}>\n"
 
         # add_or_remove_roles returns a string, stating what happened.
         message = ''
+
+        if len(selection) == 0:
+            for i in employment_roles:
+                message = message + await add_or_remove_roles(i, members_roles)
+
         for user_selected_roles in selection:
             message = message + await add_or_remove_roles(user_selected_roles, members_roles)
 
-        if len(message) > 1: # This avoids an error where no role is added or removed.
+        if len(message) > 1:  # This avoids an error where no role is added or removed.
             await interaction.response.send_message(message, ephemeral=True)
 
 
