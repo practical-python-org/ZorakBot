@@ -5,6 +5,7 @@ services:
     container_name: zorak_mongo
     volumes:
       - ./db:/data/db
+    user: "1001"
     restart: always
 
   zorak:
@@ -19,5 +20,6 @@ services:
       - DEV_SETTINGS=True
     links:
       - "mongo:mongo"
+    user: "1001"
     depends_on:
       - mongo
