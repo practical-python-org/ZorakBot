@@ -1,0 +1,39 @@
+
+
+[reaction_roles.experience]
+beginner = 1064259543250522112
+intermediate = 1064259555497877534
+professional = 1064259557049761863
+
+[reaction_roles.location]
+north_america = 1064259558819770379
+europe = 1064259561302794361
+asia = 1064259687924637768
+africa = 1064259690948722708
+south_america = 1064259693545013288
+oceana = 1064259760674840666
+
+[user_roles.employment]
+open_to_work = 1113020825596067850
+employer = 1113020504148815944
+
+[[selectors]]
+name = "experience"
+description = "Select your skill level!"
+options = [
+    { label = "Beginner", emoji = "🟢", description = "Have little to no Python Experience", id = 965926311539388457 },
+    { label = "Intermediate", emoji = "🟡", description = "Can solve issues and diagnose problems", id = 965926533984288778 },
+    { label = "Professional", emoji = "🔴", description = "Using Python in professional life.", id = 965926542481956906 },
+]
+
+[[selectors]]
+name = "location"
+description = "Select your continent!"
+options = [
+    { label = "North America", emoji = "🦅", id = 1064259558819770379 },
+    { label = "Europe", emoji = "🇪🇺", id = 1064259561302794361 },
+    { label = "Asia", emoji = "🐼", id = 1064259687924637768 },
+    { label = "Oceana", emoji = "🐨", id = 1064259760674840666 },
+    { label = "South America", emoji = "💃", id = 1064259693545013288 },
+    { label = "Africa", emoji = "🦒", id = 1064259690948722708 },
+]
