@@ -15,26 +15,44 @@ from ._settings import logger
 ROLE_DATA = toml.load(os.path.join(os.path.dirname(__file__), "..", "Resources", "ReactionRoles.toml"))
 
 
+async def remove_roles_if_exists(user, roles):
+    for r in user.roles:
+        if r in roles:
+            await user.remove_roles(r)
+
+
 class RoleDropdownSelector(discord.ui.Select):
-    def __init__(self, selector_data, roll_ids):
+    def __init__(self, selector_data, reaction_roles):
         self.name = selector_data["name"]
-        self.role_ids = roll_ids
+        self.single_choice = selector_data["single_choice"]
+        self.reaction_roles = reaction_roles
         options = [
             discord.SelectOption(label=option["label"], description=option["description"], emoji=option["emoji"], value=str(option["id"]))
             for option in selector_data["options"]
         ]
+        options.append(discord.SelectOption(label="None", description="Remove all roles", emoji="❌", value="None"))
         super().__init__(placeholder=selector_data["description"], options=options)
 
     async def callback(self, interaction: discord.Interaction):
         selection = self.values[0].lower().replace(" ", "_")
-        role = discord.utils.get(interaction.guild.roles, id=self.role_ids[f"{self.name}"][selection])
-        if role is not None:
-            if role in interaction.user.roles:
-                await interaction.user.remove_roles(role)
-                await interaction.response.send_message(f"Removed the {role.name} role!", ephemeral=True)
+        selected_role = discord.utils.get(interaction.guild.roles, id=self.reaction_roles[f"{self.name}"][selection])
+        roles = [
+            discord.utils.get(interaction.guild.roles, id=self.reaction_roles[f"{self.name}"][option])
+            for option in self.reaction_roles[f"{self.name}"]
+        ]
+        if selected_role is not None:
+            if selected_role is "None":
+                await remove_roles_if_exists(interaction.user, roles)
+                await interaction.response.send_message(f"Removed all roles in this group!", ephemeral=True)
             else:
-                await interaction.user.add_roles(role)
-                await interaction.response.send_message(f"Assigned the {role.name} role!", ephemeral=True)
+                if selected_role in interaction.user.roles:
+                    await interaction.user.remove_roles(selected_role)
+                    await interaction.response.send_message(f"Removed the {selected_role.name} role!", ephemeral=True)
+                else:
+                    if self.single_choice:
+                        remove_roles_if_exists(interaction.user, roles)
+                    await interaction.user.add_roles(selected_role)
+                    await interaction.response.send_message(f"Assigned the {selected_role.name} role!", ephemeral=True)
         else:
             await interaction.response.send_message("Role not found!", ephemeral=True)
 
@@ -48,9 +66,9 @@ class SelectView(discord.ui.View):
 
     def __init__(self, *, timeout=180):
         super().__init__(timeout=timeout)
-        role_ids = ROLE_DATA["reaction_roles"]
+        reaction_roles = ROLE_DATA["reaction_roles"]
         for selector in ROLE_DATA["selectors"]:
-            self.add_item(RoleDropdownSelector(selector, role_ids))
+            self.add_item(RoleDropdownSelector(selector, reaction_roles))
 
 
 class Roles(commands.Cog):
@@ -62,8 +80,10 @@ class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot  # Passed in from main.py
 
+    # If you wanted to prepopulate the view with a user's current roles, I think you could do it here. Grab the user object from ctx,
+    # grab the roles, and pass it into the view. Which can then pass it into the dropdowns.
     @commands.slash_command(description="Get new roles, or change the ones you have!")
-    async def roles(self, ctx):  # The ctx is passed in from the slash command.
+    async def roles(self, ctx):
         await ctx.respond("Edit Reaction Roles", view=SelectView(), ephemeral=True)
 
 

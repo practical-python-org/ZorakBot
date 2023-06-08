@@ -19,6 +19,7 @@ employer = 1113020504148815944
 
 [[selectors]]
 name = "experience"
+single_choice = true
 description = "Select your skill level!"
 options = [
     { label = "Beginner", emoji = "🟢", description = "Have little to no Python Experience", id = 965926311539388457 },
@@ -28,6 +29,7 @@ options = [
 
 [[selectors]]
 name = "location"
+single_choice = true
 description = "Select your continent!"
 options = [
     { label = "North America", emoji = "🦅", id = 1064259558819770379 },
