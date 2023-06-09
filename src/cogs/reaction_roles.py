@@ -12,7 +12,9 @@ from discord.ext import commands
 
 from ._settings import logger
 
-ROLE_DATA = toml.load(os.path.join(os.path.dirname(__file__), "..", "Resources", "ReactionRoles.toml"))
+ROLE_DATA = toml.load(os.path.join("Settings", "ReactionRoles.toml"))
+reaction_roles = ROLE_DATA['reaction_roles']
+selectors = ROLE_DATA['selectors']
 
 
 async def remove_roles_if_exists(user, roles):
@@ -22,39 +24,76 @@ async def remove_roles_if_exists(user, roles):
 
 
 class RoleDropdownSelector(discord.ui.Select):
-    def __init__(self, selector_data, reaction_roles):
-        self.name = selector_data["name"]
-        self.single_choice = selector_data["single_choice"]
-        self.reaction_roles = reaction_roles
+    def __init__(self, selector_data):
+        self.name = selector_data['name']
+        self.single_choice = selector_data['single_choice']
+        self.description = selector_data['description']
+        self.reaction_roles = selector_data['options']
         options = [
-            discord.SelectOption(label=option["label"], description=option["description"], emoji=option["emoji"], value=str(option["id"]))
-            for option in selector_data["options"]
+            discord.SelectOption(
+                label=option["label"]
+                , description=option["description"]
+                , emoji=option["emoji"]
+                , value=str(option["id"]
+                            )
+            )
+            for option in self.reaction_roles
         ]
-        options.append(discord.SelectOption(label="None", description="Remove all roles", emoji="❌", value="None"))
+        options.append(
+            discord.SelectOption(
+                label="None"
+                , description="Remove all roles"
+                , emoji="❌"
+                , value='None'
+            )
+        )
         super().__init__(placeholder=selector_data["description"], options=options)
 
     async def callback(self, interaction: discord.Interaction):
-        selection = self.values[0].lower().replace(" ", "_")
-        selected_role = discord.utils.get(interaction.guild.roles, id=self.reaction_roles[f"{self.name}"][selection])
+        selection = self.values[0]
+        selected_role = discord.utils.get(
+            interaction.guild.roles
+            , id=int(selection)
+        )
+
+        # TODO: 'roles' here is not giving back id's of the roles
+        #   Instead we get [None, None, None], probably because option['id] doesn't exist.
+        #   Once we grab the id's from here, I think this might actually work
         roles = [
-            discord.utils.get(interaction.guild.roles, id=self.reaction_roles[f"{self.name}"][option])
-            for option in self.reaction_roles[f"{self.name}"]
+            discord.utils.get(
+                interaction.guild.roles
+                , id=option['id']
+            )
+            for option in self.reaction_roles
         ]
+
         if selected_role is not None:
-            if selected_role is "None":
+            if selected_role == "None":
                 await remove_roles_if_exists(interaction.user, roles)
-                await interaction.response.send_message(f"Removed all roles in this group!", ephemeral=True)
+                await interaction.response.send_message(
+                    f"Removed all roles in this group!"
+                    , ephemeral=True
+                )
             else:
                 if selected_role in interaction.user.roles:
                     await interaction.user.remove_roles(selected_role)
-                    await interaction.response.send_message(f"Removed the {selected_role.name} role!", ephemeral=True)
+                    await interaction.response.send_message(
+                        f"Removed the {selected_role.name} role!"
+                        , ephemeral=True
+                    )
                 else:
                     if self.single_choice:
-                        remove_roles_if_exists(interaction.user, roles)
+                        await remove_roles_if_exists(interaction.user, roles)
                     await interaction.user.add_roles(selected_role)
-                    await interaction.response.send_message(f"Assigned the {selected_role.name} role!", ephemeral=True)
+                    await interaction.response.send_message(
+                        f"Assigned the {selected_role.name} role!"
+                        , ephemeral=True
+                    )
         else:
-            await interaction.response.send_message("Role not found!", ephemeral=True)
+            await interaction.response.send_message(
+                "Role not found!"
+                , ephemeral=True
+            )
 
 
 class SelectView(discord.ui.View):
@@ -66,9 +105,8 @@ class SelectView(discord.ui.View):
 
     def __init__(self, *, timeout=180):
         super().__init__(timeout=timeout)
-        reaction_roles = ROLE_DATA["reaction_roles"]
-        for selector in ROLE_DATA["selectors"]:
-            self.add_item(RoleDropdownSelector(selector, reaction_roles))
+        for menu in selectors:
+            self.add_item(RoleDropdownSelector(selectors[menu]))
 
 
 class Roles(commands.Cog):
@@ -89,7 +127,8 @@ class Roles(commands.Cog):
 
 def setup(bot):
     """
-    Xarlos likes to raise his linting score.
-    I like to ruin parties.
+    Maszi likes to ruin parties.
+    But Xarlos ERFORDERT REGELN UND STRUKTUR
+    PASS AUF, ODER DU BEKOMMST DEN DEUTSCHEN DIKTATOR IN DEN GITHUB-KOMMENTAREN
     """
     bot.add_cog(Roles(bot))

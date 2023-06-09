@@ -13,11 +13,11 @@ africa = 1064259690948722708
 south_america = 1064259693545013288
 oceana = 1064259760674840666
 
-[user_roles.employment]
+[reaction_roles.employment]
 open_to_work = 1113020825596067850
 employer = 1113020504148815944
 
-[[selectors]]
+[selectors.experience]
 name = "experience"
 single_choice = true
 description = "Select your skill level!"
@@ -27,15 +27,25 @@ options = [
     { label = "Professional", emoji = "🔴", description = "Using Python in professional life.", id = 965926542481956906 },
 ]
 
-[[selectors]]
+[selectors.location]
 name = "location"
 single_choice = true
 description = "Select your continent!"
 options = [
-    { label = "North America", emoji = "🦅", id = 1064259558819770379 },
-    { label = "Europe", emoji = "🇪🇺", id = 1064259561302794361 },
-    { label = "Asia", emoji = "🐼", id = 1064259687924637768 },
-    { label = "Oceana", emoji = "🐨", id = 1064259760674840666 },
-    { label = "South America", emoji = "💃", id = 1064259693545013288 },
-    { label = "Africa", emoji = "🦒", id = 1064259690948722708 },
+    { label = "North America", emoji = "🦅", description = "", id = 1064259558819770379 },
+    { label = "Europe", emoji = "🇪🇺", description = "", id = 1064259561302794361 },
+    { label = "Asia", emoji = "🐼", description = "", id = 1064259687924637768 },
+    { label = "Oceana", emoji = "🐨", description = "", id = 1064259760674840666 },
+    { label = "South America", emoji = "💃", description = "", id = 1064259693545013288 },
+    { label = "Africa", emoji = "🦒", description = "", id = 1064259690948722708 },
+]
+
+[selectors.employment]
+name = "employment"
+single_choice = false
+description = "Are you open to work / Looking for a developer?!"
+options = [
+    { label = "Open to Work", emoji = "🛠️", description = "You are open to taking Python related jobs.", id = 1064259558819770379 },
+    { label = "Employer", emoji = "💼", description = "You are looking to hiring a Python developer.", id = 1064259561302794361 }
+
 ]
