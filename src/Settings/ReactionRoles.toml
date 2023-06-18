@@ -22,9 +22,9 @@ name = "experience"
 single_choice = true
 description = "Select your skill level!"
 options = [
-    { label = "Beginner", emoji = "🟢", description = "Have little to no Python Experience", id = 965926311539388457 },
-    { label = "Intermediate", emoji = "🟡", description = "Can solve issues and diagnose problems", id = 965926533984288778 },
-    { label = "Professional", emoji = "🔴", description = "Using Python in professional life.", id = 965926542481956906 },
+    { label = "Beginner", emoji = "🟢", description = "Have little to no Python Experience", id = 1064259543250522112 },
+    { label = "Intermediate", emoji = "🟡", description = "Can solve issues and diagnose problems", id = 1064259555497877534 },
+    { label = "Professional", emoji = "🔴", description = "Using Python in professional life.", id = 1064259557049761863 },
 ]
 
 [selectors.location]
@@ -45,7 +45,7 @@ name = "employment"
 single_choice = false
 description = "Are you open to work / Looking for a developer?!"
 options = [
-    { label = "Open to Work", emoji = "🛠️", description = "You are open to taking Python related jobs.", id = 1064259558819770379 },
-    { label = "Employer", emoji = "💼", description = "You are looking to hiring a Python developer.", id = 1064259561302794361 }
+    { label = "Open to Work", emoji = "🛠️", description = "You are open to taking Python related jobs.", id = 1114611004182102218 },
+    { label = "Employer", emoji = "💼", description = "You are looking to hiring a Python developer.", id = 1114611092677722113 }
 
 ]

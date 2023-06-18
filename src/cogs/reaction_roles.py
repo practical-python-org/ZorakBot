@@ -44,21 +44,21 @@ class RoleDropdownSelector(discord.ui.Select):
                 label="None"
                 , description="Remove all roles"
                 , emoji="❌"
-                , value='None'
+                , value="0"
             )
         )
         super().__init__(placeholder=selector_data["description"], options=options)
 
     async def callback(self, interaction: discord.Interaction):
         selection = self.values[0]
-        selected_role = discord.utils.get(
+        # selected_role gives back a nonetype when no roles are selected.
+        # this is bad, because we error out when we select "no roles"
+        # trying a ternary here to avoid it.
+        selected_role = (discord.utils.get(
             interaction.guild.roles
             , id=int(selection)
-        )
+        )) if selection is not "0" else "0"
 
-        # TODO: 'roles' here is not giving back id's of the roles
-        #   Instead we get [None, None, None], probably because option['id] doesn't exist.
-        #   Once we grab the id's from here, I think this might actually work
         roles = [
             discord.utils.get(
                 interaction.guild.roles
@@ -67,18 +67,19 @@ class RoleDropdownSelector(discord.ui.Select):
             for option in self.reaction_roles
         ]
 
-        if selected_role is not None:
-            if selected_role == "None":
+        # We add a second condition here to capture the event when "remove all" is selected and a 0 is returned.
+        if selected_role is not None or selection is "0":
+            if selection is "0":
                 await remove_roles_if_exists(interaction.user, roles)
                 await interaction.response.send_message(
                     f"Removed all roles in this group!"
                     , ephemeral=True
                 )
             else:
-                if selected_role in interaction.user.roles:
+                if selected_role.id in interaction.user.roles:
                     await interaction.user.remove_roles(selected_role)
                     await interaction.response.send_message(
-                        f"Removed the {selected_role.name} role!"
+                        f"Removed the <@&{selected_role.id}> role!"
                         , ephemeral=True
                     )
                 else:
@@ -86,7 +87,7 @@ class RoleDropdownSelector(discord.ui.Select):
                         await remove_roles_if_exists(interaction.user, roles)
                     await interaction.user.add_roles(selected_role)
                     await interaction.response.send_message(
-                        f"Assigned the {selected_role.name} role!"
+                        f"Assigned the <@&{selected_role.id}> role!"
                         , ephemeral=True
                     )
         else:
