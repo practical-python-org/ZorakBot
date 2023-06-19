@@ -15,9 +15,9 @@ class admin_verification(discord.ui.View):
         roles = guild.roles
         role = discord.utils.get(roles, id=user_roles["unverified"]["needs_approval"])
 
-        website = "https://xarlos89.github.io/PracticalPython/"
+        website = "https://practical-python-org.github.io/Home/"
         website_emoji = discord.utils.get(self.bot.emojis, name="logo")
-        email = "mailto:Practicalpython-staff@pm.me"
+        email = "Practicalpython-staff@pm.me"
         email_emoji = "<:email:1040342884240597122>"
         review = "https://disboard.org/review/create/900302240559018015"
         review_emoji = "<:100:1040342353417863318>"
@@ -29,8 +29,8 @@ class admin_verification(discord.ui.View):
         invite = "https://discord.gg/vgZmgNwuHw"
         invite_emoji = "<:heart_hands:1040343137454915594>"
 
-        quicklinks = f"{website_emoji} [Website]({website})\n{email_emoji} [Practicalpython-staff@pm.me]({email})\n{review_emoji} [Vote for us on disboard!]({review})"
-        info = f"{created_emoji} Created: <t:{int(created)}:R>\n{owner_emoji} Owner: {owner}\n{invite_emoji} [discord.gg/vgZmgNwuHw]({invite})"
+        quicklinks = f"{website_emoji} [Website]({website})\n{email_emoji} {email}\n{review_emoji} [Vote for us on disboard!]({review})"
+        info = f"{created_emoji} Created: <t:{int(created)}:R>\n{owner_emoji} Owner: {owner}\n{invite_emoji} {invite}"
 
         embed = discord.Embed(
             title="Welcome to Practical Python", color=discord.Color.yellow()
@@ -41,21 +41,21 @@ class admin_verification(discord.ui.View):
         embed.add_field(
             name=f"You are member number {guild.member_count}!",
             value=f"""
-Awesome, {user.mention}. Thank you for verifying.
-Allow me to introduce you {guild.name}.
-
-1. Be sure to read our {self.bot.get_channel(mod_channel['rules_channel']).mention}.
-2. Why not set some {self.bot.get_channel(mod_channel['role_channel']).mention}?
-3. Introduce yourself in {self.bot.get_channel(normal_channel['general_channel']).mention}.
-
-We keep a ton of awesome links to courses, cool tools, and popular software in {self.bot.get_channel(normal_channel['resources_channel']).mention}.
-If you have any questions, feel free to post your question in {self.bot.get_channel(normal_channel['python_help_1']).mention}
-
-I can run your code directly in the server!
-To learn how, type **/help** in any channel.
-
-Looking forward to having you here!
-""",
+            Awesome, {user.mention}. Thank you for verifying.
+            Allow me to introduce you {guild.name}.
+            
+            1. Be sure to read our {self.bot.get_channel(mod_channel['rules_channel']).mention}.
+            2. Set some roles using **/roles**
+            3. Introduce yourself in {self.bot.get_channel(normal_channel['general_channel']).mention}.
+            
+            We keep a ton of awesome links to courses, cool tools, and popular software in {self.bot.get_channel(normal_channel['resources_channel']).mention}.
+            If you have any questions, feel free to post your question in {self.bot.get_channel(normal_channel['python_help_1']).mention}
+            
+            I can run your code directly in the server!
+            To learn how, type **/help** in any channel.
+            
+            Looking forward to having you here!
+            """,
             inline=False,
         )
         embed.add_field(name="Quick Links", value=quicklinks)
@@ -74,7 +74,6 @@ Looking forward to having you here!
             await user.send("You have already been Verified. Go away.")
 
 
-
 class verify_helper(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -87,9 +86,10 @@ class verify_helper(commands.Cog):
         await ctx.respond(
             f"Please Verify that you are not a bot.", view=admin_verification(self.bot)
             )
-    """
-	Error handling for the entire Admin Cog
-	"""
+
+        """
+        Error handling for the entire Admin Cog
+        """
 
     async def cog_command_error(
         self, ctx: commands.Context, error: commands.CommandError
