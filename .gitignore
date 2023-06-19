@@ -150,8 +150,10 @@ data/
 .idea/misc.xml
 .idea/vcs.xml
 .idea/workspace.xml
-
+.idea/ZorakBot.iml
+.idea/modules.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/Zorak.iml
 
 # ignore db data
 db/*
-.idea/ZorakBot.iml

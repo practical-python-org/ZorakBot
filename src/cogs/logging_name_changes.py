@@ -1,15 +1,20 @@
-import discord
 from discord.ext import commands
-from datetime import datetime
 from ._settings import log_channel
+from utilities.cog_helpers._embeds import embed_name_change, embed_verified_success
 
 
-class logging_nameChanges(commands.Cog):
+class LoggingNameChanges(commands.Cog):
+    """
+    Simple listener to on_member_update
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
+        """
+        Just checking if the name before is != to the name after.
+        """
         if before.nick is None:
             username_before = before
         else:
@@ -21,35 +26,27 @@ class logging_nameChanges(commands.Cog):
             username_after = after.nick
 
         if before.nick != after.nick and before.nick is not None:
-            embed = discord.Embed(
-                title="<:grey_exclamation:1044305627201142880> Name Change",
-                description=f"Changed by: {before}.",
-                color=discord.Color.dark_grey(),
-                timestamp=datetime.utcnow(),
-            )
-            embed.set_thumbnail(url=after.avatar)
-            embed.add_field(name="Before", value=username_before, inline=True)
-            embed.add_field(name="After", value=username_after, inline=True)
+            embed = embed_name_change(before, after, username_before, username_after)
 
-            logs_channel = await self.bot.fetch_channel(
-                log_channel["user_log"]
-            )  # ADMIN user log
-            await logs_channel.send(f"{username_after.mention}", embed=embed)
+            logs_channel = await self.bot.fetch_channel(log_channel['mod_log'])
+            await logs_channel.send(f'{username_after.mention}', embed=embed)
 
         # Verification success logging
+        # TODO: Find a way to pull this into it's own cog.
         elif "Needs Approval" in [
             role.name for role in before.roles
-        ] and "Needs Approval" not in [role.name for role in after.roles]:
-            logs_channel = await self.bot.fetch_channel(
-                log_channel["join_log"]
-            )  # user join logs
-            embed = discord.Embed(
-                title="",
-                description=f"{username_after}, human number {after.guild.member_count} has joined.",
-                color=discord.Color.dark_green(),
-            )
+        ] and "Needs Approval" not in [
+            role.name for role in after.roles
+        ]:
+
+            logs_channel = await self.bot.fetch_channel(log_channel["join_log"])  # user join logs
+            embed = embed_verified_success(username_after, after.guild.member_count)
+
             await logs_channel.send(f"{username_after.mention}", embed=embed)
 
 
 def setup(bot):
-    bot.add_cog(logging_nameChanges(bot))
+    """
+    Necessary for loading the cog into the bot instance.
+    """
+    bot.add_cog(LoggingNameChanges(bot))

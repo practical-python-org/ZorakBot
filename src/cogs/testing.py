@@ -9,6 +9,7 @@ class Ping(commands.Cog, command_attrs=dict(hidden=True)):
     async def on_message(self, message):
         if message.content.startswith('!ping'):
             await message.channel.send(f'Ping: {round(self.bot.latency, 3)}ms')
+            return
 
 
 def setup(bot):
