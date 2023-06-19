@@ -5,7 +5,7 @@ services:
     container_name: zorak_mongo
     volumes:
       - ./db:/data/db
-    user: "1001"
+    user: "1002"
     restart: always
 
   zorak:
@@ -17,5 +17,5 @@ services:
       - "mongo:mongo"
     depends_on:
       - mongo
-    user: "1001"
+    user: "1002"
     restart: always
