@@ -293,3 +293,34 @@ def embed_role_remove(some_member, member_who_did_action, role_obj):
     return embed
 
 
+def embed_docs(search_term, title, link_list):
+    """
+    Embedding for python docs search
+    """
+    embed = discord.Embed(
+        title=title
+        , description=f'Search term: "{search_term}"'
+        , color=discord.Color.green()
+        , timestamp=datetime.utcnow()
+    )
+
+    for iteration, link in enumerate(link_list):
+        if iteration < 5:
+            category = (link.split('#')[1])
+
+            embed.add_field(
+                name=f"{category}"
+                , value=f"[Link]({link})"
+                , inline=False
+            )
+        else:
+            embed.add_field(
+                name=f"Find more at:"
+                , value=f"[Python Documentation Search](https://docs.python.org/3/"
+                        f"search.html?q={search_term}&check_keywords=yes&area=default)"
+                , inline=False
+            )
+            return embed
+
+    return embed
+
