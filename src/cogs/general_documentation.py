@@ -1,10 +1,11 @@
 """
 Grabs the selected item from the Python documentation
 """
+import logging
 import requests
 from bs4 import BeautifulSoup
 from discord.ext import commands
-import logging
+
 
 from utilities.cog_helpers._embeds import embed_docs
 
@@ -27,7 +28,7 @@ class Documentation(commands.Cog):
         For now, this covers all basic methods and functions.
         """
         soup = BeautifulSoup(
-            requests.get('https://overapi.com/python').content
+            requests.get('https://overapi.com/python', timeout=5).content
             , 'html.parser'
         )
         links = soup.find_all('a')
