@@ -334,3 +334,24 @@ def embed_docs(search_term, link_list):
 
     return embed
 
+def embed_definition(the_word, part_of_speech, definition, synonym, source):
+    """
+    Embedding for /define command
+    """
+    embed = discord.Embed(
+        title=the_word.capitalize()
+        , description=f'**{part_of_speech.capitalize()}**\n{definition}'
+        , color=discord.Color.green()
+    )
+    if synonym is not None:
+        embed.add_field(
+            name='Synonym'
+            , value=synonym.capitalize()
+            , inline=True
+        )
+    embed.add_field(
+        name=''
+        , value=f"[Source]({source})"
+        , inline=True
+    )
+    return embed
