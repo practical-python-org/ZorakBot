@@ -13,27 +13,41 @@ logger = logging.getLogger(__name__)
 
 
 class Documentation(commands.Cog):
+    """
+    This allows us to search the Python docs for things.
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.slash_command()
     async def docs(self, ctx, searchterm):
-
-        r = requests.get('https://docs.python.org/3/genindex-all.html')
-        soup = BeautifulSoup(r.content, 'html.parser')
+        """
+        We use Overapi to search, as it weeds out a lot of the
+        noise from the documentation.
+        For now, this covers all basic methods and functions.
+        """
+        soup = BeautifulSoup(
+            requests.get('https://overapi.com/python').content
+            , 'html.parser'
+        )
         links = soup.find_all('a')
-        title = soup.find_all('title')
-        version = title[0].text.split('—')[1].strip()
+        search_results = []
 
-        results = []
         for i in links:
-            if searchterm in i['href']:
-                results.append(f"https://docs.python.org/3/{i['href']}")
+            if 'http://docs.python.org' in str(i) and searchterm in str(i['href']):
+                name = i['href'].split('.')[-1]
+                link = i['href']
+                description = i['title']
+                result = tuple((name, link, description))
+                search_results.append(result)
 
-        embed = embed_docs(searchterm, version, results)
+        embed = embed_docs(searchterm, search_results)
 
         await ctx.respond(embed=embed)
 
 
 def setup(bot):
+    """
+    dOcStRiNgS aRe GrEaT...
+    """
     bot.add_cog(Documentation(bot))
