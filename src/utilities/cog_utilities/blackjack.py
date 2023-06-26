@@ -1,3 +1,5 @@
+# pylint: disable-all
+
 # I've moved this here for now so it doesnt get loaded on the bot as it's not quite finished.
 # You can ignore this for now, I'll move it in when it's done and put another PR in.
 
