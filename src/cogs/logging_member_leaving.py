@@ -1,6 +1,9 @@
+"""
+Logs when a member leaves.
+"""
 from discord.ext import commands
-from ._settings import log_channel, server_info
 from utilities.cog_helpers._embeds import embed_leave
+from ._settings import log_channel, server_info
 
 
 class LoggingLeaving(commands.Cog):
