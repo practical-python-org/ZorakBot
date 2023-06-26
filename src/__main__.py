@@ -6,6 +6,7 @@ The in-house server bot of Practical Python!
 """
 import logging
 import os
+import sys
 from pathlib import Path
 
 import discord
@@ -24,16 +25,23 @@ setup_logger(
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
 bot.remove_command("help")
 
-for cog_path in Path("./cogs").glob("*.py"):
-    cog_name = cog_path.stem
-    DOTTED_PATH = "cogs.{cog_name}"
-    if cog_name not in ('__init__', '_settings'):
-        logger.info("loading... {%s}", DOTTED_PATH)
-        try:
-            bot.load_extension(str(DOTTED_PATH))
-        except Exception as e:
-            logger.info("Failed to load cog {%s} - exception:{%s}", DOTTED_PATH, e)
-        logger.info("loaded {%s}", DOTTED_PATH)
+
+def load_cogs():
+    """
+    Loads the directories under the /cogs/ folder,
+    then digs through those directories and loads the cogs.
+    """
+    logger.info("Loading Cogs...")
+    for directory in os.listdir("./cogs"):
+        if not directory.startswith("_"):  # Makes sure __innit.py__ doesnt get called
+            for file in os.listdir(f"./cogs/{directory}"):
+                if file.endswith('.py') and not file.startswith("_"):
+                    try:
+                        logger.info(f"Loading Cog: \\{directory}\\{file}")
+                        bot.load_extension(f"cogs.{directory}.{file[:-3]}")
+                    except Exception as e:
+                        logger.critical("Failed to load: {%s}.{%s}, {%s}", directory, file, e)
+    logger.info("Loaded all cogs successfully.")
 
 
 @bot.listen("on_interaction")
@@ -58,6 +66,7 @@ async def log_message(message):
 
 initialise_bot_db(bot)
 try:
+    load_cogs()
     bot.run(os.getenv("DISCORD_TOKEN"))
 except TypeError as e:
     print(e)

@@ -3,7 +3,7 @@ This cog allows us to create tickets.
 """
 import discord
 from discord.ext import commands
-from ._settings import mod_channel, admin_roles
+from cogs._settings import mod_channel, admin_roles
 
 
 class AddTicketButton(commands.Cog):

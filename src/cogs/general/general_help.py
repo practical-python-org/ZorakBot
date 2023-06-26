@@ -6,7 +6,7 @@ this command creates a help button menu which includes
 """
 import discord
 from discord.ext import commands
-from ._settings import server_info
+from cogs._settings import server_info
 
 
 class HelpButtons(discord.ui.View):

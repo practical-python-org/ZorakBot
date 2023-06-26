@@ -3,7 +3,7 @@ The point handler for the whole server.
 """
 import discord
 from discord.ext import commands
-from ._settings import log_channel
+from cogs._settings import log_channel
 
 
 class Points(commands.Cog):

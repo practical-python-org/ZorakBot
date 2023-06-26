@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 import discord
 from discord.ext import commands
-from ._settings import log_channel
+from cogs._settings import log_channel
 
 
 class ModerationInvites(commands.Cog):

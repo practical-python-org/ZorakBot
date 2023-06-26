@@ -4,7 +4,7 @@ TODO: Would be cool to add an API that detects nasty images here.
 """
 from discord.ext import commands
 from utilities.cog_helpers._embeds import embed_avatar
-from ._settings import log_channel
+from cogs._settings import log_channel
 
 
 

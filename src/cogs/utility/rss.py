@@ -6,7 +6,7 @@ import discord
 import feedparser
 import html2text
 from discord.ext import commands
-from ._settings import normal_channel, rss_feed
+from cogs._settings import normal_channel, rss_feed
 
 
 class RSS(commands.Cog):

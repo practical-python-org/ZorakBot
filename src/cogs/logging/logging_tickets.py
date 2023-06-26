@@ -4,7 +4,7 @@ logs when someone makes a ticket.
 from discord.ext import commands
 from utilities.cog_helpers._embeds \
     import embed_ticket_create, embed_ticket_update, embed_ticket_delete, embed_ticket_remove
-from ._settings import log_channel, server_info
+from cogs._settings import log_channel, server_info
 
 
 
