@@ -1,19 +1,29 @@
+"""
+General utility commands, or commands that assist the user in some way.
+"""
+import math
+import datetime
 import discord
 from discord.ext import commands
-import math
 from pistonapi import PistonAPI
-import datetime
 import requests
 import pytz
 
 
-class util(commands.Cog, command_attrs=dict(hidden=True)):
+class Util(commands.Cog):
+    """
+    The overall class for util items.
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.slash_command(description="Search Py-pi for a package.")
-    async def pip_search(self, ctx, package: discord.Option(str)):
-        data = requests.get(f"https://pypi.org/pypi/{package}/json").json()
+    async def pip_search(self, ctx, package):
+        """
+        Searches Pypi for a specific package.
+        """
+        data = requests.get(f"https://pypi.org/pypi/{package}/json"
+                            , timeout=5).json()
         try:
             embed = discord.Embed(
                 title=f"Searched {package}",
@@ -36,15 +46,18 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
             )
 
     @commands.slash_command(description="Search Github for a repo.")
-    async def github_search(
-        self, ctx, username: discord.Option(str), repo: discord.Option(str)
-    ):
+    async def github_search(self, ctx, username, repo):
+        """
+        Searches GitHub for a specific repo.
+        """
         try:
             info = requests.get(
                 f"https://api.github.com/repos/{username}/{repo}"
+                , timeout=5
             ).json()
             contrib_info = requests.get(
                 f"https://api.github.com/repos/{username}/{repo}/contributors"
+                , timeout=5
             ).json()
             embed = discord.Embed(
                 title=info["name"],
@@ -78,9 +91,13 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
             await ctx.respond(embed=embed)
 
     @commands.slash_command(description="Current times of Staff.")
-    async def devtimes(
-        self, ctx
-    ):  # again, dict mapping could be good to help here, could also provide a command with timezone as input. Could do a whole times cog probably.
+    async def devtimes(self, ctx):
+        """
+        Sends the Current local time of the moderation staff.
+        TODO: again, dict mapping could be good to help here,
+            could also provide a command with timezone as input.
+             Could do a whole times cog probably.
+        """
         tz_india = datetime.datetime.now(tz=pytz.timezone("Asia/Kolkata"))
         tz_japan = datetime.datetime.now(tz=pytz.timezone("Asia/Tokyo"))
         tz_america_ny = datetime.datetime.now(tz=pytz.timezone("America/New_York"))
@@ -116,8 +133,11 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
         await ctx.respond(embed=embed)
 
     @commands.slash_command(description="Checks a URL to see if its online.")
-    async def zeus(self, ctx, url: discord.Option(str)):
-        if "https://" in url is True:
+    async def zeus(self, ctx, url):
+        """
+        Checks if a website is currently Up and reachable.
+        """
+        if "https://" in url:
             try:
                 requests.get(url=url, timeout=2.5, verify=False)
                 context = (url, "**ONLINE**")
@@ -143,7 +163,11 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
         await ctx.respond(embed=embed)
 
     @commands.slash_command()
-    async def suggest(self, ctx, question: discord.Option(str)):
+    async def suggest(self, ctx, question):
+        """
+        Adds an embed question, with a thumbsup and thumbsdown emoji
+        for voting on things.
+        """
         embed = discord.Embed(description=question)
         embed.set_author(name=f"Suggestion by {ctx.author.name}")
         msg = await ctx.send(embed=embed)
@@ -154,6 +178,9 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
     # # AttributeError: module 'matplotlib.pyplot' has no attribute 'mathtext'
     #     @commands.slash_command(description='Sends a latex image.')
     #     async def latex(self, ctx, expr: discord.Option(str)):
+    #         """
+    #         Sends a latex image of a formula.
+    #         """
     #         plt.rcParams["savefig.transparent"] = True
     #         plt.rcParams["text.color"] = "white"
     #         buff = BytesIO()
@@ -161,7 +188,10 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
     #             f"${expr}$".replace("\n", " "),
     #             buff,
     #             dpi=300,
-    #             prop=plt.font_manager.FontProperties(size=30, family="serif", math_fontfamily="cm"),
+    #             prop=plt.font_manager.FontProperties(
+    #                 size=30
+    #                 , family="serif"
+    #                 , math_fontfamily="cm"),
     #             format="png",
     #         )
     #         buff.seek(0)
@@ -174,6 +204,9 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
     # # Issue is with "discord.User.display_avatar"
     # @commands.slash_command(description='Grabs the avatar of a user.')
     # async def avatar(self, ctx, member: discord.Option(str)):
+    #     """
+    #     Sends the avatar of a user.
+    #     """
     #     if member is 'me':
     #         member = ctx.author
     #     embed = discord.Embed(
@@ -188,6 +221,9 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
     # # ValueError: too many values to unpack (expected 2)
     #     @commands.slash_command()
     #     async def poll(self, ctx, title, option1, option2, option3='', option4='', option5=''):
+    #         """
+    #         Makes a poll where people can vote for different items.
+    #         """
     #         options = [option1,option2, option3,option4,option5]
     #         reactions = ['1️⃣','2️⃣','3️⃣','4️⃣ ','5️⃣ ']
     #         embed = discord.Embed(description=f"{title}")
@@ -203,19 +239,27 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
     # # Figure out how to call up other users.
     #     @commands.slash_command(description='Sends info about a user.')
     #     async def whois(self, ctx, member: discord.User):
+    #         """
+    #         A user-lookup command that sends info about a user.
+    #         """
     #         if member is None:
     #             member = ctx.author
-
-    #         roles = [role for role in self.bot.member.roles]
+    #
+    #         roles = list(self.bot.member.roles)
     #         embed = discord.Embed(colour=discord.Colour.orange(), title=str(member.display_name))
     #         # embed.set_thumbnail(url=member.avatar_url)
     #         embed.set_footer(text=f"Requested by {ctx.author}")
     #         embed.add_field(name="Username:", value=member.name, inline=False)
     #         embed.add_field(name="ID:", value=member.id, inline=False)
-    #         embed.add_field(name="Account Created On:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
-    #         embed.add_field(name="Joined Server On:", value=member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"), inline=False)
+    #         embed.add_field(name="Account Created On:"
+    #                         , value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC")
+    #                         , inline=False)
+    #         embed.add_field(name="Joined Server On:"
+    #                         , value=member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC")
+    #                         , inline=False)
     #         try:
-    #             embed.add_field(name="Roles:", value="".join([role.mention for role in roles[1:]]))
+    #             embed.add_field(name="Roles:"
+    #                             , value="".join([role.mention for role in roles[1:]]))
     #             embed.add_field(name="Highest Role:", value=member.top_role.mention)
     #         except:
     #             pass
@@ -223,13 +267,17 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
 
     @commands.command()
     async def run(self, ctx, *, codeblock):
+        """
+        # TODO: put this in it's own cog.
+        Uses Piston-API to run code in the server.
+        """
         piston = PistonAPI()
         if codeblock.startswith("```py") is True:
             if codeblock.endswith("```") is True:
                 codeblock = codeblock.replace("```py", "").replace("```", "").strip()
-            runCode = piston.execute(language="py", version="3.10.0", code=codeblock)
+            runcode = piston.execute(language="py", version="3.10.0", code=codeblock)
             embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.10")
-            embed.add_field(name="Output:", value=runCode)
+            embed.add_field(name="Output:", value=runcode)
             await ctx.channel.send(embed=embed)
 
         elif codeblock.startswith("'''") is True:
@@ -237,7 +285,8 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
                 embed = discord.Embed(colour=discord.Colour.red(), title="Oops...")
                 embed.add_field(
                     name="Formatting error",
-                    value="Did you mean to use a ` instead of a '?\n\`\`\`py Your code here \`\`\`",
+                    value="Did you mean to use a ` instead of "
+                          "a '?\n\`\`\`py Your code here \`\`\`",  # pylint: disable=W1401
                 )
                 await ctx.channel.send(embed=embed)
 
@@ -245,39 +294,43 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
             embed = discord.Embed(colour=discord.Colour.red(), title="Oops...")
             embed.add_field(
                 name="Formatting error",
-                value='Please place your code in a code block.\n\nz.python \n\`\`\`py \nx = "like this"\nprint(x) \n\`\`\`',
-                mention_author=True,
+                value='Please place your code in a code block.'
+                      '\n\nz.python \n\`\`\`py \nx = "like this"\nprint(x) \n\`\`\`' # pylint: disable=W1401
             )
             await ctx.channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        """
+        TODO: Move this into it's own cog.
+        This is a moderation listen that watches for discord invites.
+        """
         text = message.content
         text = text.split(" ")
         for word in text:
             if word.startswith("https://discord.com/channels/") is True:
 
                 link = word.split("/")
-                sourceServer = self.bot.get_guild(int(link[4]))
-                sourceChannel = sourceServer.get_channel(int(link[5]))
-                sourceMessage = await sourceChannel.fetch_message(int(link[6]))
+                sourceserver = self.bot.get_guild(int(link[4]))
+                sourcechannel = sourceserver.get_channel(int(link[5]))
+                sourcemessage = await sourcechannel.fetch_message(int(link[6]))
 
-                if len(sourceMessage.content) <= 1000:
+                if len(sourcemessage.content) <= 1000:
                     embed = discord.Embed(
                         title="Link preview: ",
-                        description=f"Length: {len(sourceMessage.content)}",
+                        description=f"Length: {len(sourcemessage.content)}",
                     )
-                    embed.add_field(name="Content:", value=sourceMessage.content)
-                    embed.set_footer(text=sourceMessage.author)
+                    embed.add_field(name="Content:", value=sourcemessage.content)
+                    embed.set_footer(text=sourcemessage.author)
                     await message.channel.send(embed=embed)
 
-                elif len(sourceMessage.content) > 1000:
-                    contents = sourceMessage.content
+                elif len(sourcemessage.content) > 1000:
+                    contents = sourcemessage.content
                     con2 = []
                     splitstr = math.ceil(len(contents) / 1000)
                     embed1 = discord.Embed(
                         title="Link preview: ",
-                        description=f"Length: {len(sourceMessage.content)}",
+                        description=f"Length: {len(sourcemessage.content)}",
                     )
                     while contents:
                         con2.append(contents[:900])
@@ -288,9 +341,12 @@ class util(commands.Cog, command_attrs=dict(hidden=True)):
                             value=f"```py\n{con2[feilds]}\n```",
                             inline=False,
                         )
-                    embed1.set_footer(text=sourceMessage.author)
+                    embed1.set_footer(text=sourcemessage.author)
                     await message.channel.send(embed=embed1)
 
 
 def setup(bot):
-    bot.add_cog(util(bot))
+    """
+    Required.
+    """
+    bot.add_cog(Util(bot))
