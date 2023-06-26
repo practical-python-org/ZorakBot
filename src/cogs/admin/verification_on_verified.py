@@ -3,7 +3,7 @@ Once a user verifies, this cog is called.
 """
 import discord
 from discord.ext import commands
-from ._settings import log_channel, mod_channel, normal_channel, user_roles
+from cogs._settings import log_channel, mod_channel, normal_channel, user_roles
 
 
 class AdminVerification(discord.ui.View):

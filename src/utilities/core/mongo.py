@@ -39,7 +39,7 @@ class MongoDBClient:
         try:
             self.db.create_collection(collection_name)
         except pymongo.errors.CollectionInvalid:
-            logger.warning("Collection {%s} already exists.", collection_name)
+            logger.debug("Collection {%s} already exists.", collection_name)
         if validator_schema:
             self.configure_validation(collection_name, validator_schema)
 
@@ -308,7 +308,7 @@ def initialise_bot_db(
     connected = False
     attempts = 0
     while connected is False and attempts < 5:
-        logger.info("Connecting to database... Attempt {%s} of 10", str(attempts + 1))
+        logger.info("Connecting to database... Attempt %s of 10", str(attempts + 1))
         db_client = CustomMongoDBClient(
             host="mongo", port=27017
         )  # It creates a new instance of the CustomMongoDBClient class,

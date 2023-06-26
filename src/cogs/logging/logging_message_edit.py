@@ -3,7 +3,7 @@ Logs when messages are edited.
 """
 from discord.ext import commands
 from utilities.cog_helpers._embeds import embed_message_edit
-from ._settings import log_channel, admin_roles
+from cogs._settings import log_channel, admin_roles
 
 
 class LoggingMessageEdit(commands.Cog):

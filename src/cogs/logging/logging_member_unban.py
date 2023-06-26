@@ -3,7 +3,7 @@ Logs when a member is UN-banned.
 """
 from discord.ext import commands
 from utilities.cog_helpers._embeds import embed_unban
-from ._settings import log_channel
+from cogs._settings import log_channel
 
 
 class LoggingUnbans(commands.Cog):

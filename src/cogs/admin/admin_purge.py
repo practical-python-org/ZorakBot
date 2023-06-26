@@ -2,7 +2,7 @@
 Admin command to remove messages in bulk.
 """
 from discord.ext import commands
-from ._settings import log_channel
+from cogs._settings import log_channel
 
 
 class AdminPurge(commands.Cog):
