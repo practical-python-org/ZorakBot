@@ -1,6 +1,9 @@
+"""
+Logs when messages are edited.
+"""
 from discord.ext import commands
-from ._settings import log_channel, admin_roles
 from utilities.cog_helpers._embeds import embed_message_edit
+from ._settings import log_channel, admin_roles
 
 
 class LoggingMessageEdit(commands.Cog):
@@ -26,11 +29,9 @@ class LoggingMessageEdit(commands.Cog):
 
             for role in message_before.author.roles:
                 if role.id not in admin_roles.values():
-                    """
-                    Dont log admin actions.
-                    This just gets really messy when we are cleaning things up
-                    or doing dodgy business in secret places. 
-                    """
+                    # Dont log admin actions.
+                    # This just gets really messy when we are cleaning things up
+                    # or doing dodgy business in secret places.
                     embed = embed_message_edit(username, author, message_before, message_after)
                     logs_channel = await self.bot.fetch_channel(log_channel["chat_log"])
                     await logs_channel.send(embed=embed)
