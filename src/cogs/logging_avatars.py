@@ -1,6 +1,11 @@
+"""
+Logs user avatar changes.
+TODO: Would be cool to add an API that detects nasty images here.
+"""
 from discord.ext import commands
-from ._settings import log_channel
 from utilities.cog_helpers._embeds import embed_avatar
+from ._settings import log_channel
+
 
 
 class LoggingAvatars(commands.Cog):
