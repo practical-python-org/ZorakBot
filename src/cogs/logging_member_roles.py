@@ -2,8 +2,9 @@
 Logging for role changes. Logs the user who did the changing, the target user and the role.
 """
 from discord.ext import commands
-from ._settings import log_channel, server_info
 from utilities.cog_helpers._embeds import embed_role_add, embed_role_remove
+from ._settings import log_channel, server_info
+
 
 
 class LoggingRoles(commands.Cog):
