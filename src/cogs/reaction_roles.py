@@ -10,7 +10,6 @@ import discord
 import toml
 from discord.ext import commands
 
-from ._settings import logger
 
 ROLE_DATA = toml.load(os.path.join("Settings", "ReactionRoles.toml"))
 reaction_roles = ROLE_DATA['reaction_roles']
@@ -18,12 +17,16 @@ selectors = ROLE_DATA['selectors']
 
 
 async def remove_roles_if_exists(user, roles):
-    for r in user.roles:
-        if r in roles:
-            await user.remove_roles(r)
+    """removes roles that a user has if the role exists on them"""
+    for role in user.roles:
+        if role in roles:
+            await user.remove_roles(role)
 
 
 class RoleDropdownSelector(discord.ui.Select):
+    """
+    This is the dropdown selection menu that the user interacts with.
+    """
     def __init__(self, selector_data):
         self.name = selector_data['name']
         self.single_choice = selector_data['single_choice']
@@ -50,6 +53,9 @@ class RoleDropdownSelector(discord.ui.Select):
         super().__init__(placeholder=selector_data["description"], options=options)
 
     async def callback(self, interaction: discord.Interaction):
+        """
+        this is the fancy logic that does something on clicks.
+        """
         selection = self.values[0]
         # selected_role gives back a nonetype when no roles are selected.
         # this is bad, because we error out when we select "no roles"
@@ -57,7 +63,7 @@ class RoleDropdownSelector(discord.ui.Select):
         selected_role = (discord.utils.get(
             interaction.guild.roles
             , id=int(selection)
-        )) if selection is not "0" else "0"
+        )) if selection != "0" else "0"
 
         roles = [
             discord.utils.get(
@@ -67,12 +73,13 @@ class RoleDropdownSelector(discord.ui.Select):
             for option in self.reaction_roles
         ]
 
-        # We add a second condition here to capture the event when "remove all" is selected and a 0 is returned.
-        if selected_role is not None or selection is "0":
-            if selection is "0":
+        # We add a second condition here to capture the event when
+        # "remove all" is selected and a 0 is returned.
+        if selected_role is not None or selection == "0":
+            if selection == "0":
                 await remove_roles_if_exists(interaction.user, roles)
                 await interaction.response.send_message(
-                    f"Removed all roles in this group!"
+                    "Removed all roles in this group!"
                     , ephemeral=True
                 )
             else:
@@ -119,10 +126,12 @@ class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot  # Passed in from main.py
 
-    # If you wanted to prepopulate the view with a user's current roles, I think you could do it here. Grab the user object from ctx,
+    # If you wanted to prepopulate the view with a user's current roles,
+    # I think you could do it here. Grab the user object from ctx,
     # grab the roles, and pass it into the view. Which can then pass it into the dropdowns.
     @commands.slash_command(description="Get new roles, or change the ones you have!")
     async def roles(self, ctx):
+        """The slash command that initiates the fancy menus."""
         await ctx.respond("Edit Reaction Roles", view=SelectView(), ephemeral=True)
 
 
