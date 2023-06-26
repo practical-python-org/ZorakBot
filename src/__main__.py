@@ -1,3 +1,9 @@
+"""
+The in-house server bot of Practical Python!
+- https://discord.gg/vgZmgNwuHw
+- https://github.com/practical-python-org/ZorakBot
+- Practicalpython-staff@pm.me
+"""
 import logging
 import os
 from pathlib import Path
@@ -8,6 +14,7 @@ from discord.ext import commands
 from utilities.core.logging_utils import setup_logger
 from utilities.core.mongo import initialise_bot_db
 
+
 logger = logging.getLogger(__name__)
 setup_logger(
     level=int(os.getenv("LOGGING_LEVEL", 20)),
@@ -15,31 +22,37 @@ setup_logger(
 )
 
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
-bot.remove_command("python")
+bot.remove_command("help")
 
 for cog_path in Path("./cogs").glob("*.py"):
     cog_name = cog_path.stem
-    dotted_path = f"cogs.{cog_name}"
-    if cog_name != "__init__" and cog_name != "_settings":
-        logger.info(f"loading... {dotted_path}")
+    DOTTED_PATH = "cogs.{cog_name}"
+    if cog_name not in ('__init__', '_settings'):
+        logger.info("loading... {%s}", DOTTED_PATH)
         try:
-            bot.load_extension(str(dotted_path))
+            bot.load_extension(str(DOTTED_PATH))
         except Exception as e:
-            logger.info(f"Failed to load cog {dotted_path} - exception:{e}")
-        logger.info(f"loaded {dotted_path}")
+            logger.info("Failed to load cog {%s} - exception:{%s}", DOTTED_PATH, e)
+        logger.info("loaded {%s}", DOTTED_PATH)
 
 
 @bot.listen("on_interaction")
 async def log_interaction(interaction):
+    """
+    This logs all interactions used by anyone, and logs them.
+    """
     if interaction is not None:
-        logger.info(f"requester: {str(interaction.user)}")
-        logger.info(f"Command: {str(interaction.data)}")
+        logger.info("requester: {%s}",str(interaction.user))
+        logger.info("Command: {%s}", str(interaction.data))
 
 
 @bot.listen("on_message")
 async def log_message(message):
+    """
+    This logs all commands used by anyone in the server.
+    """
     if message.interaction is not None:
-        logger.info(f"response: {str(message.content)}")
+        logger.info("response: {%s}", str(message.content))
         # logger.info(f"url: {str(message.jump_url)}")
 
 
