@@ -293,3 +293,65 @@ def embed_role_remove(some_member, member_who_did_action, role_obj):
     return embed
 
 
+def embed_docs(search_term, link_list):
+    """
+    Embedding for python docs search
+    """
+    # Handle empty search results.
+    if len(link_list) == 0:
+        embed = discord.Embed(
+            title="Oops..."
+            , description=f"We couldn't find anything related to '{search_term}'"
+            , color=discord.Color.yellow()
+            , timestamp=datetime.utcnow()
+        )
+        return embed
+
+    embed = discord.Embed(
+        title="Python Official Documentation"
+        , description=f'Search-term: {search_term}'
+        , color=discord.Color.yellow()
+        , timestamp=datetime.utcnow()
+    )
+
+    for iteration, link in enumerate(link_list):
+        if iteration < 5:
+            # Don't want things to get too messy
+            embed.add_field(
+                name=f"{link[0]}"
+                , value=f"{link[1]}\n{link[2]}"
+                , inline=False
+            )
+
+        else:
+            embed.add_field(
+                name=f"Read more at:"
+                , value=f"[Python Official Docs](https://docs.python.org/3/"
+                        f"search.html?q={search_term}&check_keywords=yes&area=default)"
+                , inline=False
+            )
+            return embed
+
+    return embed
+
+def embed_definition(the_word, part_of_speech, definition, synonym, source):
+    """
+    Embedding for /define command
+    """
+    embed = discord.Embed(
+        title=the_word.capitalize()
+        , description=f'**{part_of_speech.capitalize()}**\n{definition}'
+        , color=discord.Color.green()
+    )
+    if synonym is not None:
+        embed.add_field(
+            name='Synonym'
+            , value=synonym.capitalize()
+            , inline=True
+        )
+    embed.add_field(
+        name=''
+        , value=f"[Source]({source})"
+        , inline=True
+    )
+    return embed
