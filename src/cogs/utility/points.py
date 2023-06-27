@@ -5,7 +5,6 @@ import discord
 from discord.ext import commands
 from cogs._settings import log_channel
 
-
 class Points(commands.Cog):
     """
      Handles automatic points based on activity.
@@ -17,12 +16,12 @@ class Points(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):  # pylint: disable=E1101
         """When a member joins, add them to the DB."""
-        self.bot.db_client.add_member_to_table(member.id)
+        self.bot.db_client.add_user_to_table(member)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):  # pylint: disable=E1101
         """When a member leaves, remove them from the DB."""
-        self.bot.db_client.remove_member_from_table(member.id)
+        self.bot.db_client.remove_user_from_table(member)
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):

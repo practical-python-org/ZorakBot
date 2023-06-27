@@ -23,6 +23,7 @@ class MongoDBClient:
         Parameters:
         - host: the hostname or IP address of the MongoDB instance
         - port: the port number of the MongoDB instance
+        - port: the port number of the MongoDB instance
         - database: the name of the database to use
         """
         self.client = pymongo.MongoClient(host, port)
