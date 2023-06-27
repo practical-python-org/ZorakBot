@@ -1,3 +1,6 @@
+"""
+Arg utils
+"""
 from __future__ import annotations
 
 import logging
@@ -11,7 +14,9 @@ logger = logging.getLogger(__name__)
 def add_boolean_arg(
     parser: ArgumentParser, name: str, desc: str, default: bool = False
 ) -> None:
-    """Adds a boolean arg to the arg parser allowing --arg and --no-arg for True and False respectively
+    """Adds a boolean arg to the arg parser allowing
+    --arg and --no-arg for True and False respectively
+
     Parameters
     ----------
     parser : ArgumentParser
@@ -68,7 +73,8 @@ def parse_args() -> Args:
         "--discord-token",
         type=str,
         dest="discord_token",
-        help="Token for the discord bot connection. If not included the TOKEN env variable is used.",
+        help="Token for the discord bot connection. "
+             "If not included the TOKEN env variable is used.",
     )
     add_boolean_arg(arg_parser, "console-log", "Log to console", default=True)
     return Args(**OrderedDict(vars(arg_parser.parse_args())))

@@ -1,6 +1,9 @@
+"""
+Logs member bans
+"""
 from discord.ext import commands
-from ._settings import log_channel, server_info
 from utilities.cog_helpers._embeds import embed_ban
+from cogs._settings import log_channel, server_info
 
 
 class LoggingBans(commands.Cog):

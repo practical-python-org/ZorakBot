@@ -1,6 +1,9 @@
+"""
+logs when a username is changed.
+"""
 from discord.ext import commands
-from ._settings import log_channel
 from utilities.cog_helpers._embeds import embed_name_change, embed_verified_success
+from cogs._settings import log_channel
 
 
 class LoggingNameChanges(commands.Cog):

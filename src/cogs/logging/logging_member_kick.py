@@ -1,6 +1,9 @@
+"""
+Logs when a user is kicked
+"""
 from discord.ext import commands
-from ._settings import log_channel, server_info
 from utilities.cog_helpers._embeds import embed_kick
+from cogs._settings import log_channel, server_info
 
 
 class LoggingKicks(commands.Cog):

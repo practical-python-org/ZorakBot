@@ -1,3 +1,4 @@
+"""Our Mongo DB instance."""
 import logging
 import time
 from typing import Dict, List
@@ -10,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 class MongoDBClient:
     """
-    A class that provides a simple interface for performing common operations with MongoDB using the PyMongo library.
+    A class that provides a simple interface for performing common
+    operations with MongoDB using the PyMongo library.
     This is a standard interface that can be used to implement any sort of database functionality.
     """
 
@@ -37,7 +39,7 @@ class MongoDBClient:
         try:
             self.db.create_collection(collection_name)
         except pymongo.errors.CollectionInvalid:
-            logger.warning(f"Collection {collection_name} already exists.")
+            logger.debug("Collection {%s} already exists.", collection_name)
         if validator_schema:
             self.configure_validation(collection_name, validator_schema)
 
@@ -63,7 +65,7 @@ class MongoDBClient:
             self.db.command("collMod", collection, validator={"$jsonSchema": validator})
         except pymongo.errors.OperationFailure:
             logger.warning(
-                f"Validation rule already exists for collection {collection}."
+                "Validation rule already exists for collection {%s}.", collection
             )
 
     def insert_one(self, collection: str, document: Dict):
@@ -123,7 +125,7 @@ class MongoDBClient:
         return self.db[collection].find(query)
 
     def update_one(
-        self, collection: str, query: Dict, update: Dict, upsert: bool = False
+            self, collection: str, query: Dict, update: Dict, upsert: bool = False
     ):
         """Update a single document in a collection.
 
@@ -141,7 +143,7 @@ class MongoDBClient:
         self.db[collection].update_one(query, update, upsert=upsert)
 
     def update_many(
-        self, collection: str, query: Dict, update: Dict, upsert: bool = False
+            self, collection: str, query: Dict, update: Dict, upsert: bool = False
     ):
         """Update multiple documents in a collection.
 
@@ -185,15 +187,16 @@ class MongoDBClient:
     # def backup_db(self):
     #     """Backup the MongoDB instance."""
 
-    #     subprocess.run(["docker", "exec", "mongo", "sh", "-c", "'mongodump", "--archive'", ">", "db.dump"])
+    #     subprocess.run(
+    #       ["docker", "exec", "mongo", "sh", "-c", "'mongodump", "--archive'", ">", "db.dump"])
     #     logger.info("Database backed up.")
 
 
 class CustomMongoDBClient(MongoDBClient):
-    """A further extension ontop of the earlier MongoDB class to abstract functions to be able to more easily
-    interact with a custom database design. This is only intended to handle a single
-    guild, but could be extended to handle multiple guilds by adding a guild_id field to the user table, or adding
-    a new table for each guild."""
+    """A further extension ontop of the earlier MongoDB class to abstract functions to be able
+    to more easily interact with a custom database design. This is only intended to handle a single
+    guild, but could be extended to handle multiple guilds by adding a guild_id field
+    to the user table, or adding a new table for each guild."""
 
     def initialise_user_table(self):
         """Initialise the user table. Ensures that the UserID field is unique."""
@@ -222,7 +225,8 @@ class CustomMongoDBClient(MongoDBClient):
             self.insert_one("UserPoints", {"UserID": member.id, "Points": 0})
 
     def create_table_from_members(self, members: List):
-        """Create a table from a list of members if it does not already exist. If it does it adds all unnadded members"""
+        """Create a table from a list of members if it does not already exist.
+         If it does it adds all unnadded members"""
         for member in members:
             self.add_user_to_table(member)
 
@@ -241,7 +245,7 @@ class CustomMongoDBClient(MongoDBClient):
         self.update_many("UserPoints", {}, {"$inc": {"Points": points}})
 
     def remove_points_from_user(
-        self, user_id: int, points: int
+            self, user_id: int, points: int
     ):  # Not really needed, but here for completeness.
         """Remove points from a user."""
         self.update_one(
@@ -269,7 +273,7 @@ class CustomMongoDBClient(MongoDBClient):
             return user["Points"]
         return None
 
-    """Used for the RSS_feeds cog"""
+    # Used for the RSS_feeds cog
 
     def initialise_news_table(self):
         """Initialise the news table."""
@@ -298,16 +302,17 @@ class CustomMongoDBClient(MongoDBClient):
 
 
 def initialise_bot_db(
-    bot: Bot,
+        bot: Bot,
 ):  # This is called in the main bot file and is the bit of code that connects to the database.
     """Initialise the database."""
     connected = False
     attempts = 0
     while connected is False and attempts < 5:
-        logger.info(f"Connecting to database... Attempt {str(attempts+1)} of 10")
+        logger.info("Connecting to database... Attempt %s of 10", str(attempts + 1))
         db_client = CustomMongoDBClient(
             host="mongo", port=27017
-        )  # It creates a new instance of the CustomMongoDBClient class, which abstracts our database interactions.
+        )  # It creates a new instance of the CustomMongoDBClient class,
+        # which abstracts our database interactions.
         try:
             time.sleep(10)
             db_client.client.admin.command(
@@ -324,7 +329,11 @@ def initialise_bot_db(
             attempts += 1
     if connected:
         logger.info("Connected to database.")
-        db_client.initialise_user_table()  # This makes the table if it doesn't exist and ensures the validation rules.
+        db_client.initialise_user_table()
+        # This makes the table if it doesn't exist
+        # and ensures the validation rules.
         db_client.initialise_news_table()
-        bot.db_client = db_client  # This adds the db_client to the bot object so that it can be accessed elsewhere.
+        bot.db_client = db_client
+        # This adds the db_client to the bot
+        # object so that it can be accessed elsewhere.
     return bot

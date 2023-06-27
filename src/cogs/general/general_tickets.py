@@ -1,32 +1,43 @@
+"""
+This cog allows us to create tickets.
+"""
 import discord
 from discord.ext import commands
-from ._settings import mod_channel, admin_roles
-from __main__ import bot
+from cogs._settings import mod_channel, admin_roles
 
-class add_ticket_button(commands.Cog):
+
+class AddTicketButton(commands.Cog):
+    """
+    This is the slash command that sends our UI element.
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.slash_command()
     async def ticket(self, ctx):
+        """
+        A simple command with a view.
+        """
         await ctx.respond(
             "Do you need help, or do you have a question for the Staff?",
-            view=make_a_ticket(),
+            view=MakeATicket(),
             ephemeral=True,
         )
 
 
-class make_a_ticket(discord.ui.View):
+class MakeATicket(discord.ui.View):
+    """
+    A UI component that sends a button, which does other things.
+    """
     @discord.ui.button(label="Open a support Ticket", style=discord.ButtonStyle.primary)
     async def button_callback(self, button, interaction):
-
-        """Disable the button quickly, so duplicates are not made."""
+        """
+        The callback on the button, or... what happens on click.
+        """
         await interaction.response.defer()
         button.label = "Ticket Created!"
         button.disabled = True
         await interaction.edit_original_response(view=self)
-
-        """ Create the thread, add members. """
 
         support = await interaction.guild.fetch_channel(mod_channel["server_support"])
         staff = interaction.guild.get_role(admin_roles["staff"])
@@ -51,4 +62,7 @@ class make_a_ticket(discord.ui.View):
 
 
 def setup(bot):
-    bot.add_cog(add_ticket_button(bot))
+    """
+    Required
+    """
+    bot.add_cog(AddTicketButton(bot))

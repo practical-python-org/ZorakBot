@@ -1,15 +1,25 @@
+"""
+Once a user verifies, this cog is called.
+"""
 import discord
 from discord.ext import commands
-from ._settings import log_channel, mod_channel, normal_channel, user_roles
+from cogs._settings import log_channel, mod_channel, normal_channel, user_roles
 
 
-class admin_verification(discord.ui.View):
+class AdminVerification(discord.ui.View):
+    """
+    We remove the needs approval role and send them a nice happy message.
+    """
     def __init__(self, bot):
         self.bot = bot
         super().__init__(timeout=None)
 
     @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.success)
-    async def verify_button_callback(self, button, interaction):
+    async def verify_button_callback(self, interaction):
+        """
+        This is the stuff that happens
+        - Send a nice happy message.
+        """
         user = interaction.user
         guild = interaction.guild
         roles = guild.roles
@@ -29,8 +39,11 @@ class admin_verification(discord.ui.View):
         invite = "https://discord.gg/vgZmgNwuHw"
         invite_emoji = "<:heart_hands:1040343137454915594>"
 
-        quicklinks = f"{website_emoji} [Website]({website})\n{email_emoji} {email}\n{review_emoji} [Vote for us on disboard!]({review})"
-        info = f"{created_emoji} Created: <t:{int(created)}:R>\n{owner_emoji} Owner: {owner}\n{invite_emoji} {invite}"
+        quicklinks = f"{website_emoji} [Website]({website})" \
+                     f"\n{email_emoji} {email}\n{review_emoji}" \
+                     f" [Vote for us on disboard!]({review})"
+        info = f"{created_emoji} Created: <t:{int(created)}:R>" \
+               f"\n{owner_emoji} Owner: {owner}\n{invite_emoji} {invite}"
 
         embed = discord.Embed(
             title="Welcome to Practical Python", color=discord.Color.yellow()
@@ -74,7 +87,12 @@ class admin_verification(discord.ui.View):
             await user.send("You have already been Verified. Go away.")
 
 
-class verify_helper(commands.Cog):
+class VerifyHelper(commands.Cog):
+    """
+    this adds the button to the #verification channel so that people
+    can verify
+    TODO: Make this button persistent.
+    """
     def __init__(self, bot):
         self.bot = bot
 
@@ -83,13 +101,10 @@ class verify_helper(commands.Cog):
         description="Adds verify button to channel."
     )  # Create a slash command
     async def add_verify_button(self, ctx):
+        """Adds the button"""
         await ctx.respond(
-            f"Please Verify that you are not a bot.", view=admin_verification(self.bot)
+            "Please Verify that you are not a bot.", view=AdminVerification(self.bot)
             )
-
-        """
-        Error handling for the entire Admin Cog
-        """
 
     async def cog_command_error(
         self, ctx: commands.Context, error: commands.CommandError
@@ -104,4 +119,5 @@ class verify_helper(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(verify_helper(bot))
+    """Required."""
+    bot.add_cog(VerifyHelper(bot))

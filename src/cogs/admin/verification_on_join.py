@@ -1,16 +1,24 @@
+"""
+This is a handler that adds a Need Approval role and sends the user a message.
+"""
+from asyncio import sleep
 import discord
 from discord.ext import commands
-from asyncio import sleep
-from ._settings import log_channel, mod_channel, unverified_role
+from cogs._settings import log_channel, mod_channel, unverified_role
 
 
-class logging_verification(commands.Cog):
+class LoggingVerification(commands.Cog):
+    """
+    Handled with a role, and a message.
+    the role limits the user to one channel, with a verify button.
+    If the user does not push the button within one hour, they are auto-kicked.
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener()
-    ###### On new join, do this
     async def on_member_join(self, member: discord.Member):
+        """ On join, do this stuff. """
         # Add verification role
         await member.add_roles(member.guild.get_role(unverified_role["needs_approval"]))
 
@@ -28,7 +36,9 @@ I'm Zorak, the moderatior of {guild.name}.
 
 We are very happy that you have decided to join us.
 Before you are allowed to chat, you need to verify that you aren't a bot.
-Dont worry, it's easy. Just go to {self.bot.get_channel(mod_channel['verification_channel']).mention} and click the green button.
+Dont worry, it's easy. Just go to 
+{self.bot.get_channel(mod_channel['verification_channel']).mention}
+and click the green button.
 
 After you do, all of {guild.name} is availibe to you. Have a great time :-)
 """
@@ -46,10 +56,12 @@ After you do, all of {guild.name} is availibe to you. Have a great time :-)
             if "Needs Approval" in [role.name for role in member.roles]:
                 # Log the kick
                 await logs_channel.send(
-                    f"{member.mention} did not verify, auto-removed. ({(time_unverified_kick/3600)} hour/s)"
+                    f"{member.mention} did not verify, auto-removed."
+                    f" ({(time_unverified_kick/3600)} hour/s)"
                 )
                 await member.kick(reason="Did not verify.")
 
 
 def setup(bot):
-    bot.add_cog(logging_verification(bot))
+    """Required"""
+    bot.add_cog(LoggingVerification(bot))

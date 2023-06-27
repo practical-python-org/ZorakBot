@@ -1,34 +1,42 @@
+"""
+Creates an embed for use in rescources, rules... whatever.
+TODO: This dude here is broken as hell. fix it.
+"""
 import discord
 from discord.ext import commands
 
 
-class admin_utility(commands.Cog, command_attrs=dict(hidden=True)):
+class AdminEmbed(commands.Cog):
+    """
+    An embed command that embeds text into a nice format.
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.slash_command()
     @commands.has_permissions(manage_messages=True)
     async def embed(self, ctx, title, content):
-        # text = ctx.message.content.split("\n")
-        text = ["a" * 1020, "b" * 1020]  # for testing
+        """
+        Handles text that is bigger than the standard size for an embed
+        by splitting it into chunks and adding them all together.
+        """
+        text = ctx.message.content.split("\n")
         embed = discord.Embed(title=title)
-        text.pop(0)
-        # TODO: Fix this boi here  (didn't fix much but changed slightly)
-        [
+        # TODO: This here is probably what's broken.
+        content = [
             embed.add_field(name=" ----- ", value=item, inline=False) for item in text
         ]  # Nice
         embed.add_field(name="Content", value=content)
-        # embed.set_footer(icon_url=ctx.author.avatar_url)
-        # await ctx.message.delete()
+        await ctx.message.delete()
         await ctx.send(embed=embed)
 
-    """
-	Error handling for the entire Admin Cog
-	"""
-
     async def cog_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
+            self, ctx: commands.Context, error: commands.CommandError
     ):
+        """
+        Error handling for the entire Admin Cog
+        """
+
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(
                 f"Sorry, {ctx.author.name}, you dont have permission to use this command!",
@@ -39,4 +47,7 @@ class admin_utility(commands.Cog, command_attrs=dict(hidden=True)):
 
 
 def setup(bot):
-    bot.add_cog(admin_utility(bot))
+    """
+    Required.
+    """
+    bot.add_cog(AdminEmbed(bot))
