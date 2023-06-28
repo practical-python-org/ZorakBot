@@ -355,3 +355,16 @@ def embed_definition(the_word, part_of_speech, definition, synonym, source):
         , inline=True
     )
     return embed
+
+
+def embed_cant_do_that(message):
+    """
+    Embedding for things you cant do.
+    """
+    embed = discord.Embed(
+        title=''
+        , description=message
+        , color=discord.Color.red()
+        , timestamp=datetime.utcnow()
+    )
+    return embed
