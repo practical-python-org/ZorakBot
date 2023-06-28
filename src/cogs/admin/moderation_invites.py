@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 import discord
 from discord.ext import commands
-from cogs._settings import log_channel
+from cogs._settings import log_channel  # pylint: disable=E0401
 
 
 class ModerationInvites(commands.Cog):

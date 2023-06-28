@@ -6,7 +6,7 @@ import discord
 import feedparser
 import html2text
 from discord.ext import commands
-from cogs._settings import normal_channel, rss_feed
+from cogs._settings import normal_channel, rss_feed  # pylint: disable=E0401
 
 
 class RSS(commands.Cog):

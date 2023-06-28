@@ -1,5 +1,6 @@
 """
 Admin command for deleting a users historical messages
+TODO: Finish this cog. It is currently named with a _ prefix so that it is not loaded.
 """
 import logging
 from datetime import datetime, timedelta

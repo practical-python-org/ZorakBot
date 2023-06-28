@@ -2,8 +2,9 @@
 logs when a username is changed.
 """
 from discord.ext import commands
-from utilities.cog_helpers._embeds import embed_name_change, embed_verified_success
-from cogs._settings import log_channel
+from utilities.cog_helpers._embeds\
+    import embed_name_change, embed_verified_success  # pylint: disable=E0401
+from cogs._settings import log_channel  # pylint: disable=E0401
 
 
 class LoggingNameChanges(commands.Cog):

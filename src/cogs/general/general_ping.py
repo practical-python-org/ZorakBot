@@ -1,7 +1,11 @@
 """
 Ping
 """
+import logging
 from discord.ext import commands
+
+
+logger = logging.getLogger(__name__)
 
 
 class Ping(commands.Cog):
@@ -12,7 +16,10 @@ class Ping(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         """It's a me, a ping command."""
+
         if message.content.startswith('!ping'):
+            logger.info("%s used a ping command."
+                        , message.author.name)
             await message.channel.send(f'Ping: {round(self.bot.latency, 3)}ms')
             return
 

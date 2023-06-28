@@ -5,15 +5,13 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 from discord.ext import commands
-
-
-from utilities.cog_helpers._embeds import embed_docs
+from utilities.cog_helpers._embeds import embed_docs  # pylint: disable=E0401
 
 
 logger = logging.getLogger(__name__)
 
 
-class Documentation(commands.Cog):
+class UtilityDocumentation(commands.Cog):
     """
     This allows us to search the Python docs for things.
     """
@@ -27,6 +25,9 @@ class Documentation(commands.Cog):
         noise from the documentation.
         For now, this covers all basic methods and functions.
         """
+        logger.info("%s used the %s command."
+                    , ctx.author.name
+                    , ctx.command)
         soup = BeautifulSoup(
             requests.get('https://overapi.com/python', timeout=5).content
             , 'html.parser'
@@ -51,4 +52,4 @@ def setup(bot):
     """
     dOcStRiNgS aRe GrEaT...
     """
-    bot.add_cog(Documentation(bot))
+    bot.add_cog(UtilityDocumentation(bot))
