@@ -1,9 +1,13 @@
 """
 This cog allows us to create tickets.
 """
+import logging
 import discord
 from discord.ext import commands
-from cogs._settings import mod_channel, admin_roles
+from cogs._settings import mod_channel, admin_roles  # pylint: disable=E0401
+
+
+logger = logging.getLogger(__name__)
 
 
 class AddTicketButton(commands.Cog):
@@ -18,6 +22,9 @@ class AddTicketButton(commands.Cog):
         """
         A simple command with a view.
         """
+        logger.info("%s used the %s command."
+                    , ctx.author.name
+                    , ctx.command)
         await ctx.respond(
             "Do you need help, or do you have a question for the Staff?",
             view=MakeATicket(),

@@ -1,3 +1,4 @@
+# pylint: skip-file
 # import discord
 # from discord import default_permissions
 from discord.ext import commands

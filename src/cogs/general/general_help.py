@@ -4,9 +4,13 @@ this command creates a help button menu which includes
 - Running code
 - code blocks
 """
+import logging
 import discord
 from discord.ext import commands
-from cogs._settings import server_info
+from cogs._settings import server_info  # pylint: disable=E0401
+
+
+logger = logging.getLogger(__name__)
 
 
 class HelpButtons(discord.ui.View):
@@ -75,6 +79,9 @@ class HelpCommand(commands.Cog):
         """
         A standard slash command.
         """
+        logger.info("%s used the %s command."
+                    , ctx.author.name
+                    , ctx.command)
         await ctx.respond("What do you want, human?", view=HelpButtons(timeout=120))
 
 

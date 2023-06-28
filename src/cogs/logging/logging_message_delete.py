@@ -4,7 +4,7 @@ logs when a message is deleted.
 from datetime import datetime
 import discord
 from discord.ext import commands
-from cogs._settings import log_channel, admin_roles
+from cogs._settings import log_channel, admin_roles  # pylint: disable=E0401
 
 # from utilities.cog_helpers._embeds import  embed_message_delete
 

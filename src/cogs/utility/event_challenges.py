@@ -50,7 +50,7 @@ class Challenges(commands.Cog):
                         )
                         await ctx.respond(embed=embed)
 
-                        # FIXME this was never used
+                        # TODO: this was never used
                         # Open the thread
                         # channel = await self.bot.fetch_channel(
                         #     1045104938071633994

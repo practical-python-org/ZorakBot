@@ -2,8 +2,8 @@
 Logs when a member leaves.
 """
 from discord.ext import commands
-from utilities.cog_helpers._embeds import embed_leave
-from cogs._settings import log_channel, server_info
+from utilities.cog_helpers._embeds import embed_leave  # pylint: disable=E0401
+from cogs._settings import log_channel, server_info  # pylint: disable=E0401
 
 
 class LoggingLeaving(commands.Cog):

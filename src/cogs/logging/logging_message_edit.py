@@ -2,8 +2,8 @@
 Logs when messages are edited.
 """
 from discord.ext import commands
-from utilities.cog_helpers._embeds import embed_message_edit
-from cogs._settings import log_channel, admin_roles
+from utilities.cog_helpers._embeds import embed_message_edit  # pylint: disable=E0401
+from cogs._settings import log_channel, admin_roles  # pylint: disable=E0401
 
 
 class LoggingMessageEdit(commands.Cog):

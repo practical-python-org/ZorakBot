@@ -3,7 +3,7 @@ The point handler for the whole server.
 """
 import discord
 from discord.ext import commands
-from cogs._settings import log_channel
+from cogs._settings import log_channel  # pylint: disable=E0401
 
 class Points(commands.Cog):
     """

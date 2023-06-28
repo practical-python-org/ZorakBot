@@ -4,7 +4,7 @@ This is a handler that adds a Need Approval role and sends the user a message.
 from asyncio import sleep
 import discord
 from discord.ext import commands
-from cogs._settings import log_channel, mod_channel, unverified_role
+from cogs._settings import log_channel, mod_channel, unverified_role  # pylint: disable=E0401
 
 
 class LoggingVerification(commands.Cog):
