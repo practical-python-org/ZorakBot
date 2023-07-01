@@ -1,0 +1,82 @@
+name: Bump version
+on:
+  pull_request:
+    types:
+      - closed
+    branches: [ test-bump ]
+
+jobs:
+  bump-version:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN  }}
+
+    - name: Get PR Title
+      id: pr
+      run: |
+        PR_TITLE=$(gh pr view https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }} --json title -q ".title")
+        echo "::set-output name=pr_title::$PR_TITLE"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Git User
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+
+    - name: Bump version and push tag
+      id: bump_version
+      run: |
+        # Parse version bump from PR title
+        PREFIX=$(echo "${{ steps.pr.outputs.pr_title }}" | awk -F':' '{print $1}')
+        git fetch --tags
+        LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo 'v0.0.0')
+        
+        IFS='.' read -ra ADDR <<< "${LATEST_TAG//v}"
+  
+        MAJOR=${ADDR[0]}
+        MINOR=${ADDR[1]}
+        FIX=${ADDR[2]}
+  
+        if [ "$PREFIX" = "major" ]; then
+          MAJOR=$((MAJOR+1))
+          MINOR=0
+          FIX=0
+        elif [ "$PREFIX" = "minor" ]; then
+          MINOR=$((MINOR+1))
+          FIX=0
+        elif [ "$PREFIX" = "fix" ]; then
+          FIX=$((FIX+1))
+        else
+          echo "No valid prefix (major:, minor:, fix:) found in PR title, skipping version bump"
+          exit 0
+        fi
+  
+        NEW_VERSION="v$MAJOR.$MINOR.$FIX"
+        NEW_VERSION_RC="v$MAJOR.$MINOR.$FIX-rc"
+        echo "::set-output name=new_version::$NEW_VERSION"
+        echo "::set-output name=new_version_rc::$NEW_VERSION_RC"
+  
+        git tag $NEW_VERSION
+        git push origin $NEW_VERSION
+        git tag $NEW_VERSION_RC
+        git push origin $NEW_VERSION_RC
+
+
+    - name: Create Pre-Release
+      id: create_release
+      if: steps.bump_version.outputs.new_version_rc != ''
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      with:
+        tag_name: ${{ steps.bump_version.outputs.new_version_rc }}
+        release_name: Pre-Release ${{ steps.bump_version.outputs.new_version_rc }}
+        draft: false
+        prerelease: true
