@@ -10,7 +10,7 @@ from discord.ext import commands
 logger = logging.getLogger(__name__)
 
 
-class GithubSearch(commands.Cog):
+class GeneralDevtimes(commands.Cog):
     """
     Sends the Current local time of the moderation staff.
     """
@@ -67,4 +67,4 @@ class GithubSearch(commands.Cog):
 
 def setup(bot):
     """Required."""
-    bot.add_cog(GithubSearch(bot))
+    bot.add_cog(GeneralDevtimes(bot))
