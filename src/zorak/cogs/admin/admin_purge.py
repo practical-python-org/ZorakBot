@@ -3,8 +3,6 @@ Admin command to remove messages in bulk.
 """
 from discord.ext import commands
 
-from zorak.cogs import log_channel  # pylint: disable=E0401
-
 
 class AdminPurge(commands.Cog):
     """
@@ -27,10 +25,10 @@ class AdminPurge(commands.Cog):
 
         # removes the need for a response
         await ctx.defer()
-        logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])  # Welcome channel
+        logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])  # Welcome channel
 
         # Check that users are not removing from log channels
-        if ctx.channel.id in log_channel.values():
+        if ctx.channel.id in self.bot.server_settings.log_channel.values():
             await ctx.channel.send(f"{ctx.author.mention}, you should not be purging the {ctx.channel.mention}.")
             await logs_channel.send(f"{ctx.author.mention} atempted to purge the {ctx.channel.mention}.")
         else:

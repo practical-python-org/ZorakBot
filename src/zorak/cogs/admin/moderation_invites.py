@@ -7,8 +7,6 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
-from zorak.cogs import log_channel  # pylint: disable=E0401
-
 
 class ModerationInvites(commands.Cog):
     """
@@ -81,7 +79,7 @@ class ModerationInvites(commands.Cog):
             return embed
 
         if is_invite(txt) is True:
-            logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
+            logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
             await logs_channel.send(embed=log_message(message))
             await message.delete()
             await current_channel.send(embed=embed_warning(message))

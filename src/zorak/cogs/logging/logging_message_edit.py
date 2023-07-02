@@ -3,7 +3,6 @@ Logs when messages are edited.
 """
 from discord.ext import commands
 
-from zorak.cogs import admin_roles, log_channel  # pylint: disable=E0401
 from zorak.utilities.cog_helpers._embeds import (
     embed_message_edit,  # pylint: disable=E0401
 )
@@ -32,12 +31,12 @@ class LoggingMessageEdit(commands.Cog):
             author = message_before.author
 
             for role in message_before.author.roles:
-                if role.id not in admin_roles.values():
+                if role.id not in self.bot.server_settings.admin_roles.values():
                     # Dont log admin actions.
                     # This just gets really messy when we are cleaning things up
                     # or doing dodgy business in secret places.
                     embed = embed_message_edit(username, author, message_before, message_after)
-                    logs_channel = await self.bot.fetch_channel(log_channel["chat_log"])
+                    logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["chat_log"])
                     await logs_channel.send(embed=embed)
                     return
 

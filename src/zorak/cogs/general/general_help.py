@@ -9,8 +9,6 @@ import logging
 import discord
 from discord.ext import commands
 
-from zorak.cogs import server_info  # pylint: disable=E0401
-
 logger = logging.getLogger(__name__)
 
 
@@ -18,6 +16,10 @@ class HelpButtons(discord.ui.View):
     """
     Here we create the button class for handling the helper.
     """
+
+    def __init__(self, server_settings, *, timeout=None):
+        super().__init__(timeout=timeout)
+        self.server_settings = server_settings
 
     async def on_timeout(self):
         """
@@ -33,17 +35,17 @@ class HelpButtons(discord.ui.View):
         the button for the Server info.
         """
         embed = discord.Embed(
-            title=server_info["name"],
-            description=f"**- Website -**\n{server_info['website']}\n\n"
+            title=self.server_settings.server_info["name"],
+            description=f"**- Website -**\n{self.server_settings.server_info['website']}\n\n"
             f" \**- Owner -**\n{interaction.guild.owner}\n\n"  # pylint: disable=W1401
-            f" \**- Email -**\n{server_info['email']}\n\n"  # pylint: disable=W1401
-            f" \**- Invite Link -**\n{server_info['invite']}\n\n"  # pylint: disable=W1401
-            f" \**- Leave a reveiw -**\n{server_info['review']}\n\n"  # pylint: disable=W1401
+            f" \**- Email -**\n{self.server_settings.server_info['email']}\n\n"  # pylint: disable=W1401
+            f" \**- Invite Link -**\n{self.server_settings.server_info['invite']}\n\n"  # pylint: disable=W1401
+            f" \**- Leave a reveiw -**\n{self.server_settings.server_info['review']}\n\n"  # pylint: disable=W1401
             f" \**- Questions? -**\nMake a ticket using /ticket, or"  # pylint: disable=W1401
             f" send us an email.",
             color=discord.Color.yellow(),
         )
-        embed.set_thumbnail(url=server_info["logo"])
+        embed.set_thumbnail(url=self.server_settings.server_info["logo"])
         await interaction.response.send_message(embed=embed)
 
     @discord.ui.button(label="Running code", row=0, style=discord.ButtonStyle.success)
@@ -83,7 +85,7 @@ class HelpCommand(commands.Cog):
         A standard slash command.
         """
         logger.info("%s used the %s command.", ctx.author.name, ctx.command)
-        await ctx.respond("What do you want, human?", view=HelpButtons(timeout=120))
+        await ctx.respond("What do you want, human?", view=HelpButtons(self.bot.server_settings, timeout=120))
 
 
 def setup(bot):

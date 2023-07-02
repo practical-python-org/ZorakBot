@@ -6,8 +6,6 @@ import logging
 import discord
 from discord.ext import commands
 
-from zorak.cogs import admin_roles, mod_channel  # pylint: disable=E0401
-
 logger = logging.getLogger(__name__)
 
 
@@ -27,7 +25,7 @@ class AddTicketButton(commands.Cog):
         logger.info("%s used the %s command.", ctx.author.name, ctx.command)
         await ctx.respond(
             "Do you need help, or do you have a question for the Staff?",
-            view=MakeATicket(),
+            view=MakeATicket(self.bot.server_settings),
             ephemeral=True,
         )
 
@@ -36,6 +34,10 @@ class MakeATicket(discord.ui.View):
     """
     A UI component that sends a button, which does other things.
     """
+
+    def __init__(self, server_settings, *, timeout=None):
+        super().__init__(timeout=timeout)
+        self.server_settings = server_settings
 
     @discord.ui.button(label="Open a support Ticket", style=discord.ButtonStyle.primary)
     async def button_callback(self, button, interaction):
@@ -47,8 +49,8 @@ class MakeATicket(discord.ui.View):
         button.disabled = True
         await interaction.edit_original_response(view=self)
 
-        support = await interaction.guild.fetch_channel(mod_channel["server_support"])
-        staff = interaction.guild.get_role(admin_roles["staff"])
+        support = await interaction.guild.fetch_channel(self.server_settings.mod_channel["server_support"])
+        staff = interaction.guild.get_role(self.server_settings.admin_roles["staff"])
 
         ticket = await support.create_thread(
             name=f"[Ticket] - {interaction.user}",

@@ -6,12 +6,6 @@ from asyncio import sleep
 import discord
 from discord.ext import commands
 
-from zorak.cogs import (  # pylint: disable=E0401
-    log_channel,
-    mod_channel,
-    unverified_role,
-)
-
 
 class LoggingVerification(commands.Cog):
     """
@@ -27,10 +21,10 @@ class LoggingVerification(commands.Cog):
     async def on_member_join(self, member: discord.Member):
         """On join, do this stuff."""
         # Add verification role
-        await member.add_roles(member.guild.get_role(unverified_role["needs_approval"]))
+        await member.add_roles(member.guild.get_role(self.bot.server_settings.unverified_role["needs_approval"]))
 
         # Log unverified join
-        logs_channel = await self.bot.fetch_channel(log_channel["verification_log"])  # ADMIN user log
+        logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])  # ADMIN user log
         await logs_channel.send(f"<@{member.id}> joined, but has not verified.")
 
         # Send Welcome
@@ -42,7 +36,7 @@ I'm Zorak, the moderatior of {guild.name}.
 We are very happy that you have decided to join us.
 Before you are allowed to chat, you need to verify that you aren't a bot.
 Dont worry, it's easy. Just go to 
-{self.bot.get_channel(mod_channel['verification_channel']).mention}
+{self.bot.get_channel(self.bot.server_settings.mod_channel['verification_channel']).mention}
 and click the green button.
 
 After you do, all of {guild.name} is availibe to you. Have a great time :-)

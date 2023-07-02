@@ -11,9 +11,6 @@ from discord.ext import commands
 
 logger = logging.getLogger(__name__)
 
-try:
-    from zorak.cogs import reaction_role_data
-
     REACTION_ROLES = reaction_role_data["reaction_roles"]
     SELECTORS = reaction_role_data["selectors"]
 except Exception as e:
@@ -84,10 +81,11 @@ class SelectView(discord.ui.View):
     Consider this the entrypoint for all the other classes defined above.
     """
 
-    def __init__(self, *, timeout=180):
+    def __init__(self, reaction_role_data, *, timeout=180):
         super().__init__(timeout=timeout)
-        for menu in SELECTORS:
-            self.add_item(RoleDropdownSelector(SELECTORS[menu]))
+        selectors = reaction_role_data["selectors"]
+        for menu in selectors:
+            self.add_item(RoleDropdownSelector(selectors[menu]))
 
 
 class Roles(commands.Cog):
@@ -105,7 +103,13 @@ class Roles(commands.Cog):
     @commands.slash_command(description="Get new roles, or change the ones you have!")
     async def roles(self, ctx):
         """The slash command that initiates the fancy menus."""
-        await ctx.respond("Edit Reaction Roles", view=SelectView(), ephemeral=True)
+        if hasattr(self.bot, "reaction_role_data"):
+            if hasattr(self.bot.server_settings, "reaction_roles"):
+                await ctx.respond("Edit Reaction Roles", view=SelectView(self.bot.bot.server_settings.reaction_role_data), ephemeral=True)
+            else:
+                await ctx.respond("No reaction roles have been set up!", ephemeral=True)
+        else:
+            await ctx.respond("No server settings have been set up!", ephemeral=True)
 
 
 def setup(bot):

@@ -316,11 +316,10 @@ def initialise_bot_db(
             attempts += 1
     if connected:
         logger.info("Connected to database.")
-        db_client.initialise_user_table()
+        db_client.initialise_user_table()  # type: ignore
         # This makes the table if it doesn't exist
         # and ensures the validation rules.
-        db_client.initialise_news_table()
-        bot.db_client = db_client
+        db_client.initialise_news_table()  # type: ignore
+        bot.db_client = db_client  # type: ignore
         # This adds the db_client to the bot
         # object so that it can be accessed elsewhere.
-    return bot

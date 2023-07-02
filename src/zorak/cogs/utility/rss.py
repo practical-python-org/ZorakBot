@@ -1,5 +1,5 @@
 """
-Grabs info from an RSS feed, and posts it in the server.
+Grabs info from an RSS feed, and posts it in the server. TODO Clean
 """
 from asyncio import sleep
 
@@ -7,8 +7,6 @@ import discord
 import feedparser
 import html2text
 from discord.ext import commands
-
-from zorak.cogs import normal_channel, rss_feed  # pylint: disable=E0401
 
 
 class RSS(commands.Cog):
@@ -30,8 +28,8 @@ class RSS(commands.Cog):
             the TOML, so that we can check what we have already sent"""
             most_recent_ids = []
 
-            for news_source in rss_feed.keys():
-                news_feed = feedparser.parse(rss_feed[news_source])
+            for news_source in self.bot.server_settings.rss_feed.keys():
+                news_feed = feedparser.parse(self.bot.server_settings.rss_feed[news_source])
 
                 id_code = news_feed["entries"][0]["id"]
                 most_recent_ids.append(id_code)
@@ -44,7 +42,7 @@ class RSS(commands.Cog):
             Each news story is parsed 'slightly' different, which is annoying."""
 
             def send_python_software_foundation(id_tag):
-                newsfeed = feedparser.parse(rss_feed["Python_Software_foundation"])
+                newsfeed = feedparser.parse(self.bot.server_settings.rss_feed["Python_Software_foundation"])
                 id_code = newsfeed["entries"][0]["id"]
                 if id_tag == id_code:
                     # if the ID code in the article matches the ID we grabbed in get_IDs(), send.
@@ -74,7 +72,7 @@ class RSS(commands.Cog):
                 return None
 
             def send_jetbrains(id_tag):
-                jetbrains = rss_feed["jetbrains"]
+                jetbrains = self.bot.server_settings.rss_feed["jetbrains"]
                 newsfeed = feedparser.parse(jetbrains)
                 id_code = newsfeed["entries"][0]["id"]
                 if id_tag == id_code:
@@ -120,7 +118,7 @@ class RSS(commands.Cog):
 
             for entry in story_queue:
                 if entry not in sent_id_list:
-                    news_channel = await self.bot.fetch_channel(normal_channel["news_channel"])
+                    news_channel = await self.bot.fetch_channel(self.bot.server_settings.normal_channel["news_channel"])
 
                     await news_channel.send(embed=send_news(entry))
                     self.bot.db_client.add_story_to_table(entry)

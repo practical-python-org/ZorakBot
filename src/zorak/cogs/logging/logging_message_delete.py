@@ -6,8 +6,6 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
-from zorak.cogs import admin_roles, log_channel  # pylint: disable=E0401
-
 # from utilities.cog_helpers._embeds import  embed_message_delete
 
 
@@ -62,10 +60,10 @@ class LoggingMessageDelete(commands.Cog):
             inline=True,
         )
 
-        logs_channel = await self.bot.fetch_channel(log_channel["chat_log"])
+        logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["chat_log"])
 
         for role in message.author.roles:
-            if role.id in admin_roles.values():
+            if role.id in self.bot.server_settings.admin_roles.values():
                 await logs_channel.send(embed=embed)
                 return
         await logs_channel.send(f"{username.mention}", embed=embed)

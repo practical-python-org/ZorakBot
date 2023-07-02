@@ -4,7 +4,6 @@ TODO: Would be cool to add an API that detects nasty images here.
 """
 from discord.ext import commands
 
-from zorak.cogs import log_channel  # pylint: disable=E0401
 from zorak.utilities.cog_helpers._embeds import embed_avatar  # pylint: disable=E0401
 
 
@@ -24,7 +23,7 @@ class LoggingAvatars(commands.Cog):
         if before.avatar != after.avatar:
             embed = embed_avatar(before, after)
 
-            logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
+            logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
             await logs_channel.send(embed=embed)
 
 

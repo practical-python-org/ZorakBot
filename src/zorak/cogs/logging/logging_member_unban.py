@@ -3,7 +3,6 @@ Logs when a member is UN-banned.
 """
 from discord.ext import commands
 
-from zorak.cogs import log_channel  # pylint: disable=E0401
 from zorak.utilities.cog_helpers._embeds import embed_unban  # pylint: disable=E0401
 
 
@@ -22,7 +21,7 @@ class LoggingUnbans(commands.Cog):
         """
         embed = embed_unban(member)
 
-        logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
+        logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
         await logs_channel.send(embed=embed)
 
 

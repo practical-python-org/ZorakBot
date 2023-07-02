@@ -4,13 +4,6 @@ Once a user verifies, this cog is called.
 import discord
 from discord.ext import commands
 
-from zorak.cogs import (  # pylint: disable=E0401
-    log_channel,
-    mod_channel,
-    normal_channel,
-    user_roles,
-)
-
 
 class AdminVerification(discord.ui.View):
     """
@@ -59,12 +52,12 @@ class AdminVerification(discord.ui.View):
             Awesome, {user.mention}. Thank you for verifying.
             Allow me to introduce you {guild.name}.
             
-            1. Be sure to read our {self.bot.get_channel(mod_channel['rules_channel']).mention}.
+            1. Be sure to read our {self.bot.get_channel(self.bot.server_settings.mod_channel['rules_channel']).mention}.
             2. Set some roles using **/roles**
-            3. Introduce yourself in {self.bot.get_channel(normal_channel['general_channel']).mention}.
+            3. Introduce yourself in {self.bot.get_channel(self.bot.server_settings.normal_channel['general_channel']).mention}.
             
-            We keep a ton of awesome links to courses, cool tools, and popular software in {self.bot.get_channel(normal_channel['resources_channel']).mention}.
-            If you have any questions, feel free to post your question in {self.bot.get_channel(normal_channel['python_help_1']).mention}
+            We keep a ton of awesome links to courses, cool tools, and popular software in {self.bot.get_channel(self.bot.server_settings.normal_channel['resources_channel']).mention}.
+            If you have any questions, feel free to post your question in {self.bot.get_channel(self.bot.server_settings.normal_channel['python_help_1']).mention}
             
             I can run your code directly in the server!
             To learn how, type **/help** in any channel.
@@ -80,7 +73,7 @@ class AdminVerification(discord.ui.View):
             await user.remove_roles(role)
             await user.send(embed=embed)
 
-            log_channels = await self.bot.fetch_channel(log_channel["verification_log"])  # ADMIN user log
+            log_channels = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])  # ADMIN user log
             await log_channels.send(f"{user.mention} has verified!")
 
         else:

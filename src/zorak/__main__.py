@@ -9,9 +9,11 @@ import os
 
 import discord
 from discord.ext import commands
-from utilities.core.args_utils import parse_args
-from utilities.core.logging_utils import setup_logger
 from utilities.core.mongo import initialise_bot_db
+
+from zorak.utilities.core.args_utils import parse_args
+from zorak.utilities.core.logging_utils import setup_logger
+from zorak.utilities.core.server_settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -46,12 +48,11 @@ def load_cogs(bot):
                 # except Exception as e:
                 #     logger.warning("Failed to load: {%s}.{%s}, {%s}", directory, file, e)
     logger.info("Loaded all cogs successfully.")
-    return bot
 
 
 def init_bot(token, bot):
     try:
-        bot = load_cogs(bot)
+        load_cogs(bot)
         bot.run(token)
     except TypeError as e:
         print(e)
@@ -72,7 +73,10 @@ def main():
         logger.info("Initialising Database...")
         initialise_bot_db(bot)
 
-    settings_path = args.server_settings_path if args.server_settings_path else os.environ.get("SETTINGS_PATH")
+    settings_path = args.server_settings_path if args.server_settings_path else os.environ.get("SERVER_SETTINGS_PATH")
+    if server_settings_path:
+        logger.info(f"Loading server settings from {server_settings_path}")
+        bot.server_settings = Settings(server_settings_path)  # type: ignore
 
     if args.discord_token:
         init_bot(args.discord_token, bot)

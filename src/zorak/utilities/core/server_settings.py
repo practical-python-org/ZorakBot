@@ -35,9 +35,24 @@ class Settings:
             self.rss_feed = self.feeds["links"]
         except Exception as e:
             logger.warning(f"Failed to grab server info. No file under {server_settings_path}")
+            self.server_info = None
+            self.channels = None
+            self.mod_channel = None
+            self.log_channel = None
+            self.normal_channel = None
+            self.user_roles = None
+            self.admin_roles = None
+            self.elevated_roles = None
+            self.badboi_role = None
+            self.unverified_role = None
+            self.fun_roles = None
+            self.employment_roles = None
+            self.feeds = None
+            self.rss_feed = None
 
         reaction_role_config_path = os.path.join(settings_path, "reaction_roles.toml")
         try:
             self.reaction_role_data = toml.load(reaction_role_config_path)
         except Exception as e:
+            self.reaction_role_data = None
             logger.warning(f"Failed to grab reaction roles. No file under {reaction_role_config_path}")
