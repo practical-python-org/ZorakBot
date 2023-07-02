@@ -63,7 +63,7 @@ def main():
 
     setup_logger(
         level=args.log_level if args.log_level else int(os.getenv("LOGGING_LEVEL", 20)),
-        stream_logs=True,  # args.console_log if args.console_log != None else bool(os.getenv("STREAM_LOGS", False)),
+        stream_logs=args.console_log if args.console_log != None else bool(os.getenv("STREAM_LOGS", False)),
     )
 
     bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
@@ -73,7 +73,7 @@ def main():
         logger.info("Initialising Database...")
         initialise_bot_db(bot)
 
-    settings_path = args.server_settings_path if args.server_settings_path else os.environ.get("SERVER_SETTINGS_PATH")
+    server_settings_path = args.server_settings_path if args.server_settings_path else os.environ.get("SERVER_SETTINGS")
     if server_settings_path:
         logger.info(f"Loading server settings from {server_settings_path}")
         bot.server_settings = Settings(server_settings_path)  # type: ignore

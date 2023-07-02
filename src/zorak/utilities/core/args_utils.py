@@ -46,7 +46,7 @@ class Args:
 
     discord_token: str | None = os.getenv("DISCORD_TOKEN", None)
     log_level: int = int(os.getenv("LOGGING_LEVEL", 20))
-    server_settings_path: str | None = os.getenv("SERVER_SETTINGS_PATH", None)
+    server_settings_path: str | None = os.getenv("SERVER_SETTINGS", None)
     console_log: bool | None = bool(os.getenv("STREAM_LOGS", None))
     drop_db: bool = False
 
@@ -79,8 +79,8 @@ def parse_args() -> Args:
         "--server-settings-path",
         type=str,
         dest="server_settings_path",
-        default=os.getenv("SERVER_SETTINGS_PATH", None),
-        help="Path to the server settings file. " "If not included the SERVER_SETTINGS_PATH env variable is used.",
+        default=os.getenv("SERVER_SETTINGS", None),
+        help="Path to the server settings file. " "If not included the SERVER_SETTINGS env variable is used.",
     )
     arg_parser.add_argument(
         "-cl", "--console-log", dest="console_log", type=bool, default=None, help="Whether to stream logs to the console. "
