@@ -43,16 +43,17 @@ setuptools.setup(
     python_requires=">=3.7",
     extras_require={
         "dev": [
-            "cfgv==3.3.1"
-            "distlib==0.3.6"
-            "filelock==3.9.0"
-            "identify==2.5.17"
-            "nodeenv==1.7.0"
-            "platformdirs==3.0.0"
-            "pre-commit==3.0.4"
-            "PyYAML==6.0"
-            "ruff==0.0.243"
-            "virtualenv==20.19.0"
+            "cfgv==3.3.1",
+            "distlib==0.3.6",
+            "filelock==3.9.0",
+            "identify==2.5.17",
+            "nodeenv==1.7.0",
+            "platformdirs==3.0.0",
+            "pre-commit==3.0.4",
+            "PyYAML==6.0",
+            "ruff==0.0.243",
+            "virtualenv==20.19.0",
+            "versioneer",
         ],
         # 'test': ['coverage'],
     },
