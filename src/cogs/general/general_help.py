@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from src.cogs._settings import server_info
+from cogs._settings import server_info
 
 
 class helpButtons(discord.ui.View):
