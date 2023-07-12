@@ -29,13 +29,13 @@ class helpButtons(discord.ui.View):
     @discord.ui.button(label="Running code", row=0, style=discord.ButtonStyle.success)
     async def third_button_callback(self, button, interaction):
         await interaction.response.send_message(
-            """To run python code in the chat, type:\n\n/run\n\`\`\`py\nx = 'hello world'\nprint(x) \`\`\`"""
+            """To run python code in the chat, type:\n\n/run\n\`\`\`py\nx = 'hello world'\nprint(x)\n\`\`\`"""
         )
 
     @discord.ui.button(label="Code Blocks", row=0, style=discord.ButtonStyle.success)
     async def fourth_button_callback(self, button, interaction):
         await interaction.response.send_message(
-            """To format your python code like this: \n```py x = 'Hello World!' ``` Type this: \`\`\`py Your code here \`\`\`"""
+            """To format your python code like this: ```py\nx = 'Hello World!'\n``` Type this: \n\`\`\`py\nYour code here\n\`\`\`"""
         )
 
 
