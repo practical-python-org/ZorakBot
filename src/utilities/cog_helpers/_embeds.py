@@ -279,7 +279,7 @@ def embed_role_remove(some_member, member_who_did_action, role_obj):
     Embedding for user kick alerts.
     """
     embed = discord.Embed(
-        title=f':negative_squared_cross_mark: Role Update'
+        title=':negative_squared_cross_mark: Role Update'
         , description=f'<@{member_who_did_action.id}> removed a role from <@{some_member.id}>'
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
@@ -325,7 +325,7 @@ def embed_docs(search_term, link_list):
 
         else:
             embed.add_field(
-                name=f"Read more at:"
+                name="Read more at:"
                 , value=f"[Python Official Docs](https://docs.python.org/3/"
                         f"search.html?q={search_term}&check_keywords=yes&area=default)"
                 , inline=False
@@ -353,5 +353,18 @@ def embed_definition(the_word, part_of_speech, definition, synonym, source):
         name=''
         , value=f"[Source]({source})"
         , inline=True
+    )
+    return embed
+
+
+def embed_cant_do_that(message):
+    """
+    Embedding for things you cant do.
+    """
+    embed = discord.Embed(
+        title=''
+        , description=message
+        , color=discord.Color.red()
+        , timestamp=datetime.utcnow()
     )
     return embed

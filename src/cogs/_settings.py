@@ -1,3 +1,7 @@
+"""
+Here we define TOML variables to be used throughout the cogs
+TODO: Kill this shit off.
+"""
 import logging
 import os
 
@@ -6,7 +10,7 @@ import toml
 logger = logging.getLogger(__name__)
 
 stage = os.getenv("SETTINGS")
-logger.info(f"using settings at: {stage}")
+logger.info("using settings at: {%s}", stage)
 
 ############
 #  Server  #
