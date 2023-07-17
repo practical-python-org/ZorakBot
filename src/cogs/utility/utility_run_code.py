@@ -25,10 +25,14 @@ class UtilityRunCode(commands.Cog):
                     , ctx.author.name
                     , ctx.command)
 
+        # Adjust iOS quotation marks “”‘’ to avoid SyntaxError: invalid character 
+        codeblock.translate(codeblock.maketrans("“”‘’", """""''"""))
+
         piston = PistonAPI()
         if codeblock.startswith("```py") is True:
             if codeblock.endswith("```") is True:
-                codeblock = codeblock.replace("```py", "").replace("```", "").strip()
+                # Remove backticks and py/python language indicator from codeblock
+                codeblock = codeblock.replace("```python", "").replace("```py", "").replace("```", "").strip()
             runcode = piston.execute(language="py", version="3.10.0", code=codeblock)
             embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.10")
             embed.add_field(name="Output:", value=runcode)
