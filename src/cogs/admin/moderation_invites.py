@@ -90,7 +90,7 @@ class ModerationInvites(commands.Cog):
             return False
 
         if is_invite(txt):
-            if check_for_admin_override(txt) is False:
+            if not check_for_admin_override(txt):
                 logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
                 await logs_channel.send(embed=log_message(message))
                 await message.delete()
