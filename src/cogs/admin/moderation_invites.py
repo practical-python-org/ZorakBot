@@ -82,12 +82,10 @@ class ModerationInvites(commands.Cog):
             """
             Handling for when a MOD user needs to post an invitation
             """
-            for fixedrole in admin_roles.keys():  # Check the user's roles
-                for auth_roles in message.author.roles:
-                    if fixedrole.lower() == auth_roles.name.lower():
-                        if message.content.startswith('z.invite '):  # check for the flag
-                            return True
-            return False
+            if not message.content.startswith('z.invite '):
+                return False
+
+            return any(role.id in admin_roles.values() for role in message.author.roles)
 
         if is_invite(txt):
             if not check_for_admin_override(txt):
