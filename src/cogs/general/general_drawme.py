@@ -28,6 +28,10 @@ class GeneralDrawMe(commands.Cog):
         sanetized = prompt.replace(" ", "-")
         gen_url = f"https://api.computerender.com/generate/{sanetized}"
         if seed:
+            try:
+                seed = int(seed)
+            except ValueError:
+                seed = sum([ord(char) for char in seed])
             gen_url = gen_url + f"?seed={seed}"
         embed = discord.Embed.from_dict(
             {"title": prompt, "color": 10848322, "image": {"url": gen_url}}
