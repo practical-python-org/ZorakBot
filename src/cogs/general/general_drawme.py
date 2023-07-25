@@ -1,6 +1,8 @@
 """
 uses computerrender API to make a CGI image
 """
+import hashlib
+
 import logging
 import discord
 from discord.ext import commands
@@ -31,7 +33,7 @@ class GeneralDrawMe(commands.Cog):
             try:
                 seed = int(seed)
             except ValueError:
-                seed = sum([ord(char) for char in seed])
+                seed = int(hashlib.sha256(seed.encode()).hexdigest(), 16)
             gen_url = gen_url + f"?seed={seed}"
         embed = discord.Embed.from_dict(
             {"title": prompt, "color": 10848322, "image": {"url": gen_url}}
