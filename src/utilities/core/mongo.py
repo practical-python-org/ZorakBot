@@ -274,6 +274,14 @@ class CustomMongoDBClient(MongoDBClient):
             return user["Points"]
         return None
 
+    def get_top_10(self):
+        """Get the top 10 point earners."""
+        top10 = []
+        # Grab 20, because we filter out staff/bot users later in the command.
+        for x in self.find("UserPoints").sort("Points", -1).limit(20):
+            top10.append(x)
+        return top10
+
     # Used for the RSS_feeds cog
 
     def initialise_news_table(self):
