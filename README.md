@@ -2,97 +2,56 @@
 # ZorakBot
 ZorakBot is the House bot of the Practical Python discord server, which was designed to be the standalone bot in the Server.
 Zorak uses Py-Cord with cogged slash commands, and ties into a Mongo Database.
-The bot features reaction roles, a points system, full server logging, spam prevention and raid protection.
+The bot features reaction roles, a points system, full server logging, Admin commands, spam prevention and raid protection.
 
 Zorak is developed with features by the community. Anyone from our server can contribute.
 
-# Commands and Features
-### Help
-- [X] - /help
-	- [X] - /ping
-	- [X] - /commands
-	- [X] - /run_code
-	- [X] - /code_blocks
-
-### For-fun commands
-- [X] - /hello
-- [X] - /taunt
-- [X] - /catfact
-- [X] - /dogfact
-- [X] - /pugfact
-- [X] - /catpic
-- [X] - /dogpic arg:[breed]
-- [X] - /joke
-- [X] - /quote
-- [X] - /fakeperson
-- [X] - /google arg:[question]
-- [X] - /pokedex arg:[pokemon]
-- [X] - /rolldice
-- [X] - /8ball arg:[question]
-- [X] - /drawme arg:[text] arg:[seed]
-- [X] - /imbored
-
-### Utility Commands
-- [X] - /run \`\`\`py print('hello world')\`\`\`
-- [X] - /pip_search arg:[package]
-- [X] - /github_search arg:[endpoint]
-- [X] - /devtimes
-- [X] - /zeus arg:[website]
-- [ ] - /latex arg:[formula]
-- [ ] - /avatar arg:[user]
-- [ ] - /poll arg:[title] arg:[option1] arg:[option2] arg:[option3]...
-- [ ] - /whois arg:[user]
-- [ ] - /rolls
-- [ ] - /my_points
-
-### Admin-Only Commands
-- [X] - /test
-- [X] - /embed arg:[title] arg:[content]
-- [X] - /suggest arg:[suggestion]
-
-### Cool Tricks
-- [X] - When a link to a discord message is sent in a channel, Zorak will preview that message.
-- [X] - Zorak utilizes Piston API to run code directly in the server.
-- [X] - Verifies new users with a verification button.
-- [X] - Suspicious link detection and removal
-- [X] - Welcome message for new members.
-- [X] - Run code within the server.
-- [X] - Every message gives a user 1 point. Deleting a message removed a point. 
-
-	
 # Deployment
-Clone the bot into a folder of your choice.
 
+Clone the bot into a folder of your choice.
 ```
 git clone https://github.com/Xarlos89/ZorakBot
 ```
-## Docker
-The bot is deployed using docker. Replace the DISCORD_TOKEN env variable with your discord bot token.
+The bot is deployed using docker. 
+Create an .env file from '.env.example'. Docker will use these env variables to spin up your instance of Zorak.
+Replace the DISCORD_TOKEN env variable with your discord bot token.
 
-### Development Workflow
-```zsh
-docker-compose -f dc-dev.yaml up -d
-docker-compose -f dc-dev.yaml exec zorak python __main__.py
-docker-compose -f dc-dev.yaml down --rmi local
-```
-
-> :warning:  If you make changes to the .env variables you will need to bring down the docker stack and back
-
-### Production Deployment
-
+## Production
 ```zsh
 docker-compose -f dc-prod.yaml up -d
 ```
 
-## ENV example:
+For testing, a separate docker-compose file is provided. 'dc-dev.yaml'
+## Development / testing
 
-```ini
-# General Settings
-DISCORD_TOKEN=Some_Junk_Here #secret token found here https://discord.com/developers/applications
-TAG=0.2
-DEV_SETTINGS=TRUE
-
-# Logging
-LOGGING_LEVEL=20 #DEBUG 10
-STREAM_LOGS=FALSE
+You should still have the .env file from the previous steps. Make sure this contains all the relevant info.
+```zsh
+docker-compose -f dc-dev.yaml up -d
+docker-compose -f dc-dev.yaml exec zorak python __main__.py
 ```
+The first command will rebuild your container with the changes you made, and the second command will enter the container and start your bot.
+
+# Contributing to Zorak
+
+Contributing to Zorak is encouraged for everyone. Especially those who are part of our Discord community. 
+We use a Prod / Development git-flow. 
+
+To add a feature / make a bugfix, first create a new branch from the **Development** branch. This will have the most up to date changes.
+Please name your branch:
+- feature/whatever your feature is
+- bugfix/whatever your bugfix is
+- refactor/whatever your refactor is
+
+Make all your commits on that branch, and then make a Pull Request to merge your branch back into **Development**. 
+
+We require approvals on all PRs that go back into Dev. If your PR is linked to a Github Issue, please link the issue in the PR.
+
+Changes will be merged into **Main** when there are changes to merge.
+
+ ### Git-Flow chart
+The chart below demonstrates one feature, and one bugfix. 
+Main and Development already exist. You would want to make a new branch for whatever you're going to do.
+
+
+
+![Untitled Diagram.drawio.png](..%2F..%2FDesktop%2FUntitled%20Diagram.drawio.png)
