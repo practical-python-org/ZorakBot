@@ -21,7 +21,6 @@ class ModerationInvites(commands.Cog):
         """
         Scans every message with the regex below.
         """
-
         txt = message.content
         current_channel = message.channel
 
@@ -78,11 +77,21 @@ class ModerationInvites(commands.Cog):
             )
             return embed
 
-        if is_invite(txt) is True:
-            logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
-            await logs_channel.send(embed=log_message(message))
-            await message.delete()
-            await current_channel.send(embed=embed_warning(message))
+        def check_for_admin_override(arg_message):
+            """
+            Handling for when a MOD user needs to post an invitation
+            """
+            if not message.content.startswith('z.invite '):
+                return False
+
+            return any(role.id in admin_roles.values() for role in message.author.roles)
+
+        if is_invite(txt):
+            if not check_for_admin_override(txt):
+                logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+                await logs_channel.send(embed=log_message(message))
+                await message.delete()
+                await current_channel.send(embed=embed_warning(message))
 
 
 def setup(bot):

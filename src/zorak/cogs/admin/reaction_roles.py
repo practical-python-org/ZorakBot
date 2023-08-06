@@ -11,14 +11,6 @@ from discord.ext import commands
 
 logger = logging.getLogger(__name__)
 
-    REACTION_ROLES = reaction_role_data["reaction_roles"]
-    SELECTORS = reaction_role_data["selectors"]
-except Exception as e:
-    logger.error(f"Failed to load role_data: {e}")
-    REACTION_ROLES = []
-    SELECTORS = []
-
-
 async def remove_roles_if_exists(user, roles):
     """removes roles that a user has if the role exists on them"""
     for role in user.roles:
@@ -105,7 +97,7 @@ class Roles(commands.Cog):
         """The slash command that initiates the fancy menus."""
         if hasattr(self.bot, "reaction_role_data"):
             if hasattr(self.bot.server_settings, "reaction_roles"):
-                await ctx.respond("Edit Reaction Roles", view=SelectView(self.bot.bot.server_settings.reaction_role_data), ephemeral=True)
+                await ctx.respond("Edit Reaction Roles", view=SelectView(self.bot.server_settings.reaction_role_data), ephemeral=True)
             else:
                 await ctx.respond("No reaction roles have been set up!", ephemeral=True)
         else:

@@ -6,6 +6,7 @@ from __future__ import annotations
 import discord
 from discord.ext import commands
 
+from zorak.utilities.cog_helpers._embeds import embed_leaderboard
 
 class Points(commands.Cog):
     """
@@ -114,18 +115,35 @@ class Points(commands.Cog):
         await ctx.respond("Points reset for all users.")
 
     @commands.slash_command()
-    async def my_points(self, ctx):
-        """Get your points."""
-        points = self.bot.db_client.get_user_points(ctx.author.id)
-        await ctx.respond(f"You have {points} point{('s', '')[abs(points) == 1]}.")
-
-    @commands.slash_command()
     @commands.has_any_role("Staff", "Owner", "Project Manager")
     async def get_points_for_user(self, ctx, mention: discord.Option[str]):
         """Get points for a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         points = self.bot.db_client.get_user_points(user.id)
         await ctx.respond(f"{mention} has {points} point{('s', '')[abs(points) == 1]}.")
+
+    @commands.slash_command()
+    async def leaderboard(self, ctx):
+        """Get your points."""
+
+        def is_staff(member_obj):
+            """ Tells us if the 'member_obj' has an admin role. """
+            for role in self.bot.server_settings.admin_roles:
+                if self.bot.server_settings.admin_roles[role] in [y.id for y in member_obj.roles]:
+                    return True
+            return False
+
+        top10_no_staff = []
+        points = self.bot.db_client.get_top_10()
+        guild = self.bot.get_guild(self.bot.server_settings.server_info['id'])
+        for person in points:
+            member = guild.get_member(person['UserID'])
+            if not is_staff(member):
+                top10_no_staff.append((member, person['Points']))
+
+        embed = embed_leaderboard(top10_no_staff)
+        await ctx.respond(embed=embed)
+
 
 
 def setup(bot):

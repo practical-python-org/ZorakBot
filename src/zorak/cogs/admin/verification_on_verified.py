@@ -15,7 +15,7 @@ class AdminVerification(discord.ui.View):
         super().__init__(timeout=None)
 
     @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.success)
-    async def verify_button_callback(self, interaction):
+    async def verify_button_callback(self, bot, interaction):
         """
         This is the stuff that happens
         - Send a nice happy message.

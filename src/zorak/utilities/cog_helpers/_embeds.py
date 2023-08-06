@@ -6,6 +6,8 @@ in one place.
 from datetime import datetime
 import discord
 
+from cogs._settings import server_info
+
 
 def embed_avatar(before, after):
     """
@@ -334,6 +336,7 @@ def embed_docs(search_term, link_list):
 
     return embed
 
+
 def embed_definition(the_word, part_of_speech, definition, synonym, source):
     """
     Embedding for /define command
@@ -367,4 +370,27 @@ def embed_cant_do_that(message):
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
     )
+    return embed
+
+
+def embed_leaderboard(people_list):
+    """
+        Embedding for the leaderboard command.
+        """
+    embed = discord.Embed(
+        title=f"{server_info['name']}'s Top Point earners"
+        , color=discord.Color.gold()
+        , timestamp=datetime.utcnow()
+    )
+
+    embed.set_thumbnail(
+        url=server_info['logo']
+    )
+    for place, person in enumerate(people_list):
+        embed.add_field(
+            name=f"#{place+1}  -  {person[0].display_name}"
+            , value=f"Points: {person[1]}"
+            , inline=False
+        )
+
     return embed
