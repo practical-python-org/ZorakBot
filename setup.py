@@ -26,7 +26,9 @@ setuptools.setup(
         "feedparser",
         "html2text",
         "pymongo",
-        "youtube_dl",
+        "PyNaCl==1.5.0",
+        "ffmpeg-python==0.2.0",
+        "yt-dlp==2023.7.6",
     ],
     classifiers=[
         # see https://pypi.org/classifiers/
