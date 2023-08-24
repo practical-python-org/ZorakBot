@@ -141,7 +141,7 @@ class Points(commands.Cog):
             if not is_staff(member):
                 top10_no_staff.append((member, person['Points']))
 
-        embed = embed_leaderboard(top10_no_staff)
+        embed = embed_leaderboard(top10_no_staff, self.bot.server_settings.server_info['name'], self.bot.server_settings.server_info['logo'])
         await ctx.respond(embed=embed)
 
 

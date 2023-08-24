@@ -3,7 +3,7 @@ on:
   pull_request:
     types:
       - closed
-    branches: [ test-bump ]
+    branches: [ Development ]
 
 jobs:
   bump-version:

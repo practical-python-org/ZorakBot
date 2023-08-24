@@ -12,7 +12,7 @@ setuptools.setup(
     package_dir={"": "src"},
     include_package_data=True,
     packages=setuptools.find_packages(where="src"),
-    entry_points={"console_scripts": ["zorak=__main__:main"]},
+    entry_points={"console_scripts": ["zorak=zorak.__main__:main"]},
     package_data={"": ["*.toml"]},
     install_requires=[
         "py-cord",

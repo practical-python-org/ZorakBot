@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 class Settings:
     def __init__(self, settings_path):
-        server_settings_path = os.path.join(settings_path, "server_info.toml")
+        server_settings_path = os.path.join(settings_path, "channel_info.toml")
         try:
             server_settings = toml.load(server_settings_path)
 

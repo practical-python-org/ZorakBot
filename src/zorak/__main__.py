@@ -9,7 +9,7 @@ import os
 
 import discord
 from discord.ext import commands
-from utilities.core.mongo import initialise_bot_db
+from zorak.utilities.core.mongo import initialise_bot_db
 
 from zorak.utilities.core.args_utils import parse_args
 from zorak.utilities.core.logging_utils import setup_logger
@@ -43,7 +43,10 @@ def load_cogs(bot):
                 # try:
                 cog_path = os.path.join(cog_subdir_path, file)
                 logger.info(f"Loading Cog: {cog_path}")
-                bot.load_extension(f"cogs.{directory}.{file[:-3]}")
+                try:
+                    bot.load_extension(f"zorak.cogs.{directory}.{file[:-3]}")
+                except Exception as e:
+                    logger.warning("Failed to load: {%s}.{%s}, {%s}", directory, file, e)
                 #     logger.debug(f"Loaded Cog: {cog_path}")
                 # except Exception as e:
                 #     logger.warning("Failed to load: {%s}.{%s}, {%s}", directory, file, e)

@@ -5,6 +5,5 @@ COPY . /code
 WORKDIR /code
 
 CMD pip install .
-# make sure all messages always reach console
 
 ENTRYPOINT ["zorak"]
