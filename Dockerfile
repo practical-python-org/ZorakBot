@@ -4,6 +4,6 @@ ENV PYTHONUNBUFFERED=1
 COPY . /code
 WORKDIR /code
 
-CMD pip install .
+RUN pip install .
 
 ENTRYPOINT ["zorak"]

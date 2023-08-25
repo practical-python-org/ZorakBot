@@ -158,3 +158,4 @@ data/
 # ignore db data
 db/*
 /deploy
+.env
