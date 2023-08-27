@@ -6,7 +6,7 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
-# from utilities.cog_helpers._embeds import  embed_message_delete
+from zorak.utilities.cog_helpers._embeds import embed_message_delete
 
 
 class LoggingMessageDelete(commands.Cog):
@@ -27,46 +27,26 @@ class LoggingMessageDelete(commands.Cog):
         https://discordpy.readthedocs.io/en/stable/api.html
         ?highlight=audit%20log#discord.AuditLogAction.message_delete
         """
-        # current_guild = self.bot.get_guild(server_info['id'])
-        # audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
-        #
-        # if str(audit_log.action) == 'AuditLogAction.message_delete':
-        #     member = current_guild.get_member(audit_log.user.id)
-        #
-        #     embed = embed_message_delete(member, audit_log.target, message)
-        #
-        #     logs_channel = await self.bot.fetch_channel(log_channel["chat_log"])
-        #     await logs_channel.send(embed=embed)
-        #     return
-
-        if message.author.nick is None:
-            username = message.author
-        else:
-            username = message.author.nick
-
-        author = message.author
-
-        embed = discord.Embed(
-            title="<:red_circle:1043616578744357085> Deleted Message",
-            description=f"Deleted by {username}\nIn {message.channel.mention}",
-            color=discord.Color.dark_red(),
-            timestamp=datetime.utcnow(),
-        )
-        embed.set_thumbnail(url=author.avatar)
-
-        embed.add_field(
-            name="Message: ",
-            value=message.content,  # ToDo: This throws an error when deleting an embed.
-            inline=True,
-        )
-
+        current_guild = self.bot.get_guild(self.bot.server_settings.server_info['id'])
+        audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
         logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["chat_log"])
+        # If the audit log is triggered, it means someone OTHER than the author deleted the message.
+        if str(audit_log.action) == 'AuditLogAction.message_delete':
+            member = current_guild.get_member(audit_log.user.id)
+            embed = embed_message_delete(audit_log.user, message)
+            await logs_channel.send(embed=embed)
 
-        for role in message.author.roles:
-            if role.id in self.bot.server_settings.admin_roles.values():
-                await logs_channel.send(embed=embed)
-                return
-        await logs_channel.send(f"{username.mention}", embed=embed)
+            return
+        else:
+            # Otherwise, the author deleted it.
+            username = message.author
+
+            for role in message.author.roles:
+                if role.id in self.bot.server_settings.admin_roles.values():
+                    await logs_channel.send(embed=embed_message_delete(username, message))
+                    return
+
+            await logs_channel.send(f"{username.mention}", embed=embed_message_delete(username, message))
 
 
 def setup(bot):
