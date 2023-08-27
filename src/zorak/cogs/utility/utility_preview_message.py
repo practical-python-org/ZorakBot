@@ -27,7 +27,10 @@ class UtilityPreview(commands.Cog):
                 sourcechannel = sourceserver.get_channel(int(link[5]))
                 sourcemessage = await sourcechannel.fetch_message(int(link[6]))
 
-                if len(sourcemessage.content) <= 1000:
+                if len(sourcemessage.content) == 0:
+                    return
+
+                elif 0 < len(sourcemessage.content) <= 1000:
                     embed = discord.Embed(
                         title="Link preview: ",
                         description=f"Length: {len(sourcemessage.content)}",
