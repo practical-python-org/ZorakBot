@@ -23,19 +23,23 @@ class AdminVerification(discord.ui.View):
         user = interaction.user
         guild = interaction.guild
         roles = guild.roles
-        role = discord.utils.get(roles, id=user_roles["unverified"]["needs_approval"])
+        unverified_role = discord.utils.get(roles, id=self.bot.server_settings.unverified_role['needs_approval'])
+
+        # Moved this up here, as someone "unverified" might be able to block the command.
+        if "Needs Approval" not in [role.name for role in user.roles]:
+            await user.send("You have already been Verified. Go away.")
 
         website = "https://practical-python-org.github.io/Home/"
-        website_emoji = discord.utils.get(self.bot.emojis, name="logo")
+        website_emoji = ":globe_with_meridians:"
         email = "Practicalpython-staff@pm.me"
-        email_emoji = "<:email:1040342884240597122>"
+        email_emoji = ":email:"
         review = "https://disboard.org/review/create/900302240559018015"
         review_emoji = "<:100:1040342353417863318>"
         created = str(guild.created_at.timestamp())
         created = created[:10]
         created_emoji = "<:triangular_flag_on_post:1040343017204228217>"
         owner = guild.owner.mention
-        owner_emoji = discord.utils.get(self.bot.emojis, name="xarlos")
+        owner_emoji = (":crown:")
         invite = "https://discord.gg/vgZmgNwuHw"
         invite_emoji = "<:heart_hands:1040343137454915594>"
 
@@ -70,14 +74,13 @@ class AdminVerification(discord.ui.View):
         embed.add_field(name="Information", value=info)
 
         if "Needs Approval" in [role.name for role in user.roles]:
-            await user.remove_roles(role)
+            await user.remove_roles(unverified_role)
             await user.send(embed=embed)
 
             log_channels = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])  # ADMIN user log
             await log_channels.send(f"{user.mention} has verified!")
 
-        else:
-            await user.send("You have already been Verified. Go away.")
+
 
 
 class VerifyHelper(commands.Cog):
