@@ -46,7 +46,7 @@ setuptools.setup(
     extras_require={
         "dev": [
             "cfgv==3.3.1",
-            "distlib==0.3.6",
+            "distlib==0.3.7",
             "filelock==3.9.0",
             "identify==2.5.17",
             "nodeenv==1.7.0",
