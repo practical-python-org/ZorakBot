@@ -1,5 +1,7 @@
 """
 Grabs info from an RSS feed, and posts it in the server. TODO Clean
+
+this cog is retired, and not loaded by the bot. If we want to add the features again, we can.
 """
 from asyncio import sleep
 

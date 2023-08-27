@@ -18,7 +18,6 @@ class UtilityRunCode(commands.Cog):
     @commands.command()
     async def run(self, ctx, *, codeblock):
         """
-        # TODO: put this in it's own cog.
         Uses Piston-API to run code in the server.
         """
         logger.info("%s used the %s command."
