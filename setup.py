@@ -49,7 +49,7 @@ setuptools.setup(
             "distlib==0.3.7",
             "filelock==3.9.0",
             "identify==2.5.27",
-            "nodeenv==1.7.0",
+            "nodeenv==1.8.0",
             "platformdirs==3.0.0",
             "pre-commit==3.0.4",
             "PyYAML==6.0.1",
