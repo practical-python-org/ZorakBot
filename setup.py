@@ -50,7 +50,7 @@ setuptools.setup(
             "filelock==3.12.2",
             "identify==2.5.27",
             "nodeenv==1.8.0",
-            "platformdirs==3.0.0",
+            "platformdirs==3.10.0",
             "pre-commit==3.3.3",
             "PyYAML==6.0.1",
             "ruff==0.0.286",
