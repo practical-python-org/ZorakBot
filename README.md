@@ -81,7 +81,8 @@ Main and Development already exist. You would want to make a new branch for what
 
 
 
-![Untitled Diagram.drawio.png](..%2F..%2FDesktop%2FUntitled%20Diagram.drawio.png)
+![git-flow](https://github.com/practical-python-org/ZorakBot/assets/33434582/9d04d6a1-305f-48d9-8cee-be3ad08e099f)
+
 
 
 ### Version Bumping through PR titles
