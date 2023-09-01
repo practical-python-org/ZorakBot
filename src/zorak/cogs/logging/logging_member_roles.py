@@ -31,12 +31,14 @@ class LoggingRoles(commands.Cog):
             responsible_member = audit_log.user
 
             changed_roles = []
+            logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
             if len(before.roles) > len(after.roles):
                 for role in before.roles:
                     if role not in after.roles:
                         changed_roles.append(role)
                 for item in changed_roles:
                     embed = embed_role_remove(target_member, responsible_member, item)
+                    await logs_channel.send(embed=embed)
 
             elif len(before.roles) < len(after.roles):
                 for role in after.roles:
@@ -44,9 +46,8 @@ class LoggingRoles(commands.Cog):
                         changed_roles.append(role)
                 for item in changed_roles:
                     embed = embed_role_add(target_member, responsible_member, item)
+                    await logs_channel.send(embed=embed)
 
-            logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
-            await logs_channel.send(embed=embed)  # Fix - possibly unbound local variable 'embed'
 
 
 def setup(bot):
