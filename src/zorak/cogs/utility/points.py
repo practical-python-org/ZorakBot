@@ -52,14 +52,14 @@ class Points(commands.Cog):
     # #     await ctx.respond("Database backed up.")
 
     @commands.slash_command()
-    @commands.has_any_role("Staff", "Owner", "Project Manager")
+    @commands.has_any_role("Admin", "Owner", "Staff", "Project Manager")
     async def add_all_members_to_db(self, ctx):
         """Add all members to the database."""
         self.bot.db_client.create_table_from_members(ctx.guild.members)
         await ctx.respond("All members added to database.")
 
     @commands.slash_command()
-    @commands.has_any_role("Staff", "Owner", "Project Manager")
+    @commands.has_any_role("Admin", "Owner", "Staff", "Project Manager")
     async def add_points_to_user(self, ctx, mention, points):
         """Add points to a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
@@ -69,7 +69,7 @@ class Points(commands.Cog):
         await ctx.respond(f"{points} point{('s', '')[abs(int(points)) == 1]} added to {mention}.")
 
     @commands.slash_command()
-    @commands.has_any_role("Staff", "Owner", "Project Manager")
+    @commands.has_any_role("Admin", "Owner", "Staff", "Project Manager")
     async def add_points_to_all_users(self, ctx, points):
         """Add points to all users."""
         self.bot.db_client.add_points_to_all_users(int(points))
@@ -78,7 +78,7 @@ class Points(commands.Cog):
         await ctx.respond(f"{points} point{('s', '')[abs(int(points)) == 1]} added to all users.")
 
     @commands.slash_command()
-    @commands.has_any_role("Staff", "Owner", "Project Manager")
+    @commands.has_any_role("Admin", "Owner", "Staff", "Project Manager")
     async def remove_points_from_user(self, ctx, mention, points):
         """Remove points from a user."""
         mention = str(mention)
@@ -90,7 +90,7 @@ class Points(commands.Cog):
         await ctx.respond(f"{points} point{('s', '')[abs(points) == 1]} removed from {mention}.")
 
     @commands.slash_command()
-    @commands.has_any_role("Staff", "Owner", "Project Manager")
+    @commands.has_any_role("Admin", "Owner", "Staff", "Project Manager")
     async def remove_points_from_all_users(self, ctx, points):
         """Remove points from all users."""
         points = int(points)
@@ -100,7 +100,7 @@ class Points(commands.Cog):
         await ctx.respond(f"{points} point{('s', '')[abs(points) == 1]} removed from all users.")
 
     @commands.slash_command()
-    @commands.has_any_role("Staff", "Owner", "Project Manager")
+    @commands.has_any_role("Admin", "Owner", "Staff", "Project Manager")
     async def reset_points_for_user(self, ctx, mention):
         """Reset points for a user."""
         mention = str(mention)
@@ -111,7 +111,7 @@ class Points(commands.Cog):
         await ctx.respond(f"Points reset for {mention}.")
 
     @commands.slash_command()
-    @commands.has_any_role("Staff", "Owner", "Project Manager")
+    @commands.has_any_role("Admin", "Owner", "Staff", "Project Manager")
     async def reset_points_for_all_users(self, ctx):
         """Reset points for all users."""
         self.bot.db_client.set_all_user_points(0)
@@ -120,7 +120,7 @@ class Points(commands.Cog):
         await ctx.respond("Points reset for all users.")
 
     @commands.slash_command()
-    @commands.has_any_role("Staff", "Owner", "Project Manager")
+    @commands.has_any_role("Admin", "Owner", "Staff", "Project Manager")
     async def get_points_for_user(self, ctx, mention):
         """Get points for a user."""
         mention = str(mention)
@@ -142,8 +142,8 @@ class Points(commands.Cog):
         top10_no_staff = []
         points = self.bot.db_client.get_top_10()
         guild = self.bot.get_guild(self.bot.server_settings.server_info['id'])
-        for iteration, person in enumerate(points):
-            if iteration < 11:
+        if len(top10_no_staff) < 10:  # should only allow 10 people into the list
+            for iteration, person in enumerate(points):
                 member = guild.get_member(person['UserID'])
                 if not is_staff(member):
                     top10_no_staff.append((member, person['Points']))
