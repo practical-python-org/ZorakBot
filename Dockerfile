@@ -4,6 +4,6 @@ ENV PYTHONUNBUFFERED=1
 COPY . /code
 WORKDIR /code
 
-RUN pip install .
+RUN pip install . && apt-get update && apt-get install -y ffmpeg
 
 ENTRYPOINT ["zorak"]
