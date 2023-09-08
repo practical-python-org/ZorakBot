@@ -15,13 +15,10 @@ logger = logging.getLogger(__name__)
 
 def is_multi_lang(lang):
     """Tests if input is a list."""
-    if isinstance(lang, list):
-        return True
-    else:
-        return False
+    return isinstance(lang, list)
 
 
-class googletrans_func(commands.Cog):
+class GoogleTranslate(commands.Cog):
     """Main class for googletrans"""
     def __init__(self, bot):
         """
@@ -100,4 +97,4 @@ class googletrans_func(commands.Cog):
 
 def setup(bot):
     """Docstrings4lyfe"""
-    bot.add_cog(googletrans_func(bot))
+    bot.add_cog(GoogleTranslate(bot))
