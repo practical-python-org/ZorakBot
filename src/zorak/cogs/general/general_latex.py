@@ -31,6 +31,10 @@ class LaTeX(commands.Cog):
         for e, c in escape_characters.items():
             equation = equation.replace(e, c)
 
+        if " " in equation:  # The URL errors when it contains spaces.
+            await ctx.respond("Your equation may not contain spaces!")
+            return
+
         image_path = r"https://latex.codecogs.com/png.image?\dpi{200}\bg{black}\color{white}" + equation
         r = requests.get(image_path, timeout=5)
 
