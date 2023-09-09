@@ -98,15 +98,15 @@ options = [
 #employer = 1113020504148815944
 #
 #[reaction_roles.color]
-#red = 1148145845770915870
-#orange = 1148145321302560769
-#yellow = 1148145167736520764
-#light_green = 1148144840735981569
-#dark_green = 1148147946068643900
-#light_blue = 1148144625836625961
-#blue = 1148144828631224391
-#pink = 1143109787316396082
-#purple = 1148146380880216065
+#red = 1149951355000201267
+#orange = 1149951496872546337
+#yellow = 1149951592968241213
+#light_green = 1149951635842420809
+#dark_green = 1149951734345637888
+#light_blue = 1149951815773868092
+#blue = 1149951872711528529
+#pink = 1149951973513252914
+#purple = 1149951930253185084
 #
 #[selectors.experience]
 #name = "experience"
@@ -146,13 +146,13 @@ options = [
 #single_choice = true
 #description = "Select your color!"
 #options = [
-#    { label = "Red", emoji = "🔴", description = "", id = 1148145845770915870 },
-#    { label = "Orange", emoji = "🟠", description = "", id = 1148145321302560769 },
-#    { label = "Yellow", emoji = "🟡", description = "", id = 1148145167736520764 },
-#    { label = "Light Green", emoji = "🍐", description = "", id = 1148144840735981569 },
-#    { label = "Dark Green", emoji = "🟢", description = "", id = 1148147946068643900 },
-#    { label = "Light Blue", emoji = "🧊", description = "", id = 1148144625836625961 },
-#    { label = "Blue", emoji = "🔵", description = "", id = 1148144828631224391 },
-#    { label = "Pink", emoji = "💓", description = "", id = 1143109787316396082 },
-#    { label = "Purple", emoji = "🟣", description = "", id = 1148146380880216065 },
+#    { label = "Red", emoji = "🔴", description = "", id = 1149951355000201267 },
+#    { label = "Orange", emoji = "🟠", description = "", id = 1149951496872546337 },
+#    { label = "Yellow", emoji = "🟡", description = "", id = 1149951592968241213 },
+#    { label = "Light Green", emoji = "🍐", description = "", id = 1149951635842420809 },
+#    { label = "Dark Green", emoji = "🟢", description = "", id = 1149951734345637888 },
+#    { label = "Light Blue", emoji = "🧊", description = "", id = 1149951815773868092 },
+#    { label = "Blue", emoji = "🔵", description = "", id = 1149951872711528529 },
+#    { label = "Pink", emoji = "💓", description = "", id = 1149951973513252914 },
+#    { label = "Purple", emoji = "🟣", description = "", id = 1149951930253185084 },
 #]
