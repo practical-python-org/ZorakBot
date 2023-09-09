@@ -12,6 +12,87 @@ from googletrans import Translator
 
 logger = logging.getLogger(__name__)
 
+whitelist = [
+    "Python",
+    "Variable",
+    "Function",
+    "Module",
+    "List",
+    "Tuple",
+    "Dictionary",
+    "Loop",
+    "Conditional",
+    "Class",
+    "Inheritance",
+    "Polymorphism",
+    "Exception",
+    "Object",
+    "Method",
+    "Argument",
+    "Parameter",
+    "Package",
+    "Library",
+    "Syntax",
+    "Statement",
+    "Import",
+    "Return",
+    "True",
+    "False",
+    "None",
+    "Print",
+    "Input",
+    "File",
+    "Error",
+    "Debug",
+    "IDE (Integrated Development Environment)",
+    "Git",
+    "GitHub",
+    "Data",
+    "Algorithm",
+    "Algorithmic",
+    "List Comprehension",
+    "Dictionary Comprehension",
+    "Recursion",
+    "Lambda",
+    "Generator",
+    "Virtual Environment",
+    "PIP (Python Package Index)",
+    "Interpreter",
+    "Bytecode",
+    "GIL (Global Interpreter Lock)",
+    "IDE (Interactive Development Environment)",
+    "JSON (JavaScript Object Notation)",
+    "API (Application Programming Interface)",
+    "NumPy",
+    "Pandas",
+    "Matplotlib",
+    "Seaborn",
+    "Scikit-learn",
+    "TensorFlow",
+    "Keras",
+    "PyTorch",
+    "Django",
+    "Flask",
+    "Requests",
+    "Beautiful Soup",
+    "SQLAlchemy",
+    "NLTK",
+    "OpenCV",
+    "Pillow",
+    "Gensim",
+    "SciPy",
+    "SymPy",
+    "pytest",
+    "unittest",
+    "pytest-django",
+    "pytest-cov",
+    "pytest-mock",
+    "pypi",
+    "haha",
+    "pip",
+    "docker"
+]
+
 
 def is_multi_lang(lang):
     """Tests if input is a list."""
@@ -28,7 +109,7 @@ class GoogleTranslate(commands.Cog):
         self.bot = bot
         self.gl = googletrans.LANGUAGES
         self.translator = Translator()
-        self.threshold = 0.85
+        self.threshold = 0.70
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -38,12 +119,20 @@ class GoogleTranslate(commands.Cog):
         if message.author.bot:
             return
 
+        if message.content.lower() in whitelist:
+            return
+
+        if len(message.content) < 7:
+            return
+
         detected = self.translator.detect(message.content)
         multi_lang = is_multi_lang(detected.lang)
 
-        if 'en' in detected.lang and detected.confidence > self.threshold:
-            # If the message is english, just stop
+        if 'en' in detected.lang:
+            # If the message is english 70% english, just stop
             return
+
+
         logger.info("A message by %s was translated.", message.author.name)
         if multi_lang:
             lang = detected.lang[0].lower()
