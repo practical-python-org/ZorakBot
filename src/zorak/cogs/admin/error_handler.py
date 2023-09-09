@@ -11,10 +11,11 @@ logger = logging.getLogger(__name__)
 class error_handler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.error_channel = self.bot.get_channel(self.bot.server_settings.log_channel['zorak_log'])
+        self.error_channel = self.bot.server_settings.log_channel["zorak_log"]
 
     @commands.Cog.listener()
     async def on_application_command_error(self, ctx, error):
+        error_log = await self.bot.fetch_channel(self.error_channel)
 
         # # This is just an interesting way of handling errors PER ERROR.
         # # For now, let's just catch all and redirect to logs and channel
@@ -30,8 +31,8 @@ class error_handler(commands.Cog):
         embed.add_field(name='Traceback (most recent call last): '
                         , value=f'{error}')
 
-        await self.error_channel.send(ctx.author.mention)
-        await self.error_channel.send(embed=embed)
+        await error_log.send(ctx.author.mention)
+        await error_log.send(embed=embed)
         logger.critical(error)
 
 
