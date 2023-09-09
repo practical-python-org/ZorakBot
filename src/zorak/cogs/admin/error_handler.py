@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 class error_handler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.error_channel = self.bot.get_channel(self.bot.server_settings.log_channel['zorak_log'])
 
     @commands.Cog.listener()
     async def on_application_command_error(self, ctx, error):
@@ -22,8 +23,6 @@ class error_handler(commands.Cog):
         # else:
         #     raise error  # Here we raise other errors to ensure they aren't ignored
 
-        error_channel = self.bot.get_channel(self.bot.server_settings.log_channel['zorak_log'])
-
         embed = discord.Embed(title=f':red_circle: Zorak error!'
                               , description=f'{ctx.author} used /{ctx.command} in <#{ctx.channel}>'
                               , color=discord.Color.dark_red()
@@ -31,8 +30,8 @@ class error_handler(commands.Cog):
         embed.add_field(name='Traceback (most recent call last): '
                         , value=f'{error}')
 
-        await error_channel.send(ctx.author.mention)
-        await error_channel.send(embed=embed)
+        await self.error_channel.send(ctx.author.mention)
+        await self.error_channel.send(embed=embed)
         logger.critical(error)
 
 
