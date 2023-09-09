@@ -68,18 +68,18 @@ class GoogleTranslate(commands.Cog):
         await message.channel.send(embed=embed)
 
     @commands.slash_command()
-    async def translate(self, ctx, input_language, text):
+    async def translate(self, ctx, source_language, text):
         """
         A command to specify a translation.
         """
         logger.info("%s used the %s command.", ctx.author.name, ctx.command)
         try:
-            translated = self.translator.translate(text, dest=input_language)
+            translated = self.translator.translate(text, dest=source_language)
             embed = discord.Embed(
                 title=f'{text}:',
                 description=translated.text
             )
-            embed.set_footer(text=f'translated from {self.gl[input_language]}')
+            embed.set_footer(text=f'translated from {self.gl[source_language]}')
             await ctx.respond(embed=embed)
 
         except ValueError as v:
