@@ -1,0 +1,78 @@
+Python
+Variable
+Function
+Module
+List
+Tuple
+Dictionary
+Loop
+Conditional
+Class
+Inheritance
+Polymorphism
+Exception
+Object
+Method
+Argument
+Parameter
+Package
+Library
+Syntax
+Statement
+Import
+Return
+True
+False
+None
+Print
+Input
+File
+Error
+Debug
+IDE (Integrated Development Environment)
+Git
+GitHub
+Data
+Algorithm
+Algorithmic
+List Comprehension
+Dictionary Comprehension
+Recursion
+Lambda
+Generator
+Virtual Environment
+PIP (Python Package Index)
+Interpreter
+Bytecode
+GIL (Global Interpreter Lock)
+IDE (Interactive Development Environment)
+JSON (JavaScript Object Notation)
+API (Application Programming Interface)
+NumPy
+Pandas
+Matplotlib
+Seaborn
+Scikit-learn
+TensorFlow
+Keras
+PyTorch
+Django
+Flask
+Requests
+Beautiful Soup
+SQLAlchemy
+NLTK
+OpenCV
+Pillow
+Gensim
+SciPy
+SymPy
+pytest
+unittest
+pytest-django
+pytest-cov
+pytest-mock
+pypi
+haha
+pip
+docker
