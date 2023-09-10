@@ -29,6 +29,7 @@ def load_cogs(bot):
     then digs through those directories and loads the cogs.
     """
     logger.info("Loading Cogs...")
+    failed_to_load = []
     for directory in os.listdir(COGS_ROOT_PATH):
         if directory.startswith("_"):
             logger.debug(f"Skipping {directory} as it is a hidden directory.")
@@ -43,14 +44,16 @@ def load_cogs(bot):
                 # try:
                 cog_path = os.path.join(cog_subdir_path, file)
                 logger.info(f"Loading Cog: {cog_path}")
-                # try:
-                bot.load_extension(f"zorak.cogs.{directory}.{file[:-3]}")
-                # except Exception as e:
-                #     logger.warning("Failed to load: {%s}.{%s}, {%s}", directory, file, e)
-                #     logger.debug(f"Loaded Cog: {cog_path}")
-                # except Exception as e:
-                #     logger.warning("Failed to load: {%s}.{%s}, {%s}", directory, file, e)
-    logger.info("Loaded all cogs successfully.")
+                try:
+                    bot.load_extension(f"zorak.cogs.{directory}.{file[:-3]}")
+                    logger.debug(f"Loaded Cog: {cog_path}")
+                except Exception as e:
+                    logger.warning("Failed to load: {%s}.{%s}, {%s}", directory, file, e)
+                    failed_to_load.append(f"{file[:-3]}")
+    if failed_to_load:
+        logger.warning(f"Cog loading finished. Failed to load the following cogs: {', '.join(failed_to_load)}")
+    else:
+        logger.info("Loaded all cogs successfully.")
 
 
 def init_bot(token, bot):

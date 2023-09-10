@@ -88,8 +88,8 @@ class Music(commands.Cog):
     async def prev(self, ctx):
         """Play the previous song."""
         voice = get(self.bot.voice_clients, guild=ctx.guild)
-        voice.stop()
         if ctx.guild.id in self.prev_songs and self.prev_songs[ctx.guild.id]:
+            voice.stop()
             prev_url = self.prev_songs[ctx.guild.id].pop()  # Get the last played song
             if ctx.guild.id in self.queue:
                 self.queue[ctx.guild.id].insert(0, prev_url)  # Add the previous song to the start of the queue
