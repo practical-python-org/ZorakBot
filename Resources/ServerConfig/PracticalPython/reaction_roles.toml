@@ -73,7 +73,7 @@ options = [
     { label = "Dark Green", emoji = "🟢", description = "", id = 1148147946068643900 },
     { label = "Light Blue", emoji = "🧊", description = "", id = 1148144625836625961 },
     { label = "Blue", emoji = "🔵", description = "", id = 1148144828631224391 },
-    { label = "Pink", emoji = "💓", description = "", id = 1143109787316396082 },
+    { label = "Pink", emoji = "🌸", description = "", id = 1143109787316396082 },
     { label = "Purple", emoji = "🟣", description = "", id = 1148146380880216065 },
 ]
 
@@ -153,6 +153,6 @@ options = [
 #    { label = "Dark Green", emoji = "🟢", description = "", id = 1149951734345637888 },
 #    { label = "Light Blue", emoji = "🧊", description = "", id = 1149951815773868092 },
 #    { label = "Blue", emoji = "🔵", description = "", id = 1149951872711528529 },
-#    { label = "Pink", emoji = "💓", description = "", id = 1149951973513252914 },
+#    { label = "Pink", emoji = "🌸", description = "", id = 1149951973513252914 },
 #    { label = "Purple", emoji = "🟣", description = "", id = 1149951930253185084 },
 #]
