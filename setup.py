@@ -29,6 +29,8 @@ setuptools.setup(
         "PyNaCl==1.5.0",
         "ffmpeg-python==0.2.0",
         "yt-dlp==2023.7.6",
+        "googletrans==3.1.0a0",
+        "dnspython==2.3.0"
     ],
     classifiers=[
         # see https://pypi.org/classifiers/
@@ -54,7 +56,7 @@ setuptools.setup(
             "pre-commit==3.4.0",
             "PyYAML==6.0.1",
             "ruff==0.0.287",
-            "virtualenv==20.24.4",
+            "virtualenv==20.24.5",
             "versioneer",
         ],
         # 'test': ['coverage'],

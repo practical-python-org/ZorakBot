@@ -1,83 +1,41 @@
-### PRODUCTION
-
-[reaction_roles.experience]
-beginner = 965926311539388457
-intermediate = 965926533984288778
-professional = 965926542481956906
-
-[reaction_roles.location]
-north_america = 974950715892072488
-europe = 974950822133776425
-asia = 974950853452636200
-africa = 974950895387303977
-south_america = 974950944586489856
-oceana = 974951025050025984
-
-[reaction_roles.employment]
-open_to_work = 1113020825596067850
-employer = 1113020504148815944
-
-[selectors.experience]
-name = "experience"
-single_choice = true
-description = "Select your skill level!"
-options = [
-    { label = "Beginner", emoji = "🟢", description = "Have little to no Python Experience", id = 965926311539388457 },
-    { label = "Intermediate", emoji = "🟡", description = "Can solve issues and diagnose problems", id = 965926533984288778 },
-    { label = "Professional", emoji = "🔴", description = "Using Python in professional life.", id = 965926542481956906 },
-]
-
-[selectors.location]
-name = "location"
-single_choice = true
-description = "Select your continent!"
-options = [
-    { label = "North America", emoji = "🦅", description = "", id = 974950715892072488 },
-    { label = "Europe", emoji = "🇪🇺", description = "", id = 974950822133776425 },
-    { label = "Asia", emoji = "🐼", description = "", id = 974950853452636200 },
-    { label = "Oceana", emoji = "🐨", description = "", id = 974951025050025984 },
-    { label = "South America", emoji = "💃", description = "", id = 974950944586489856 },
-    { label = "Africa", emoji = "🦒", description = "", id = 974950895387303977 },
-]
-
-[selectors.employment]
-name = "employment"
-single_choice = false
-description = "Are you open to work / Looking for a developer?!"
-options = [
-    { label = "Open to Work", emoji = "🛠️", description = "You are open to taking Python related jobs.", id = 1113020825596067850 },
-    { label = "Employer", emoji = "💼", description = "You are looking to hiring a Python developer.", id = 1113020504148815944 }
-
-]
-
-
-#####  DEVELOPMENT
-
+#### PRODUCTION
+#
 #[reaction_roles.experience]
-#beginner = 1064259543250522112
-#intermediate = 1064259555497877534
-#professional = 1064259557049761863
+#beginner = 965926311539388457
+#intermediate = 965926533984288778
+#professional = 965926542481956906
 #
 #[reaction_roles.location]
-#north_america = 1064259558819770379
-#europe = 1064259561302794361
-#asia = 1064259687924637768
-#africa = 1064259690948722708
-#south_america = 1064259693545013288
-#oceana = 1064259760674840666
+#north_america = 974950715892072488
+#europe = 974950822133776425
+#asia = 974950853452636200
+#africa = 974950895387303977
+#south_america = 974950944586489856
+#oceana = 974951025050025984
 #
 #[reaction_roles.employment]
 #open_to_work = 1113020825596067850
 #employer = 1113020504148815944
+#
+#[reaction_roles.color]
+#red = 1148145845770915870
+#orange = 1148145321302560769
+#yellow = 1148145167736520764
+#light_green = 1148144840735981569
+#dark_green = 1148147946068643900
+#light_blue = 1148144625836625961
+#blue = 1148144828631224391
+#pink = 1143109787316396082
+#purple = 1148146380880216065
 #
 #[selectors.experience]
 #name = "experience"
 #single_choice = true
 #description = "Select your skill level!"
 #options = [
-#    { label = "Beginner", emoji = "🟢", description = "Have little to no Python Experience", id = 1064259543250522112 },
-#    { label = "Intermediate", emoji = "🟡", description = "Can solve issues and diagnose problems", id = 1064259555497877534 },
-#    { label = "Professional", emoji = "🔴", description = "Using Python in professional life.", id = 1064259557049761863 },
+#    { label = "Beginner", emoji = "🟢", description = "Have little to no Python Experience", id = 965926311539388457 },
+#    { label = "Intermediate", emoji = "🟡", description = "Can solve issues and diagnose problems", id = 965926533984288778 },
+#    { label = "Professional", emoji = "🔴", description = "Using Python in professional life.", id = 965926542481956906 },
 #]
 #
 #[selectors.location]
@@ -85,12 +43,12 @@ options = [
 #single_choice = true
 #description = "Select your continent!"
 #options = [
-#    { label = "North America", emoji = "🦅", description = "", id = 1064259558819770379 },
-#    { label = "Europe", emoji = "🇪🇺", description = "", id = 1064259561302794361 },
-#    { label = "Asia", emoji = "🐼", description = "", id = 1064259687924637768 },
-#    { label = "Oceana", emoji = "🐨", description = "", id = 1064259760674840666 },
-#    { label = "South America", emoji = "💃", description = "", id = 1064259693545013288 },
-#    { label = "Africa", emoji = "🦒", description = "", id = 1064259690948722708 },
+#    { label = "North America", emoji = "🦅", description = "", id = 974950715892072488 },
+#    { label = "Europe", emoji = "🇪🇺", description = "", id = 974950822133776425 },
+#    { label = "Asia", emoji = "🐼", description = "", id = 974950853452636200 },
+#    { label = "Oceana", emoji = "🐨", description = "", id = 974951025050025984 },
+#    { label = "South America", emoji = "💃", description = "", id = 974950944586489856 },
+#    { label = "Africa", emoji = "🦒", description = "", id = 974950895387303977 },
 #]
 #
 #[selectors.employment]
@@ -98,7 +56,103 @@ options = [
 #single_choice = false
 #description = "Are you open to work / Looking for a developer?!"
 #options = [
-#    { label = "Open to Work", emoji = "🛠️", description = "You are open to taking Python related jobs.", id = 1114611004182102218 },
-#    { label = "Employer", emoji = "💼", description = "You are looking to hiring a Python developer.", id = 1114611092677722113 }
+#    { label = "Open to Work", emoji = "🛠️", description = "You are open to taking Python related jobs.", id = 1113020825596067850 },
+#    { label = "Employer", emoji = "💼", description = "You are looking to hiring a Python developer.", id = 1113020504148815944 }
 #
 #]
+#
+#[selectors.color]
+#name = "color"
+#single_choice = true
+#description = "Select your color!"
+#options = [
+#    { label = "Red", emoji = "🔴", description = "", id = 1148145845770915870 },
+#    { label = "Orange", emoji = "🟠", description = "", id = 1148145321302560769 },
+#    { label = "Yellow", emoji = "🟡", description = "", id = 1148145167736520764 },
+#    { label = "Light Green", emoji = "🍐", description = "", id = 1148144840735981569 },
+#    { label = "Dark Green", emoji = "🟢", description = "", id = 1148147946068643900 },
+#    { label = "Light Blue", emoji = "🧊", description = "", id = 1148144625836625961 },
+#    { label = "Blue", emoji = "🔵", description = "", id = 1148144828631224391 },
+#    { label = "Pink", emoji = "🌸", description = "", id = 1143109787316396082 },
+#    { label = "Purple", emoji = "🟣", description = "", id = 1148146380880216065 },
+#]
+#
+
+###  DEVELOPMENT
+
+[reaction_roles.experience]
+beginner = 1064259543250522112
+intermediate = 1064259555497877534
+professional = 1064259557049761863
+
+[reaction_roles.location]
+north_america = 1064259558819770379
+europe = 1064259561302794361
+asia = 1064259687924637768
+africa = 1064259690948722708
+south_america = 1064259693545013288
+oceana = 1064259760674840666
+
+[reaction_roles.employment]
+open_to_work = 1113020825596067850
+employer = 1113020504148815944
+
+[reaction_roles.color]
+red = 1149951355000201267
+orange = 1149951496872546337
+yellow = 1149951592968241213
+light_green = 1149951635842420809
+dark_green = 1149951734345637888
+light_blue = 1149951815773868092
+blue = 1149951872711528529
+pink = 1149951973513252914
+purple = 1149951930253185084
+
+[selectors.experience]
+name = "experience"
+single_choice = true
+description = "Select your skill level!"
+options = [
+    { label = "Beginner", emoji = "🟢", description = "Have little to no Python Experience", id = 1064259543250522112 },
+    { label = "Intermediate", emoji = "🟡", description = "Can solve issues and diagnose problems", id = 1064259555497877534 },
+    { label = "Professional", emoji = "🔴", description = "Using Python in professional life.", id = 1064259557049761863 },
+]
+
+[selectors.location]
+name = "location"
+single_choice = true
+description = "Select your continent!"
+options = [
+    { label = "North America", emoji = "🦅", description = "", id = 1064259558819770379 },
+    { label = "Europe", emoji = "🇪🇺", description = "", id = 1064259561302794361 },
+    { label = "Asia", emoji = "🐼", description = "", id = 1064259687924637768 },
+    { label = "Oceana", emoji = "🐨", description = "", id = 1064259760674840666 },
+    { label = "South America", emoji = "💃", description = "", id = 1064259693545013288 },
+    { label = "Africa", emoji = "🦒", description = "", id = 1064259690948722708 },
+]
+
+[selectors.employment]
+name = "employment"
+single_choice = false
+description = "Are you open to work / Looking for a developer?!"
+options = [
+    { label = "Open to Work", emoji = "🛠️", description = "You are open to taking Python related jobs.", id = 1114611004182102218 },
+    { label = "Employer", emoji = "💼", description = "You are looking to hiring a Python developer.", id = 1114611092677722113 }
+
+]
+
+[selectors.color]
+name = "color"
+single_choice = true
+description = "Select your color!"
+options = [
+    { label = "Red", emoji = "🔴", description = "", id = 1149951355000201267 },
+    { label = "Orange", emoji = "🟠", description = "", id = 1149951496872546337 },
+    { label = "Yellow", emoji = "🟡", description = "", id = 1149951592968241213 },
+    { label = "Light Green", emoji = "🍐", description = "", id = 1149951635842420809 },
+    { label = "Dark Green", emoji = "🟢", description = "", id = 1149951734345637888 },
+    { label = "Light Blue", emoji = "🧊", description = "", id = 1149951815773868092 },
+    { label = "Blue", emoji = "🔵", description = "", id = 1149951872711528529 },
+    { label = "Pink", emoji = "🌸", description = "", id = 1149951973513252914 },
+    { label = "Purple", emoji = "🟣", description = "", id = 1149951930253185084 },
+]
