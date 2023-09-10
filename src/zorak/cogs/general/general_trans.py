@@ -7,11 +7,12 @@ import logging
 import discord
 from discord.ext import commands
 from googletrans import Translator, LANGUAGES
-
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-with open("../../utilities/cog_helpers/whitelist.txt") as f:
+
+with open(Path.cwd().joinpath("src", "zorak", "utilities", "cog_helpers", "whitelist.txt")) as f:
     WHITE_LIST = f.read().splitlines()
 
 
@@ -30,7 +31,7 @@ class GoogleTranslate(commands.Cog):
         """
         self.bot = bot
         self.translator = Translator()
-        self.threshold = 0.70   #! Does this do anything?
+        self.threshold = 0.75
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -43,26 +44,21 @@ class GoogleTranslate(commands.Cog):
         if message.content.lower() in WHITE_LIST:
             return
 
-        if len(message.content) < 7: #! we don't translate short words? like if someone types かわいい??
-            return
-
         detected = self.translator.detect(message.content)
         multi_lang = is_multi_lang(detected.lang)
 
         if 'en' in detected.lang:
             """
-            I worry how this works. If multiple languages are detected you would supposedly get a list
-            like ["es", "en"], correct? But if multiple languages are not detected, you would get a 
-            string like "en". Correct me if I'm wrong but it feels a bit like sloppy coding to check 
-            if x is in [either a list or a string]... because outside of this case, the condition would
-            be true if you either had a list that looked like ["ab", "cd", "en"] or if you had a 
-            string like "armenian".  I know this wont happen because you would only get languages codes
-            from detected.lang, but I would like to do things nicely. Perhaps move this condition to the
-            following lines where we treat detected.lang differently depending on if it is multi_lang or not.
+            # If the message is english just stop, do nothing.
             """
-            # If the message is english 70% english, just stop
             return
 
+        if 'en' not in detected.lang and detected.confidence < self.threshold:
+            """
+            If the language is not detected as english, 
+            and the CONFIDENCE that it is something else is low... dont do anything.
+            """
+            return
 
         logger.info("A message by %s was translated.", message.author.name)
         if multi_lang:
@@ -84,28 +80,28 @@ class GoogleTranslate(commands.Cog):
             title=f"{message.content}:",
             description=f"{translation.text}")
 
-            footer = f"translated from {detected_language}\nconfidence: {confidence * 100:0.2f}%"
-            pronunciation = translation.extra_data["translation"][1:]
-            if pronunciation:
-                footer += f"\npronunciation: ({pronunciation[0][-1].lower()})"
+        footer = f"translated from {detected_language}\nconfidence: {confidence * 100:0.2f}%"
+        pronunciation = translation.extra_data["translation"][1:]
+        if pronunciation:
+            footer += f"\npronunciation: ({pronunciation[0][-1].lower()})"
 
         embed.set_footer(text=footer)
         await message.channel.send(embed=embed)
 
     @commands.slash_command()
-    async def translate(self, ctx, source_language, text):
+    async def translate(self, ctx, destination_language, text):
         """
         A command to specify a translation.
         """
         logger.info("%s used the %s command.", ctx.author.name, ctx.command)
         try:
-            translated = self.translator.translate(text, dest=source_language)
+            translated = self.translator.translate(text, dest=destination_language)
             embed = discord.Embed(
                 title=f"{text}:",
                 description=translated.text
             )
-            footer = f"translated from {LANGUAGES[source_language]}"
-            pronunciation = translation.extra_data["translation"][1:]
+            footer = f"translated from {LANGUAGES[translated.src]}"
+            pronunciation = translated.extra_data["translation"][1:]
             if pronunciation:
                 footer += f"\npronunciation: ({pronunciation[0][-1].lower()})"
 
@@ -118,7 +114,7 @@ class GoogleTranslate(commands.Cog):
             n = 3
             # Print languages & codes n (3) to a row
             for key, value in LANGUAGES.items():
-                if count % n == 0: 
+                if count % n == 0:
                     languages += "\n"
                 languages += f"{value.title()}-{key}".ljust(30)
                 count += 1
@@ -127,7 +123,8 @@ class GoogleTranslate(commands.Cog):
                 title="Valid Language Codes:",
                 description=languages
             )
-            embed.set_footer(text="Please use the 2 digit code for your desired language.\n(Chinese codes are 5 digits)")
+            embed.set_footer(
+                text="Please use the 2 digit code for your desired language.\n(Chinese codes are 5 digits)")
             await ctx.respond(embed=embed)
 
 
