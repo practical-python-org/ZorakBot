@@ -18,7 +18,7 @@ class LaTeX(commands.Cog):
         self.bot = bot
 
     @commands.slash_command()
-    async def latex(self, ctx, equation):
+    async def latex(self, ctx, equation, *, bg_color = "black", txt_color = "white", dpi = 200):
         """
         Sends a mathematical equation using an API and CairoSVG
         """
@@ -26,21 +26,45 @@ class LaTeX(commands.Cog):
                     , ctx.author.name
                     , ctx.command)
 
-        escape_characters = {"\n": r"\n", "\r": r"\r", "\t": r"\t", "\x08": r"\b", "\x0c": r"\f", "\x0b": r"\v", "\x07": r"\a"}
+        
+        # check for valid user specified color for text and background
+        colors = [
+            #bg and txt ok
+            "black", "white", "red", "yellow", "green", "blue", "cyan", "magenta", 
+            #only bg ok
+            "orange", "olive", "lime", "teal", "purple", "violet", "pink", "brown", "gray", "lightgray"
+        ]
+
+        bg_color = bg_color.replace(" ", "").lower()
+        txt_color = txt_color.lower()
+
+        if bg_color not in colors:
+            bg_color = "black"
+        if txt_color not in colors[:8]:
+            txt_color = "white"
+
+        # handle necessary character replacements
+        escape_characters = {
+            "\n": r"\n", "\r": r"\r", 
+            "\t": r"\t", "\x08": r"\b", 
+            "\x0c": r"\f", "\x0b": r"\v", 
+            "\x07": r"\a", " ": "&space;"
+        }
 
         for e, c in escape_characters.items():
             equation = equation.replace(e, c)
 
-        if " " in equation:  # The URL errors when it contains spaces.
-            await ctx.respond("Your equation may not contain spaces!")
-            return
+        # prevent user specified dpi from being too big
+        dpi = max(int(dpi), 500)
 
-        image_path = r"https://latex.codecogs.com/png.image?\dpi{200}\bg{black}\color{white}" + equation
+        image_path = r"https://latex.codecogs.com/png.image?\dpi{" + f"{dpi}" + \
+                    r"}\bg{" + bg_color + r"}\color{" + txt_color + "}" + equation
+
         r = requests.get(image_path, timeout=5)
 
         if r.status_code == 200:
 
-            embed = discord.Embed(title="LaTeX", description=equation)
+            embed = discord.Embed(title="LaTeX", description=equation.replace("&space;", " "))
             embed.set_image(url=image_path)  # Set the image in the embed
 
             # Send the embed with the image
