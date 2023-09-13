@@ -31,6 +31,7 @@ setuptools.setup(
         "yt-dlp==2023.7.6",
         "googletrans==3.1.0a0",
         "dnspython==2.3.0",
+
     ],
     classifiers=[
         # see https://pypi.org/classifiers/
@@ -50,12 +51,12 @@ setuptools.setup(
             "cfgv==3.4.0",
             "distlib==0.3.7",
             "filelock==3.12.3",
-            "identify==2.5.27",
+            "identify==2.5.28",
             "nodeenv==1.8.0",
             "platformdirs==3.10.0",
             "pre-commit==3.4.0",
             "PyYAML==6.0.1",
-            "ruff==0.0.287",
+            "ruff==0.0.289",
             "virtualenv==20.24.5",
             "versioneer",
         ],
