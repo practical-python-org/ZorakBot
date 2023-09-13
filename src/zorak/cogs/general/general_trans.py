@@ -33,6 +33,17 @@ class GoogleTranslate(commands.Cog):
         self.translator = Translator()
         self.threshold = 0.75
 
+    @staticmethod
+    def pronunciation(message):
+        """
+        Static Method. Call with GoogleTranslate.pronunciation(message)
+        Looks up the pronunciation from the extra data
+        """
+        if message:
+            message = [*filter(None, message[0])]
+            return f"\npronunciation: ({message[0].lower()})"
+        return ""
+
     @commands.Cog.listener()
     async def on_message(self, message):
         """
@@ -75,15 +86,20 @@ class GoogleTranslate(commands.Cog):
         # translate message
         translation = self.translator.translate(message.content, dest='en')
 
+        if translation.text.strip().lower() == message.content.strip().lower():
+            """
+            Check to see if the result is the same as the original. If so, do not print
+            This is to avoid spamming random haha's and hehehe's. (Thanks Crambor!)
+            """
+            return
+
         # send results of translation as embed
         embed = discord.Embed(
             title=f"{message.content}:",
             description=f"{translation.text}")
 
         footer = f"translated from {detected_language}\nconfidence: {confidence * 100:0.2f}%"
-        pronunciation = translation.extra_data["translation"][1:]
-        if pronunciation:
-            footer += f"\npronunciation: ({pronunciation[0][-1].lower()})"
+        footer += GoogleTranslate.pronunciation(translation.extra_data["translation"][1:2])
 
         embed.set_footer(text=footer)
         await message.channel.send(embed=embed)
@@ -95,15 +111,13 @@ class GoogleTranslate(commands.Cog):
         """
         logger.info("%s used the %s command.", ctx.author.name, ctx.command)
         try:
-            translated = self.translator.translate(text, dest=destination_language)
+            translation = self.translator.translate(text, dest=destination_language)
             embed = discord.Embed(
                 title=f"{text}:",
-                description=translated.text
+                description=translation.text
             )
-            footer = f"translated from {LANGUAGES[translated.src]}"
-            pronunciation = translated.extra_data["translation"][1:]
-            if pronunciation:
-                footer += f"\npronunciation: ({pronunciation[0][-1].lower()})"
+            footer = f"translated from {LANGUAGES[translation.src]}"
+            footer += GoogleTranslate.pronunciation(translation.extra_data["translation"][1:2])
 
             embed.set_footer(text=footer)
             await ctx.respond(embed=embed)
