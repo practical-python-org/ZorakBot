@@ -5,7 +5,11 @@ import logging
 
 import discord
 import requests
+import json
+
 from discord.ext import commands
+from pathlib import Path
+
 
 logger = logging.getLogger(__name__)
 
@@ -18,9 +22,29 @@ class LaTeX(commands.Cog):
         self.bot = bot
 
     @commands.slash_command()
-    async def latex(self, ctx, equation, *, bg_color = "black", txt_color = "white", dpi = 200):
+    async def latex_bg(self, ctx):
+        embed = discord.Embed(title="LaTeX Background Colors", description="The following colors are available:")
+        file = discord.File(Path.cwd().joinpath("src", "zorak", "utilities", "cog_helpers", "bg_colors.png"), filename="bg_colors.png")
+        embed.set_image(url="attachment://bg_colors.png")
+        await ctx.respond(file=file, embed=embed, ephemeral=True)
+    
+    @commands.slash_command()
+    async def latex_txt(self, ctx):
+        embed = discord.Embed(title="LaTeX Background Colors", description="The following colors are available:")
+        file = discord.File(Path.cwd().joinpath("src", "zorak", "utilities", "cog_helpers", "txt_colors.png"), filename="txt_colors.png")
+        embed.set_image(url="attachment://txt_colors.png")
+        await ctx.respond(file=file, embed=embed, ephemeral=True)
+
+    @commands.slash_command()
+    async def latex(self, ctx, equation, *, bg_color="black", txt_color="white", dpi=200):
         """
-        Sends a mathematical equation using an API and CairoSVG
+        Send a mathematical equation using LaTeX commands
+
+        Parameters:
+            equation (str): The mathematical equation to render using LaTeX.
+            bg_color (str, optional): Background color for the LaTeX image. Use '/latex_bg' to see available colors. Default is "black".
+            txt_color (str, optional): Text color for the LaTeX image. Use '/latex_txt' to see available colors. Default is "white".
+            dpi (int, optional): Choose an image size (default: 200).
         """
         logger.info("%s used the %s command."
                     , ctx.author.name
@@ -28,19 +52,17 @@ class LaTeX(commands.Cog):
 
         
         # check for valid user specified color for text and background
-        colors = [
-            #bg and txt ok
-            "black", "white", "red", "yellow", "green", "blue", "cyan", "magenta", 
-            #only bg ok
-            "orange", "olive", "lime", "teal", "purple", "violet", "pink", "brown", "gray", "lightgray"
-        ]
+        with open(Path.cwd().joinpath("src", "zorak", "utilities", "cog_helpers", "colors.json")) as f:
+            d = json.load(f)
+        bg_colors = d["bg_colors"]
+        txt_colors = d["txt_colors"]
 
-        bg_color = bg_color.replace(" ", "").lower()
-        txt_color = txt_color.lower()
+        bg_color = bg_color.lower().replace(" ", "")
+        txt_color = txt_color.title().replace(" ", "")
 
-        if bg_color not in colors:
+        if bg_color not in bg_colors:
             bg_color = "black"
-        if txt_color not in colors[:8]:
+        if txt_color not in txt_colors:
             txt_color = "white"
 
         # handle necessary character replacements
@@ -70,7 +92,7 @@ class LaTeX(commands.Cog):
             # Send the embed with the image
             await ctx.respond(embed=embed)
         else:
-            await ctx.respond("Failed to fetch the image from the API")
+            await ctx.respond("Failed to fetch the image from the API", ephemeral=True)
         
 
 
