@@ -8,6 +8,7 @@ import requests
 import json
 
 from discord.ext import commands
+from discord.commands import Option
 from pathlib import Path
 
 
@@ -36,14 +37,20 @@ class LaTeX(commands.Cog):
         await ctx.respond(file=file, embed=embed, ephemeral=True)
 
     @commands.slash_command()
-    async def latex(self, ctx, equation, *, bg_color="black", txt_color="white", dpi=200):
+    async def latex(self, ctx, 
+        equation: Option(str, "LaTeX equation ($ on both ends not needed)", required = True, default = ""), 
+        *, 
+        bg_color: Option(str, "Use '/latex_bg' to see available colors.", required = False, default = "black"), 
+        txt_color: Option(str, "Use '/latex_txt' to see available colors.", required = False, default = "White"), 
+        dpi: Option(int, "Choose an image size (default: 200)", required = False, default = 200)
+        ):
         """
         Send a mathematical equation using LaTeX commands
 
         Parameters:
             equation (str): The mathematical equation to render using LaTeX.
             bg_color (str, optional): Background color for the LaTeX image. Use '/latex_bg' to see available colors. Default is "black".
-            txt_color (str, optional): Text color for the LaTeX image. Use '/latex_txt' to see available colors. Default is "white".
+            txt_color (str, optional): Text color for the LaTeX image. Use '/latex_txt' to see available colors. Default is "White".
             dpi (int, optional): Choose an image size (default: 200).
         """
         logger.info("%s used the %s command."
@@ -63,7 +70,7 @@ class LaTeX(commands.Cog):
         if bg_color not in bg_colors:
             bg_color = "black"
         if txt_color not in txt_colors:
-            txt_color = "white"
+            txt_color = "White"
 
         # handle necessary character replacements
         escape_characters = {
@@ -94,8 +101,6 @@ class LaTeX(commands.Cog):
         else:
             await ctx.respond("Failed to fetch the image from the API", ephemeral=True)
         
-
-
 
 def setup(bot):
     """
