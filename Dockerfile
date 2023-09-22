@@ -1,4 +1,5 @@
-FROM python:3.11.4-slim-buster AS builder-image
+FROM python:3.11.5-slim-bullseye AS builder-image
+
 ENV PYTHONUNBUFFERED=1
 
 COPY . /code
