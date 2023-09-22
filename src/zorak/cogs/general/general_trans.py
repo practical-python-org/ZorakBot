@@ -139,7 +139,7 @@ class GoogleTranslate(commands.Cog):
             )
             embed.set_footer(
                 text="Please use the 2 digit code for your desired language.\n(Chinese codes are 5 digits)")
-            await ctx.respond(embed=embed)
+            await ctx.respond(embed=embed, ephemeral=True)
 
 
 def setup(bot):
