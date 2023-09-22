@@ -30,7 +30,7 @@ setuptools.setup(
         "ffmpeg-python==0.2.0",
         "yt-dlp==2023.7.6",
         "googletrans==3.1.0a0",
-        "dnspython==2.3.0"
+        "dnspython==2.4.2"
     ],
     classifiers=[
         # see https://pypi.org/classifiers/
@@ -49,13 +49,13 @@ setuptools.setup(
         "dev": [
             "cfgv==3.4.0",
             "distlib==0.3.7",
-            "filelock==3.12.3",
-            "identify==2.5.28",
+            "filelock==3.12.4",
+            "identify==2.5.29",
             "nodeenv==1.8.0",
             "platformdirs==3.10.0",
             "pre-commit==3.4.0",
             "PyYAML==6.0.1",
-            "ruff==0.0.289",
+            "ruff==0.0.290",
             "virtualenv==20.24.5",
             "versioneer",
         ],
