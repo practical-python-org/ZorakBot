@@ -1,0 +1,35 @@
+{
+    "bg_colors": 
+        [
+            "yellow", "lime", "olive", "emerald",
+            "green", "cyan", "teal", "aquamarine",
+            "cerulean", "blue", "violet", "purple",
+            "plum", "lavender", "orchid", "pink",
+            "magenta", "ruby", "maroon", "red",
+            "orange", "salmon", "peach", "apricot",
+            "beige", "tan", "brown", "chocolate",
+            "gray", "black", "white"
+        ],
+    "txt_colors":
+        [
+            "SpringGreen", "GreenYellow", "Yellow", "Goldenrod", 
+            "Dandelion", "YellowOrange", "Orange", "BurntOrange", 
+            "Apricot", "Peach", "Melon", "Salmon", 
+            "Red", "RedOrange", "DarkOrange", "Bittersweet", 
+            "BrickRed", "Mahogany", "Maroon", "DarkRed", 
+            "OrangeRed", "WildStrawberry", "Magenta", "VioletRed", 
+            "RubineRed", "Purple", "RedViolet", "Orchid", 
+            "DarkOrchid", "Mulberry", "Fuchsia", "Plum", 
+            "CarnationPink", "Lavender", "Thistle", "Periwinkle", 
+            "CadetBlue", "RoyalPurple", "Violet", "DarkBlue", 
+            "BlueViolet", "Blue", "NavyBlue", "RoyalBlue", 
+            "MidnightBlue", "Teal", "CornflowerBlue", "Cerulean", 
+            "Cyan", "ProcessBlue", "SkyBlue", "Turquoise", 
+            "Aquamarine", "BlueGreen", "Emerald", "TealBlue", 
+            "SeaGreen", "JungleGreen", "Green", "ForestGreen", 
+            "PineGreen", "OliveGreen", "DarkGreen", "LimeGreen", 
+            "YellowGreen", "Gray", "Black", "White",
+            "Tan", "RawSienna", "Brown", "Sepia"  
+        ]
+
+}
