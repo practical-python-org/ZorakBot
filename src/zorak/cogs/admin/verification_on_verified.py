@@ -54,7 +54,7 @@ class AdminVerification(discord.ui.View):
             name=f"You are member number {guild.member_count}!",
             value=f"""
             Awesome, {user.mention}. Thank you for verifying.
-            Allow me to introduce you {guild.name}.
+            Allow me to introduce you to {guild.name}.
             
             1. Be sure to read our {self.bot.get_channel(self.bot.server_settings.mod_channel['rules_channel']).mention}.
             2. Set some roles using **/roles**
@@ -63,7 +63,7 @@ class AdminVerification(discord.ui.View):
             We keep a ton of awesome links to courses, cool tools, and popular software in {self.bot.get_channel(self.bot.server_settings.normal_channel['resources_channel']).mention}.
             If you have any questions, feel free to post your question in {self.bot.get_channel(self.bot.server_settings.normal_channel['python_help_1']).mention}
             
-            I can run your code directly in the server!
+            Also, I can run your code directly in the server!
             To learn how, type **/help** in any channel.
             
             Looking forward to having you here!
@@ -97,7 +97,13 @@ class VerifyHelper(commands.Cog):
     @commands.slash_command(description="Adds verify button to channel.")  # Create a slash command
     async def add_verify_button(self, ctx):
         """Adds the button"""
-        await ctx.respond("Please Verify that you are not a bot.", view=AdminVerification(self.bot))
+        button_message = ("Welcome to Practical Python! We’re thrilled to have you here to learn "
+                          "and collaborate with fellow Python enthusiasts. Before diving in, "
+                          "please click the 'Verify' button to confirm your identity and gain "
+                          "access to the server. Feel free to introduce yourself and don't "
+                          "hesitate to ask any questions. Happy coding!")
+        
+        await ctx.respond(button_message, view=AdminVerification(self.bot))
 
     async def cog_command_error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingPermissions):
