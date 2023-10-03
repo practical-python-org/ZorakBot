@@ -19,7 +19,8 @@ class LoggingMessageEdit(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, message_before, message_after):
         """
-        Just checking if the content before is != to the content after.
+        Checking if there is a change to /run command to summon a new embed
+        Or if the content before is != to the content after then log the change.
         """
         if message_after.content.startswith('/'):
             edited_command = message_after.content.split()[0]
