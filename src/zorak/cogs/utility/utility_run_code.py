@@ -16,6 +16,7 @@ class UtilityRunCode(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.previous_message_id = None
 
 
     def get_embed(self, name, value, is_error=False):
@@ -40,6 +41,14 @@ class UtilityRunCode(commands.Cog):
                     , ctx.author.name
                     , ctx.command)
 
+        if self.previous_message_id:
+            try:
+                previous_message = await ctx.channel.fetch_message(self.previous_message_id)
+                if previous_message:
+                    await previous_message.delete()
+            except discord.NotFound:
+                pass
+
         # Adjust iOS quotation marks “”‘’ to avoid SyntaxError: invalid character 
         for i, c in enumerate("“‘”’"):
             codeblock = codeblock.replace(c, "\"'"[i%2])
@@ -58,32 +67,38 @@ class UtilityRunCode(commands.Cog):
             if args or input_count:
                 # Check if number of input() functions matches args from user.
                 if len(args) != input_count:
-                    value = 'Please put your input values in order on separate lines after the codeblock:'\
+                    value = 'I am happy to run your script but I do not want to interact with you. You can'\
+                            'remove your input() functions, however if you insist on keeping them, please '\
+                            'put your input values in order on separate lines after the codeblock:'\
                             '\n\n\`\`\`py \nx = input("What is your first input: ")\ny = input("What is '\
                             'your second input: ")\nprint(x)\nprint(y)\n\`\`\`\nmy_first_input\nmy_second_input'
                     embed = self.get_embed("Formatting error", value, True)
-                    await ctx.channel.send(embed=embed)
+                    message = await ctx.channel.send(embed=embed)
+                    self.previous_message_id = message.id
                     return
                 # Else, replace all input()s with values
                 else:
                     for i in re.findall(r"input\(.*\)\n", codeblock):
-                        codeblock = codeblock.replace(i, f'"""{args.pop(0)}"""\n')
+                        codeblock = codeblock.replace(i, f'"""{args.pop(0)}"""\n', 1)
 
             piston = PistonAPI()
             runcode = piston.execute(language="py", version="3.10.0", code=codeblock)
             embed = self.get_embed("Output:", runcode)
-            await ctx.channel.send(embed=embed)
+            message = await ctx.channel.send(embed=embed)
+            self.previous_message_id = message.id
 
         elif codeblock.startswith("'''") and codeblock.endswith("'''"):
             value = "Did you mean to use a \` instead of a ' ?\n\`\`\`py Your code here \`\`\`"
             embed = self.get_embed("Formatting error", value, True)
-            await ctx.channel.send(embed=embed)
+            message = await ctx.channel.send(embed=embed)
+            self.previous_message_id = message.id
 
         else:
             value = 'Please place your code inside a code block. (between \`\`\`py '\
                     'and \`\`\`)\n\n\`\`\`py \nx = "like this"\nprint(x) \n\`\`\`'
             embed = self.get_embed("Formatting error", value, True)
-            await ctx.channel.send(embed=embed)
+            message = await ctx.channel.send(embed=embed)
+            self.previous_message_id = message.id
 
 
 def setup(bot):
