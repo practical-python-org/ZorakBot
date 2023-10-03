@@ -1,4 +1,4 @@
-FROM python:3.11.5-slim-bullseye AS builder-image
+FROM python:3.12.0-slim-bullseye AS builder-image
 
 ENV PYTHONUNBUFFERED=1
 
