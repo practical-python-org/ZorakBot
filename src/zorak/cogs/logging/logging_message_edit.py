@@ -19,9 +19,15 @@ class LoggingMessageEdit(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, message_before, message_after):
         """
-        Just checking if the content before is != to the content after.
+        Checking if there is a change to /run command to summon a new embed
+        Or if the content before is != to the content after then log the change.
         """
-        if message_before.content != message_after.content:
+        if message_after.content.startswith('/'):
+            edited_command = message_after.content.split()[0]
+            if edited_command == '/run':
+                ctx = await self.bot.get_context(message_after)
+                await self.bot.invoke(ctx)
+        elif message_before.content != message_after.content:
             # This guy here makes sure we use the displayed name inside the guild.
             if message_before.author.nick is None:
                 username = message_before.author
