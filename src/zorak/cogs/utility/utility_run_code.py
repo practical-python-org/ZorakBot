@@ -23,7 +23,7 @@ class UtilityRunCode(commands.Cog):
         if is_error:
             embed = discord.Embed(colour=discord.Colour.red(), title="Oops...")
         else:
-            embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.11")
+            embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.10")
         embed.add_field(
             name=name,
             value=value,
@@ -82,7 +82,7 @@ class UtilityRunCode(commands.Cog):
                         codeblock = codeblock.replace(i, f'"""{args.pop(0)}"""\n', 1)
 
             piston = PistonAPI()
-            runcode = piston.execute(language="py", version="3.11.0", code=codeblock)
+            runcode = piston.execute(language="py", version="3.10.0", code=codeblock)
             embed = self.get_embed("Output:", runcode)
             message = await ctx.channel.send(embed=embed)
             self.previous_message_id = message.id
