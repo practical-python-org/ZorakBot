@@ -23,7 +23,7 @@ class UtilityRunCode(commands.Cog):
         if is_error:
             embed = discord.Embed(colour=discord.Colour.red(), title="Oops...")
         else:
-            embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.10")
+            embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.11")
         embed.add_field(
             name=name,
             value=value,
@@ -67,7 +67,7 @@ class UtilityRunCode(commands.Cog):
             if args or input_count:
                 # Check if number of input() functions matches args from user.
                 if len(args) != input_count:
-                    value = 'I am happy to run your script but I do not want to interact with you. You can'\
+                    value = 'I am happy to run your script but I do not want to interact with you. You can '\
                             'remove your input() functions, however if you insist on keeping them, please '\
                             'put your input values in order on separate lines after the codeblock:'\
                             '\n\n\`\`\`py \nx = input("What is your first input: ")\ny = input("What is '\
@@ -82,7 +82,7 @@ class UtilityRunCode(commands.Cog):
                         codeblock = codeblock.replace(i, f'"""{args.pop(0)}"""\n', 1)
 
             piston = PistonAPI()
-            runcode = piston.execute(language="py", version="3.10.0", code=codeblock)
+            runcode = piston.execute(language="py", version="3.11.0", code=codeblock)
             embed = self.get_embed("Output:", runcode)
             message = await ctx.channel.send(embed=embed)
             self.previous_message_id = message.id
