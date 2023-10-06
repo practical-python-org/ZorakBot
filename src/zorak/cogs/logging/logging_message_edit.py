@@ -18,7 +18,7 @@ class LoggingMessageEdit(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, message_before, message_after):
-        """
+
         # IGNORE /run, since we will set up an on_message_edit handler there with opposite logic
         if message_before.content.startswith('/run') or message_after.content.startswith('/run'):
             return
