@@ -31,7 +31,7 @@ class GoogleTranslate(commands.Cog):
         """
         self.bot = bot
         self.translator = Translator()
-        self.threshold = 0.75
+        self.threshold = 0.90
 
     @staticmethod
     def pronunciation(message):
