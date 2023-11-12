@@ -95,7 +95,7 @@ class LoggingVerification(commands.Cog):
         if self.feature_flag:
             await self.log_unverified_join(member, logs_channel)
             await self.send_welcome_message(guild, member)
-            await self.kick_if_not_verified(member, 10, logs_channel)
+            await self.kick_if_not_verified(member, 3600, logs_channel)
 
 
 def setup(bot):
