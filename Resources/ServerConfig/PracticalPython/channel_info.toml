@@ -55,8 +55,8 @@ helpful = 940547307194179644
 challenger = 1048940634779689062
 active_participant = 954308504708075570
 
-[user_roles.unverified]
-needs_approval = 935466692316917770
+[user_roles.verified]
+verified = 1173170054695764050
 
 [user_roles.bad]
 muted = 996770748825870376
