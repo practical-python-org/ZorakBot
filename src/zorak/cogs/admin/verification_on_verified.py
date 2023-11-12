@@ -14,7 +14,7 @@ class AdminVerification(discord.ui.View):
         self.bot = bot
         super().__init__(timeout=None)
 
-    async def is_verified(self, member):
+    def is_verified(self, member):
         if "✅" in [role.name for role in member.roles]:
             return True
 
@@ -38,7 +38,7 @@ class AdminVerification(discord.ui.View):
             guild = interaction.guild
             roles = guild.roles
             await user.send(embed=embed)
-            verified_role = discord.utils.get(roles, id=self.bot.server_settings.verified['verified'])
+            verified_role = discord.utils.get(roles, id=self.bot.server_settings.verified_role['verified'])
             await user.add_roles(verified_role)
             log_channels = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])
             await log_channels.send(f"{user.mention} has verified!")
