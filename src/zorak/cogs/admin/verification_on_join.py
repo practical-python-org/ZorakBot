@@ -19,15 +19,15 @@ class LoggingVerification(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.log_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])
+        self.feature_flag = False
+
+
 
     # OLD LOGIC
 
     async def add_role_and_log(self, member, logging_channel):
         # Add verification role
         await member.add_roles(member.guild.get_role(self.bot.server_settings.unverified_role["needs_approval"]))
-
-        # Log unverified join
-        await logging_channel.send(f"<@{member.id}> joined, but has not verified.")
 
     async def send_welcome_message(self, guild, member):
         welcome_message = f"""
@@ -64,21 +64,38 @@ class LoggingVerification(commands.Cog):
                     f"{member.mention} did not verify, auto-removed." f" ({int((time_to_kick / 3600))} hour/s)")
                 await member.kick(reason="Did not verify.")
 
-    @commands.Cog.listener()
-    async def on_member_join(self, member: discord.Member):
-        guild = member.guild
-        await self.add_role_and_log(guild, self.logs_channel)
-        await self.send_welcome_message(guild, member)
-        await self.kick_if_unverified(member, 3600, self.logs_channel)
+
+
 
     # NEW LOGIC
 
+    async def log_unverified_join(self, member, logging_channel):
+        await logging_channel.send(f"<@{member.id}> joined, but has not verified.")
+
+    async def kick_if_not_verified(self, member, time_to_kick, logging_channel):
+        await sleep(time_to_kick)
+
+        if ":white_check_mark:" not in [role.name for role in member.roles]:
+            await logging_channel.send(
+                f"{member.mention} did not verify after {int((time_to_kick / 3600))} hour/s, auto-removed.")
+            await member.kick(reason="Did not verify.")
+
+
+
+    # EXECUTION
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         guild = member.guild
-        await self.add_role_and_log(guild, self.logs_channel)
-        await self.send_welcome_message(guild, member)
-        await self.kick_if_unverified(member, 3600, self.logs_channel)
+
+        if not self.feature_flag:
+            await self.add_role_and_log(guild, self.logs_channel)
+            await self.send_welcome_message(guild, member)
+            await self.kick_if_unverified(member, 3600, self.logs_channel)
+
+        if self.feature_flag:
+            await self.log_unverified_join(member, self.logs_channel)
+            await self.send_welcome_message(guild, member)
+            await self.kick_if_not_verified(member, 3600, self.logs_channel)
 
 
 def setup(bot):
