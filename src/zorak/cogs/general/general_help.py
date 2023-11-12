@@ -30,13 +30,13 @@ class HelpButtons(discord.ui.View):
     async def first_button_callback(self, button, interaction):
         # staff_role = interaction.guild.get_role(admin_roles["staff"])
         embed = discord.Embed(
-            title=self.server_settings.server_info["name"],
-            description=f"** Website **\n{self.server_settings.server_info['website']}\n\n"
-            f" \** Owner **\n{interaction.guild.owner}\n\n"  # pylint: disable=W1401
-            f" \** Email **\n{self.server_settings.server_info['email']}\n\n"  # pylint: disable=W1401
-            f" \** Invite Link **\n{self.server_settings.server_info['invite']}\n\n"  # pylint: disable=W1401
-            f" \** Leave a reveiw **\n{self.server_settings.server_info['review']}\n\n"  # pylint: disable=W1401
-            f" \** Questions? **\nMake a ticket using /ticket, or send us an email.",
+            title=f"{self.server_settings.server_info['name']}",
+            description=f"**Website** \n{self.server_settings.server_info['website']}\n\n"
+            f"**Owner** \n{interaction.guild.owner.mention}\n\n"  # pylint: disable=W1401
+            f"**Email** \n{self.server_settings.server_info['email']}\n\n"  # pylint: disable=W1401
+            f"**Invite Link** \n{self.server_settings.server_info['invite']}\n\n"  # pylint: disable=W1401
+            f"**Leave a reveiw** \n{self.server_settings.server_info['review']}\n\n"  # pylint: disable=W1401
+            f"**Questions?** \nMake a ticket using **/ticket**, or send us an email.",
             color=discord.Color.yellow(),
         )
         embed.set_thumbnail(url=self.server_settings.server_info["logo"])
