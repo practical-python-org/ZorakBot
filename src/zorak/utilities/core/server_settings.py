@@ -26,7 +26,7 @@ class Settings:
             self.admin_roles = self.user_roles["admin"]
             self.elevated_roles = self.user_roles["elevated"]
             self.badboi_role = self.user_roles["bad"]
-            self.unverified_role = self.user_roles["unverified"]
+            self.verified_role = self.user_roles["verified"]
             self.fun_roles = self.user_roles["fun"]
             self.employment_roles = self.user_roles["employment"]
 
@@ -44,7 +44,7 @@ class Settings:
             self.admin_roles = None
             self.elevated_roles = None
             self.badboi_role = None
-            self.unverified_role = None
+            self.verified_role = None
             self.fun_roles = None
             self.employment_roles = None
             self.feeds = None
