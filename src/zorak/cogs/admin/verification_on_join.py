@@ -18,8 +18,7 @@ class LoggingVerification(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.log_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])
-        self.feature_flag = False
+        self.feature_flag = True
 
 
 
@@ -86,18 +85,21 @@ class LoggingVerification(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         guild = member.guild
+        logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])
 
         if not self.feature_flag:
-            await self.add_role_and_log(guild, self.logs_channel)
+            await self.add_role_and_log(member, logs_channel)
             await self.send_welcome_message(guild, member)
-            await self.kick_if_unverified(member, 3600, self.logs_channel)
+            await self.kick_if_unverified(member, 3600, logs_channel)
 
         if self.feature_flag:
-            await self.log_unverified_join(member, self.logs_channel)
+            await self.log_unverified_join(member, logs_channel)
             await self.send_welcome_message(guild, member)
-            await self.kick_if_not_verified(member, 3600, self.logs_channel)
+            await self.kick_if_not_verified(member, 10, logs_channel)
 
 
 def setup(bot):
     """Required"""
     bot.add_cog(LoggingVerification(bot))
+
+
