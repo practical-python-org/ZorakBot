@@ -4,6 +4,8 @@ Once a user verifies, this cog is called.
 import discord
 from discord.ext import commands
 
+from zorak.utilities.cog_helpers._embeds import embed_verified_success  # pylint: disable=E0401
+
 
 class AdminVerification(discord.ui.View):
     """
@@ -40,8 +42,12 @@ class AdminVerification(discord.ui.View):
             await user.send(embed=embed)
             verified_role = discord.utils.get(roles, id=self.bot.server_settings.verified_role['verified'])
             await user.add_roles(verified_role)
-            log_channels = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])
-            await log_channels.send(f"{user.mention} has verified!")
+
+            log_channels_verification_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])
+            log_channels_user = await self.bot.fetch_channel(self.bot.server_settings.log_channel["user_log"])
+
+            await log_channels_verification_log.send(f"{user.mention} has verified!")
+            await log_channels_user.send(embed=embed_verified_success(user.mention, user.guild.member_count))
 
 
 class VerifyHelper(commands.Cog):

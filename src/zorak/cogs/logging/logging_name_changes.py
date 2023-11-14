@@ -38,14 +38,6 @@ class LoggingNameChanges(commands.Cog):
             logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
             await logs_channel.send(f"{username_after.mention}", embed=embed)
 
-        # Verification success logging
-        # TODO: Find a way to pull this into it's own cog.
-        elif "Needs Approval" in [role.name for role in before.roles] and "Needs Approval" not in [role.name for role in after.roles]:
-            logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["join_log"])  # user join logs
-            embed = embed_verified_success(username_after, after.guild.member_count)
-
-            await logs_channel.send(f"{username_after.mention}", embed=embed)
-
 
 def setup(bot):
     """
