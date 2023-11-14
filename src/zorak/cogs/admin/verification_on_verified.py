@@ -44,10 +44,10 @@ class AdminVerification(discord.ui.View):
             await user.add_roles(verified_role)
 
             log_channels_verification_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])
-            log_channels_user = await self.bot.fetch_channel(self.bot.server_settings.log_channel["user_log"])
+            log_channels_join = await self.bot.fetch_channel(self.bot.server_settings.log_channel["join_log"])
 
             await log_channels_verification_log.send(f"{user.mention} has verified!")
-            await log_channels_user.send(embed=embed_verified_success(user.mention, user.guild.member_count))
+            await log_channels_join.send(embed=embed_verified_success(user.mention, user.guild.member_count))
 
 
 class VerifyHelper(commands.Cog):
