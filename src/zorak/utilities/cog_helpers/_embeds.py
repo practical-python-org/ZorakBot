@@ -376,12 +376,13 @@ def embed_spammer(message_to_report):
     Embedding for detected spam messages.
     """
     embed = discord.Embed(
-        title='A spam message was detected'
-        , description=message_to_report
+        title='Firewall has been triggered'
+        , description="When you send the same message three times, you get the quarantine."
+                      " Wait for the staff to come let you out."
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
     )
-    embed.set_footer(text="If this is a mistake, please ping the @staff")
+    embed.add_field(name="Message:", value=message_to_report, inline=True)
     return embed
 
 
