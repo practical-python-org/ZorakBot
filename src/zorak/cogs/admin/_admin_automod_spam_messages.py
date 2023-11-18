@@ -3,8 +3,13 @@ A listener that looks for repeat messages and destroys them.
 """
 from datetime import datetime, timedelta
 
+import discord
 from discord.ext import commands
+from discord.utils import get
 
+from zorak.utilities.cog_helpers._embeds import (
+    embed_spammer,  # pylint: disable=E0401
+)
 
 class ModerationSpamMessages(commands.Cog):
     """
@@ -13,60 +18,60 @@ class ModerationSpamMessages(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.last_message = discord.Message
+        self.uber_last_message = discord.Message
+
 
     @commands.Cog.listener()
-    async def on_message(self, message_in_question):
+    async def on_message(self, message):
         """
         Scans every message and compares them
         """
-        time_ago = datetime.utcnow() - timedelta(minutes=5)
+        time_ago = datetime.utcnow() - timedelta(seconds=5)
 
-        for guild in self.bot.guilds:
-            for channel in guild.text_channels:
-                async for last_message in channel.history(limit=10, after=time_ago):
-                    if last_message.content == message_in_question.content:
-                        if last_message.author == message_in_question.author and message_in_question.author.bot is False:
-                            await last_message.channel.send(f"you already posted this in {message_in_question.channel.mention}")
-                            await last_message.delete()
+        # Dont catch Zorak
+        if message.author == self.bot.user:
+            return
 
-    # def log_message(arg_message):
-    #     """
-    #     If it finds something, it logs the message
-    #     """
-    #     author = arg_message.author
-    #     embed = discord.Embed(
-    #         title="<:red_circle:1043616578744357085> Invite removed",
-    #         description=f"Posted by {arg_message.author}\nIn {arg_message.channel.mention}",
-    #         color=discord.Color.dark_red(),
-    #         timestamp=datetime.utcnow(),
-    #     )
-    #     embed.set_thumbnail(url=author.avatar)
-    #     embed.add_field(
-    #         name="Message: ",
-    #         value=message.content,  # ToDo: This throws an error when deleting an embed.
-    #         inline=True,
-    #     )
-    #     return embed
+        # When message is not spam...
+        if self.last_message != message.content:
+            self.uber_last_message = self.last_message
+            self.last_message = message
+            return
 
-    # def embed_warning(arg_message):
-    #     """
-    #     If it finds something, it sends a warning that the user should quit that shit.
-    #     """
-    #     embed = discord.Embed(
-    #         title="<:x:1055080113336762408> External Invites are not allowed here!",
-    #         description=f"{arg_message.author}, your message was removed "
-    #                     f"because it contained an external invite.\nIf this "
-    #                     f"was a mistake, contact the @staff",
-    #         color=discord.Color.dark_red(),
-    #         timestamp=datetime.utcnow(),
-    #     )
-    #     return embed
+        # When message IS spam...
+        # last message is the same as the current message
+        if self.last_message == message.content:
+            # The channel however, is different.
 
-    # if is_invite(txt) is True:
-    #     logs_channel = await self.bot.fetch_channel(log_channel["mod_log"])
-    #     await logs_channel.send(embed=log_message(message))
-    #     await message.delete()
-    #     await current_channel.send(embed=embed_warning(message))
+            if self.last_message.channel != message.channel:
+                await message.channel.send(
+                    f"{message.author.mention}"
+                    f"\nPlease do not post the same message in multiple channels.")
+                # Load those roles, and get ready to activate.
+                naughty = get(message.author.server.roles, name="Naughty")
+                quarantine = await self.bot.fetch_channel(self.bot.server_settings.user_roles.bad["naughty"])
+
+                # If user has sent 3 messages that are exactly the same, pull the trigger.
+                if message.content == self.last_message.content == self.uber_last_message.content:
+
+                    # timeout that boi
+                    message.author.timeout(
+                        until=datetime.timedelta(minutes=10)
+                        , reason="Duplicate message was detected in multiple channels.")
+
+                    # assign Naughty roll
+                    await self.bot.add_roles(message.author, naughty)
+
+                    # Post the message in Quarantine channel
+                    await quarantine.send(embed=embed_spammer(message.content))
+
+                    # delete the messages
+                    await self.bot.uber_last_message.delete()
+                    await self.bot.last_message.delete()
+                    await message.delete()
+
+
 
 
 def setup(bot):
