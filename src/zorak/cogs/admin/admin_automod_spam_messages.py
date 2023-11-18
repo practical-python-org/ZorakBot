@@ -12,30 +12,6 @@ from zorak.utilities.cog_helpers._embeds import (
 )
 
 
-def same_author(current, old):
-    if current.author == old.author:
-        return True
-    return False
-
-
-def same_3_content(first, second, third):
-    if first.content == second.content == third.content:
-        return True
-    return False
-
-
-def same_3_author(first, second, third):
-    if first.author == second.author == third.author:
-        return True
-    return False
-
-
-def same_3_channel(first, second, third):
-    if first.channel == second.channel == third.channel:
-        return True
-    return False
-
-
 def is_second_message(first, second):
     if first.content == second.content:
         return True
@@ -49,8 +25,9 @@ class ModerationSpamMessages(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.last_message = discord.Message
-        self.uber_last_message = discord.Message
+        self.records = {}
+        # self.last_message = discord.Message
+        # self.uber_last_message = discord.Message
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -59,49 +36,87 @@ class ModerationSpamMessages(commands.Cog):
         """
 
         # Dont catch Zorak
-        if message.author == self.bot.user:
+        if message.author.bot:
             return
 
-        print(f">{message.content} - {self.last_message.content} - {self.uber_last_message.content}")
+        # new speaker. Welcome to auto mod.
+        if message.author.id not in self.records:
+            self.records[message.author.id] = {
+                "last_message": message.content
+                , "occurrence": 1
+                , "1st": {"message_id": message.id, "channel_id": message.channel.id}
+                , "2nd": {}
+                , "3rd": {}
+            }
 
-        # When message is spam...
-        if same_3_author(message, self.last_message, self.uber_last_message):
-            if same_3_content(message, self.last_message, self.uber_last_message):
-                if not same_3_channel(message, self.last_message, self.uber_last_message):
-                    # Load those roles and channels
-                    naughty = get(message.author.guild.roles, name="Naughty")
+        # Old speaker. We are watching you...
+        else:
+            # Check if the last message is the same as the new one.
+            the_archive = self.records[message.author.id]
+
+            if the_archive["last_message"] == message.content:
+                # If so, increase the occurance by 1
+                the_archive["occurrence"] += 1
+
+                if the_archive["occurrence"] == 2:
+                    # when a repeat message is sent, set the message ID for the 2nd message
+                    the_archive["2nd"]["message_id"] = message.id
+                    the_archive["2nd"]["channel_id"] = message.channel.id
+
+                if the_archive["occurrence"] == 3:
+                    # You lost the game, asshole.
+                    the_archive["3rd"]["message_id"] = message.id
+                    the_archive["3rd"]["channel_id"] = message.channel.id
+
+                    # timeout right away
+                    await message.author.timeout(
+                        until=(datetime.now() + timedelta(0, 30))
+                        , reason="Spam firewall has been triggered.")
+
+                    naughty = message.author.guild.get_role(self.bot.server_settings.user_roles["bad"]["naughty"])
                     quarantine = await self.bot.fetch_channel(
                         self.bot.server_settings.channels["moderation"]["quarantine_channel"])
 
-                    # timeout that boi
-                    await message.author.timeout(
-                        until=(datetime.now() + timedelta(seconds=10))
-                        , reason="Duplicate message was detected in multiple channels.")
-
                     # assign Naughty roll
-                    await message.author.add_role(naughty)
+                    member = message.author
+                    await member.add_roles(naughty)
 
                     # Post the message in Quarantine channel
                     await quarantine.send(embed=embed_spammer(message.content))
 
                     # delete the messages
-                    await self.bot.uber_last_message.delete()
-                    await self.bot.last_message.delete()
-                    await message.delete()
+                    channel1 = await self.bot.fetch_channel(the_archive["1st"]["channel_id"])
+                    channel2 = await self.bot.fetch_channel(the_archive["2nd"]["channel_id"])
+                    channel3 = await self.bot.fetch_channel(the_archive["3rd"]["channel_id"])
 
-                # Else user is spamming one channel.
-                else:
-                    await message.author.timeout(
-                        until=(datetime.now() + timedelta(seconds=30))
-                        , reason="Spamming channels. Please refrain.")
+                    one = await channel1.fetch_message(the_archive["1st"]["message_id"])
+                    two = await channel2.fetch_message(the_archive["2nd"]["message_id"])
+                    three = await channel3.fetch_message(the_archive["3rd"]["message_id"])
+                    await one.delete()
+                    await two.delete()
+                    await three.delete()
 
-        if is_second_message(message, self.last_message):
-            self.uber_last_message = self.last_message
+                    # reset after the quarantine, as the user might actually not be a bot.
+                    self.records[message.author.id] = {
+                        "last_message": message.content
+                        , "occurrence": 1
+                        , "1st": {"message_id": message.id, "channel_id": message.channel.id}
+                        , "2nd": {}
+                        , "3rd": {}
+                    }
 
-        self.last_message = message
+            else:
+                # Message is new, and we reset back to the first occurrence.
+                self.records[message.author.id] = {
+                    "last_message": message.content
+                    , "occurrence": 1
+                    , "1st": {"message_id": message.id, "channel_id": message.channel.id}
+                    , "2nd": {}
+                    , "3rd": {}
+                }
 
-        print(f"<{message.content} - {self.last_message.content} - {self.uber_last_message.content}")
-
+        # For debugging
+        # print(self.records[message.author.id])
 
 
 def setup(bot):
