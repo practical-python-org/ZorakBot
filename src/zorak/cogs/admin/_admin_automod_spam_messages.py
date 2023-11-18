@@ -72,8 +72,6 @@ class ModerationSpamMessages(commands.Cog):
                     await message.delete()
 
 
-
-
 def setup(bot):
     """
     Required.
