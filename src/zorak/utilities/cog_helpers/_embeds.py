@@ -371,6 +371,20 @@ def embed_cant_do_that(message):
     return embed
 
 
+def embed_spammer(message_to_report):
+    """
+    Embedding for detected spam messages.
+    """
+    embed = discord.Embed(
+        title='A spam message was detected'
+        , description=message_to_report
+        , color=discord.Color.red()
+        , timestamp=datetime.utcnow()
+    )
+    embed.set_footer(text="If this is a mistake, please ping the @staff")
+    return embed
+
+
 def embed_leaderboard(people_list, server_name, server_logo):
     """
         Embedding for the leaderboard command.
