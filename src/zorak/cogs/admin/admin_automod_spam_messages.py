@@ -3,9 +3,7 @@ A listener that looks for repeat messages and destroys them.
 """
 from datetime import datetime, timedelta
 
-import discord
 from discord.ext import commands
-from discord.utils import get
 
 from zorak.utilities.cog_helpers._embeds import (
     embed_spammer,  # pylint: disable=E0401
@@ -26,8 +24,7 @@ class ModerationSpamMessages(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.records = {}
-        # self.last_message = discord.Message
-        # self.uber_last_message = discord.Message
+
 
     @commands.Cog.listener()
     async def on_message(self, message):
