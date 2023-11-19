@@ -66,10 +66,7 @@ class ModerationSpamMessages(commands.Cog):
                     the_archive["3rd"]["channel_id"] = message.channel.id
 
                     # timeout right away
-                    #TODO: the timeout for some reason is an HOUR and 30 seconds. Fix that.
-                    await message.author.timeout(
-                        until=(datetime.now() + timedelta(seconds=30))
-                        , reason="Spam firewall has been triggered.")
+                    await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=30))
 
                     naughty = message.author.guild.get_role(self.bot.server_settings.user_roles["bad"]["naughty"])
                     quarantine = await self.bot.fetch_channel(
