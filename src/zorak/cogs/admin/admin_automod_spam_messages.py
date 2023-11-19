@@ -1,6 +1,7 @@
 """
 A listener that looks for repeat messages and destroys them.
 """
+import logging
 from datetime import datetime, timedelta
 
 import discord.errors
@@ -10,6 +11,9 @@ from zorak.utilities.cog_helpers._embeds import (
     embed_spammer,  # pylint: disable=E0401
     embed_spammer_warn  # pylint: disable=E0401
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 def is_second_message(first, second):
@@ -56,6 +60,7 @@ class ModerationSpamMessages(commands.Cog):
             if the_archive["last_message"] == message.content:
                 # If so, increase the occurance by 1
                 the_archive["occurrence"] += 1
+                logger.debug("%s has sent a double message in %s", message.author.name, message.channel.name)
 
                 if the_archive["occurrence"] == 2:
                     # when a repeat message is sent, set the message ID for the 2nd message
@@ -64,13 +69,19 @@ class ModerationSpamMessages(commands.Cog):
 
                     if the_archive["1st"]["channel_id"] != the_archive["2nd"]["channel_id"]:
                         await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=15))
+                        logger.info("%s was timed out (2/3 messages)", message.author.name)
                         channel1 = await self.bot.fetch_channel(the_archive["1st"]["channel_id"])
                         channel2 = await self.bot.fetch_channel(the_archive["2nd"]["channel_id"])
 
                         # Send a DM. If you can't, send in the channel.
                         try:
                             await message.author.send(embed=embed_spammer_warn(channel1, channel2))
+                            logger.debug("%s was sent a DM about their double message.", message.author.name)
                         except discord.errors.HTTPException as closed_dms:
+                            logger.debug("could not send %s a message, diverting to channel: %s"
+                                         , message.author.name
+                                         , message.channel.name)
+
                             first_channel = await self.bot.fetch_channel(the_archive['1st']['channel_id'])
                             self.warn_message = await message.reply(
                                 f"{message.author.mention}, Please do not post the same message in "
@@ -78,6 +89,7 @@ class ModerationSpamMessages(commands.Cog):
 
                 if the_archive["occurrence"] == 3:
                     # You lost the game, asshole.
+                    logger.info("%s was quarantined for sending 3 repeat messages.", message.author.name)
                     the_archive["3rd"]["message_id"] = message.id
                     the_archive["3rd"]["channel_id"] = message.channel.id
 
