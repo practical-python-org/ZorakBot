@@ -1,0 +1,16 @@
+py-cord
+beautifulsoup4
+requests
+matplotlib
+DateTime
+pytz
+pistonapi
+toml
+feedparser
+html2text
+pymongo
+PyNaCl==1.5.0
+ffmpeg-python==0.2.0
+yt-dlp==2023.10.13
+googletrans==3.1.0a0
+dnspython==2.3.0
