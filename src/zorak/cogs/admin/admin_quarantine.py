@@ -20,10 +20,9 @@ class AdminQuarantine(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.quarantine_role = self.bot.server_settings.user_roles["bad"]["naughty"]
 
     @commands.slash_command(description="Quarantine a user.")
-    @commands.has_permissions(manage_members=True)
+    @commands.has_permissions(manage_roles=True)
     @commands.has_role("Staff")
     async def quarantine(self, ctx, target: discord.Member):
         """
@@ -32,8 +31,7 @@ class AdminQuarantine(commands.Cog):
         # Cant ban bots or admins.
         if not target.bot:
             if not target.guild_permissions.administrator:
-
-                quarantine_role = ctx.guild.get_role(self.quarantine_role)
+                quarantine_role = discord.utils.get(ctx.guild.roles, id=self.bot.user_roles.badboi_role["naughty"])
                 await target.edit(roles=[quarantine_role])
 
                 logger.info("{%s} quarantined {%s}.", ctx.author.name, target.name)
