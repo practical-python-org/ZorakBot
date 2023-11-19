@@ -3,10 +3,12 @@ A listener that looks for repeat messages and destroys them.
 """
 from datetime import datetime, timedelta
 
+import discord.errors
 from discord.ext import commands
 
 from zorak.utilities.cog_helpers._embeds import (
     embed_spammer,  # pylint: disable=E0401
+    embed_spammer_warn  # pylint: disable=E0401
 )
 
 
@@ -24,7 +26,7 @@ class ModerationSpamMessages(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.records = {}
-
+        self.warn_message = 'Hello there!'
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -60,6 +62,20 @@ class ModerationSpamMessages(commands.Cog):
                     the_archive["2nd"]["message_id"] = message.id
                     the_archive["2nd"]["channel_id"] = message.channel.id
 
+                    if the_archive["1st"]["channel_id"] != the_archive["2nd"]["channel_id"]:
+                        await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=15))
+                        channel1 = await self.bot.fetch_channel(the_archive["1st"]["channel_id"])
+                        channel2 = await self.bot.fetch_channel(the_archive["2nd"]["channel_id"])
+
+                        # Send a DM. If you can't, send in the channel.
+                        try:
+                            await message.author.send(embed=embed_spammer_warn(channel1, channel2))
+                        except discord.errors.HTTPException as closed_dms:
+                            first_channel = await self.bot.fetch_channel(the_archive['1st']['channel_id'])
+                            self.warn_message = await message.reply(
+                                f"{message.author.mention}, Please do not post the same message in "
+                                f"multiple channels.\n You already posted this in {first_channel.mention}")
+
                 if the_archive["occurrence"] == 3:
                     # You lost the game, asshole.
                     the_archive["3rd"]["message_id"] = message.id
@@ -90,6 +106,7 @@ class ModerationSpamMessages(commands.Cog):
                     await one.delete()
                     await two.delete()
                     await three.delete()
+                    await self.warn_message.delete()
 
                     # reset after the quarantine, as the user might actually not be a bot.
                     self.records[message.author.id] = {
