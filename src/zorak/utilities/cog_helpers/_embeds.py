@@ -385,6 +385,26 @@ def embed_spammer(message_to_report):
     embed.add_field(name="Message:", value=message_to_report, inline=True)
     return embed
 
+def embed_spammer_warn(channel1, channel2):
+    """
+    Embedding warn for detected spam messages.
+    """
+    embed = discord.Embed(
+        title='Warning'
+        , description="When you send the same message **three times**, you get the quarantine.\n"
+        , color=discord.Color.red()
+        , timestamp=datetime.utcnow()
+    )
+    report = f"Detected the same message in {channel1.mention} and {channel2.mention}"
+    embed.add_field(name="What happened?", value=report, inline=True)
+    embed.add_field(
+        name="What should you do?"
+        , value="Don't panic, and be patent."
+                " Someone will answer you as soon as they can."
+        , inline=True)
+    embed.set_footer(text="In the meantime... Maybe make sure your question contains your code, as well as the output.")
+    return embed
+
 
 def embed_leaderboard(people_list, server_name, server_logo):
     """
