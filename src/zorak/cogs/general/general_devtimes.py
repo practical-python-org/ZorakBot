@@ -30,40 +30,43 @@ class GeneralDevtimes(commands.Cog):
                     , ctx.author.name
                     , ctx.command)
 
-        tz_india = datetime.datetime.now(tz=pytz.timezone("Asia/Kolkata"))
-        tz_japan = datetime.datetime.now(tz=pytz.timezone("Asia/Tokyo"))
-        tz_america_ny = datetime.datetime.now(tz=pytz.timezone("America/New_York"))
-        tz_austria = datetime.datetime.now(tz=pytz.timezone("Europe/Vienna"))
-        tz_uk = datetime.datetime.now(tz=pytz.timezone("GMT"))
-
         embed = discord.Embed(title="**Staff Times**", description="")
-        embed.add_field(
-            name="Austria (Xarlos):",
-            value=f"{tz_austria.strftime('%m/%d/%Y %I:%M %p')}",
-            inline=False,
-        )
-        embed.add_field(
-            name="Japan (Chiaki): ",
-            value=f"{tz_japan.strftime('%m/%d/%Y %I:%M %p')}",
-            inline=False,
-        )
-        embed.add_field(
-            name="India (777advait):",
-            value=f"{tz_india.strftime('%m/%d/%Y %I:%M %p')}",
-            inline=False,
-        )
-        embed.add_field(
-            name="America (Minus, Richardphi):",
-            value=f"{tz_america_ny.strftime('%m/%d/%Y %I:%M %p')}",
-            inline=False,
-        )
-        embed.add_field(
-            name="UK (Maszi):",
-            value=f"{tz_uk.strftime('%m/%d/%Y %I:%M %p')}",
-            inline=False,
-        )
+        dev_times_list = self.bot.db_client.get_all_dev_times()
+
+        for iteration, dev_time in enumerate(dev_times_list):
+            tz = datetime.datetime.now(tz=pytz.timezone(dev_time['Timezone']))
+            embed.add_field(
+                name=f"{dev_time['Country']} ({dev_time['Username']}):",
+                value=f"{tz.strftime('%m/%d/%Y %I:%M %p')}",
+                inline=False,
+            )
         await ctx.respond(embed=embed)
 
+    @commands.slash_command(description="Add entry to devtimes. See pytz.timezone documentation for timezone (Staff Only).")
+    @commands.has_role("Staff")
+    async def add_devtime(self, ctx, username, country, timezone):
+        """
+        Add entry to devtimes.
+        """
+        logger.info("%s used the %s command."
+                    , ctx.author.name
+                    , ctx.command)
+
+        self.bot.db_client.add_dev_time_to_table(username, country, timezone)
+        await ctx.respond(f"Added {username} to devtimes.")
+
+    @commands.slash_command(description="Remove entry from devtimes. (Staff Only).")
+    @commands.has_role("Staff")
+    async def remove_devtime(self, ctx, username):
+        """
+        Remove entry from devtimes.
+        """
+        logger.info("%s used the %s command."
+                    , ctx.author.name
+                    , ctx.command)
+
+        self.bot.db_client.remove_dev_time_from_table(username)
+        await ctx.respond(f"Removed {username} from devtimes.")
 
 def setup(bot):
     """Required."""

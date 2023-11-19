@@ -214,6 +214,43 @@ class CustomMongoDBClient(MongoDBClient):
         self.create_collection("UserPoints", validator_schema=validator)
         logger.info("User table initialised.")
 
+    def initialise_dev_times_table(self):
+        """Initialise the devtimes table. """
+        validator = {
+            "bsonType": "object",
+            "title": "Dev Times Collection Validation",
+            "required": ["Username", "Country", "Timezone"],
+            "properties": {
+                "Username": {
+                    "bsonType": "string",
+                    "description": "The Username (Display name not UID) of the user to be displayed.",
+                },
+                "Country": {
+                    "bsonType": "string",
+                    "description": "The country of the user.",
+                },
+                "Timezone": {
+                    "bsonType": "string",
+                    "description": " The time according to pytz.timezone, example: Asia/Kolkata.",
+                },
+            },
+        }
+        self.create_collection("DevTimes", validator_schema=validator)
+        logger.info("Dev Times table initialised.")
+
+    def add_dev_time_to_table(self, username: str, country: str, timezone: str):
+        """Add a user to the user table if they are not already in it."""
+        if not self.find_one("DevTimes", {"Username": username}):
+            self.insert_one("DevTimes", {"Username": username, "Country": country, "Timezone": timezone})
+
+    def remove_dev_time_from_table(self, username: str):
+        """Remove a user from the user table."""
+        self.delete_one("DevTimes", {"Username": username})
+
+    def get_all_dev_times(self):
+        """Get all dev times from the table."""
+        return self.find("DevTimes", {})
+
     def add_user_to_table(self, member):
         """Add a user to the user table if they are not already in it."""
         if not self.find_one("UserPoints", {"UserID": member.id}):
