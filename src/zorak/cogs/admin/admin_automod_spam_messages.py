@@ -91,11 +91,13 @@ class ModerationSpamMessages(commands.Cog):
                     await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=30))
 
                     naughty = message.author.guild.get_role(self.bot.server_settings.user_roles["bad"]["naughty"])
+                    verified = message.author.guild.get_role(self.bot.server_settings.verified_role['verified'])
                     quarantine = await self.bot.fetch_channel(
                         self.bot.server_settings.channels["moderation"]["quarantine_channel"])
 
                     # assign Naughty roll
                     member = message.author
+                    await member.remove_role(verified)
                     await member.add_roles(naughty)
 
                     # Post the message in Quarantine channel
