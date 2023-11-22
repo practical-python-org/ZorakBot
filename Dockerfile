@@ -14,6 +14,7 @@ COPY setup.py /code/setup.py
 COPY setup.cfg /code/setup.cfg
 COPY versioneer.py /code/versioneer.py
 COPY pyproject.toml /code/pyproject.toml
+COPY Resources/ /code/Resources
 COPY README.md /code/README.md
 COPY src /code/src
 
