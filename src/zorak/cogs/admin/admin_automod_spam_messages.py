@@ -97,7 +97,7 @@ class ModerationSpamMessages(commands.Cog):
 
                     # assign Naughty roll
                     member = message.author
-                    await member.remove_role(verified)
+                    await member.remove_roles(verified)
                     await member.add_roles(naughty)
 
                     # Post the message in Quarantine channel
