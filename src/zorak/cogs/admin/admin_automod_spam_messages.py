@@ -16,12 +16,6 @@ from zorak.utilities.cog_helpers._embeds import (
 logger = logging.getLogger(__name__)
 
 
-def is_second_message(first, second):
-    if first.content == second.content:
-        return True
-    return False
-
-
 class ModerationSpamMessages(commands.Cog):
     """
     Destroying spam with bots
