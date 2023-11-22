@@ -31,16 +31,14 @@ The easiest way to get started is to run Zorak locally and in our test server (C
 - -cl: Flag that enables streaming logs to console.
 
 ```bash
-pip install .
-zorak -dt <DISCORD_TOKEN_HERE> -ssp Resources/ServerConfig/Zorak-Dev -dd True -cl True
-```
-If you need to spin up the docker instances, you can by editing the .env file to reflect dev settings.
-1. Update the .env file to use 'dev' as the ENVIRONMENT
-2. Update your .env file to point the SETTINGS variable to Resources/ServerConfig/Zorak-Dev
-3. Run the command
-```bash
 docker-compose up -d
 ```
+And then after making a change, rebuild only zorak.
+```bash
+docker build -t zorak .
+docker run --env-file ./.env zorak -dd True -dt <DISCORD_TOKEN_HERE>
+```
+
 
 ### Production
 All environment settings are found in your .env file.
@@ -99,3 +97,4 @@ If your PR title does not include any of the specified prefixes, the GitHub Acti
 When your PR is merged into main, the GitHub Action will increment the version according to the prefix in the PR title and create a new tag.
 
 Please ensure you follow this convention to maintain a well-structured and meaningful version history for our project.
+

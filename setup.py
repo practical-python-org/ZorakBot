@@ -1,6 +1,14 @@
+import pathlib
+
+import pkg_resources
 import setuptools
 
 import versioneer
+
+install_requires = []
+with pathlib.Path("requirements.txt").open() as requirements_txt:
+    install_requires = [str(requirement) for requirement in pkg_resources.parse_requirements(requirements_txt)]
+
 
 setuptools.setup(
     name="zorak",
@@ -14,24 +22,7 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     entry_points={"console_scripts": ["zorak=zorak.__main__:main"]},
     package_data={"": ["*.toml"]},
-    install_requires=[
-        "py-cord",
-        "beautifulsoup4",
-        "requests",
-        "matplotlib",
-        "DateTime",
-        "pytz",
-        "pistonapi",
-        "toml",
-        "feedparser",
-        "html2text",
-        "pymongo",
-        "PyNaCl==1.5.0",
-        "ffmpeg-python==0.2.0",
-        "yt-dlp==2023.10.13",
-        "googletrans==3.1.0a0",
-        "dnspython==2.3.0"
-    ],
+    install_requires=install_requires,
     classifiers=[
         # see https://pypi.org/classifiers/
         "Development Status :: 5 - Production/Stable",
@@ -50,13 +41,13 @@ setuptools.setup(
             "cfgv==3.4.0",
             "distlib==0.3.7",
             "filelock==3.13.1",
-            "identify==2.5.31",
+            "identify==2.5.32",
             "nodeenv==1.8.0",
             "platformdirs==4.0.0",
             "pre-commit==3.5.0",
             "PyYAML==6.0.1",
-            "ruff==0.1.5",
-            "virtualenv==20.24.6",
+            "ruff==0.1.6",
+            "virtualenv==20.24.7",
             "versioneer",
         ],
         # 'test': ['coverage'],

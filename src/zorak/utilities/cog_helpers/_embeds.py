@@ -371,6 +371,41 @@ def embed_cant_do_that(message):
     return embed
 
 
+def embed_spammer(message_to_report):
+    """
+    Embedding for detected spam messages.
+    """
+    embed = discord.Embed(
+        title='Firewall has been triggered'
+        , description="When you send the same message three times, you get the quarantine."
+                      " Wait for the staff to come let you out."
+        , color=discord.Color.red()
+        , timestamp=datetime.utcnow()
+    )
+    embed.add_field(name="Message:", value=message_to_report, inline=True)
+    return embed
+
+def embed_spammer_warn(channel1, channel2):
+    """
+    Embedding warn for detected spam messages.
+    """
+    embed = discord.Embed(
+        title='Warning'
+        , description="When you send the same message **three times**, you get the quarantine.\n"
+        , color=discord.Color.red()
+        , timestamp=datetime.utcnow()
+    )
+    report = f"Detected the same message in {channel1.mention} and {channel2.mention}"
+    embed.add_field(name="What happened?", value=report, inline=True)
+    embed.add_field(
+        name="What should you do?"
+        , value="Don't panic, and be patent."
+                " Someone will answer you as soon as they can."
+        , inline=True)
+    embed.set_footer(text="In the meantime... Maybe make sure your question contains your code, as well as the output.")
+    return embed
+
+
 def embed_leaderboard(people_list, server_name, server_logo):
     """
         Embedding for the leaderboard command.
