@@ -70,6 +70,19 @@ class GeneralDevtimes(commands.Cog):
         self.bot.db_client.remove_dev_time_from_table(ctx.author.name)
         await ctx.respond(f"Removed {ctx.author.name} from devtimes.")
 
+    @commands.slash_command(description="Remove entry from devtimes (Staff Only).")
+    @commands.has_role("Staff")
+    async def remove_devtime_staff(self, ctx, username):
+        """
+        Remove entry from devtimes for staff.
+        """
+        logger.info("%s used the %s command."
+                    , ctx.author.name
+                    , ctx.command)
+
+        self.bot.db_client.remove_dev_time_from_table(username)
+        await ctx.respond(f"Removed {username} from devtimes.")
+
 def setup(bot):
     """Required."""
     bot.add_cog(GeneralDevtimes(bot))
