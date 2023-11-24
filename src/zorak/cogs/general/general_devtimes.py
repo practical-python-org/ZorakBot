@@ -18,7 +18,7 @@ class GeneralDevtimes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(description="Current times of Staff.")
+    @commands.slash_command(description="Current times of Developers.")
     async def devtimes(self, ctx):
         """
         Sends the Current local time of the moderation staff.
