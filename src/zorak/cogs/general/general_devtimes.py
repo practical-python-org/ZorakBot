@@ -42,22 +42,24 @@ class GeneralDevtimes(commands.Cog):
             )
         await ctx.respond(embed=embed)
 
-    @commands.slash_command(description="Add entry to devtimes. See pytz.timezone documentation for timezone (Staff Only).")
-    @commands.has_role("Staff")
-    async def add_devtime(self, ctx, username, country, timezone):
+    @commands.slash_command(description="Add entry to devtimes. See pytz.timezone documentation for timezone.")
+    async def add_devtime(self, ctx, country, timezone):
         """
         Add entry to devtimes.
         """
         logger.info("%s used the %s command."
                     , ctx.author.name
                     , ctx.command)
+        if timezone in pytz.all_timezones:
+            self.bot.db_client.add_dev_time_to_table(ctx.author.name, country, timezone)
+            await ctx.respond(f"Added {ctx.author.name} to devtimes.")
+            return
+        
+        await ctx.respond("Invalid Timezone: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones")
+        
 
-        self.bot.db_client.add_dev_time_to_table(username, country, timezone)
-        await ctx.respond(f"Added {username} to devtimes.")
-
-    @commands.slash_command(description="Remove entry from devtimes. (Staff Only).")
-    @commands.has_role("Staff")
-    async def remove_devtime(self, ctx, username):
+    @commands.slash_command(description="Remove entry from devtimes.")
+    async def remove_devtime(self, ctx):
         """
         Remove entry from devtimes.
         """
@@ -65,8 +67,8 @@ class GeneralDevtimes(commands.Cog):
                     , ctx.author.name
                     , ctx.command)
 
-        self.bot.db_client.remove_dev_time_from_table(username)
-        await ctx.respond(f"Removed {username} from devtimes.")
+        self.bot.db_client.remove_dev_time_from_table(ctx.author.name)
+        await ctx.respond(f"Removed {ctx.author.name} from devtimes.")
 
 def setup(bot):
     """Required."""
