@@ -82,8 +82,8 @@ class AdminVerification(discord.ui.View):
             try:
                 await user.send(embed=embed)
             except discord.errors.Forbidden:
-                print(f"Failed to send a message to {user.name}. They may have blocked the bot or disabled DMs.")
-                return
+                logger.debug(f'{user.name} cannot be sent a DM for verification confirmation.')
+
             verified_role = discord.utils.get(roles, id=self.bot.server_settings.verified_role['verified'])
             await user.add_roles(verified_role)
 
