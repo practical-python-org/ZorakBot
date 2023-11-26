@@ -79,7 +79,11 @@ class AdminVerification(discord.ui.View):
         if not verified:
             guild = interaction.guild
             roles = guild.roles
-            await user.send(embed=embed)
+            try:
+                await user.send(embed=embed)
+            except discord.errors.Forbidden:
+                logger.debug(f'{user.name} cannot be sent a DM for verification confirmation.')
+
             verified_role = discord.utils.get(roles, id=self.bot.server_settings.verified_role['verified'])
             await user.add_roles(verified_role)
 
