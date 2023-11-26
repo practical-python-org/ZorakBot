@@ -3,6 +3,9 @@ Once a user verifies, this cog is called.
 """
 import discord
 from discord.ext import commands
+import logging
+
+logger = logging.getLogger(__name__)
 
 from zorak.utilities.cog_helpers._embeds import embed_verified_success  # pylint: disable=E0401
 
@@ -19,9 +22,46 @@ class AdminVerification(discord.ui.View):
     def is_verified(self, member):
         if "✅" in [role.name for role in member.roles]:
             return True
+        
+    async def send_wrong_button_message(self, guild, member):
+        button_message = f"""
+            Hi there, {member.mention}
+            you have pressed the wrong button to verify yourself. 
+
+            Make sure you press the **GREEN** button to verify yourself.
+            Please join the server again and try again.
+            {self.bot.server_settings.server_info['invite']}
+            """
+        # Send Welcome Message
+        try:
+            await member.send(button_message)
+        except discord.errors.Forbidden as catch_dat_forbidden:
+            logger.debug(f'{member.name} cannot be sent a DM caused by failing verify by pressing red button.')
+
+    async def send_wrong_button_message_and_kick(self, interaction: discord.Interaction):
+        """
+        Sends a wrong button message and kicks the user.
+        """
+        user = interaction.user
+        await self.send_wrong_button_message(interaction.guild, user)
+        await user.kick(reason="User failed to verify by pressing red button.")
+
+    @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.red)
+    async def verify_button_callback_red_1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        """
+        This is a dummy button, if pressed kicks user.
+        """
+        await self.send_wrong_button_message_and_kick(interaction)
+
+    @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.red)
+    async def verify_button_callback_red_2(self, button: discord.ui.Button, interaction: discord.Interaction):
+        """
+        This is a dummy button, if pressed kicks user.
+        """
+        await self.send_wrong_button_message_and_kick(interaction)
 
     @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.success)
-    async def verify_button_callback(self, bot, interaction):
+    async def verify_button_callback_green(self, button: discord.ui.Button, interaction: discord.Interaction):
         """
         This is the stuff that happens
         - Send a nice happy message.
@@ -49,6 +89,20 @@ class AdminVerification(discord.ui.View):
             await log_channels_verification_log.send(f"{user.mention} has verified!")
             await log_channels_join.send(embed=embed_verified_success(user.mention, user.guild.member_count))
 
+    @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.red)
+    async def verify_button_callback_red_3(self, button: discord.ui.Button, interaction: discord.Interaction):
+        """
+        This is a dummy button, if pressed kicks user.
+        """
+        await self.send_wrong_button_message_and_kick(interaction)
+
+    @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.red)
+    async def verify_button_callback_red_4(self, button: discord.ui.Button, interaction: discord.Interaction):
+        """
+        This is a dummy button, if pressed kicks user.
+        """
+        await self.send_wrong_button_message_and_kick(interaction)
+
 
 class VerifyHelper(commands.Cog):
     """
@@ -66,8 +120,8 @@ class VerifyHelper(commands.Cog):
         """Adds the button"""
         button_message = ("Welcome to Practical Python! We’re thrilled to have you here to learn "
                           "and collaborate with fellow Python enthusiasts. Before diving in, "
-                          "please click the 'Verify' button to confirm your identity and gain "
-                          "access to the server. Feel free to introduce yourself and don't "
+                          "please click the **GREEN** 'Verify' button to confirm your identity and gain "
+                          "access to the server. **If you click the RED button you will be kicked!** Feel free to introduce yourself and don't "
                           "hesitate to ask any questions. Happy coding!")
         
         await ctx.respond(button_message, view=AdminVerification(self.bot))
