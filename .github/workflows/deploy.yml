@@ -13,11 +13,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: SSH and Deploy
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          USERNAME: ${{ secrets.USERNAME }}
+          HOST: ${{ secrets.HOST }}
+
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'ENDSSH'
+          echo "$SSH_KEY" > super_dooper_secret_key && sudo chmod 600 super_dooper_secret_key
+          ssh -o StrictHostKeyChecking=no -i super_dooper_secret_key ${USERNAME}@${HOST} << 'ENDSSH'
             cd /srv/ZorakBot
             sudo git pull
             sudo chmod -R 755 db/ && docker-compose up -d --build zorak || sudo chmod -R 755 db/ && docker-compose up -d --build zorak
           ENDSSH
-        env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
