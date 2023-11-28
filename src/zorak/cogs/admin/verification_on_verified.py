@@ -86,8 +86,8 @@ class AdminVerification(discord.ui.View):
             verified_role = discord.utils.get(roles, id=self.bot.server_settings.verified_role['verified'])
             await user.add_roles(verified_role)
 
-
-            log_channels_verification_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])
+            log_channels_verification_log = await self.bot.fetch_channel(
+                self.bot.server_settings.log_channel["verification_log"])
             log_channels_join = await self.bot.fetch_channel(self.bot.server_settings.log_channel["join_log"])
 
             await log_channels_verification_log.send(f"{user.mention} has verified!")
@@ -106,6 +106,7 @@ class AdminVerification(discord.ui.View):
         This is a dummy button, if pressed kicks user.
         """
         await self.send_wrong_button_message_and_kick(interaction)
+
 
 class VerifyHelper(commands.Cog):
     """
@@ -129,8 +130,6 @@ class VerifyHelper(commands.Cog):
 
         await ctx.respond(button_message, view=AdminVerification(self.bot))
 
-
-
     async def cog_command_error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(
@@ -141,7 +140,7 @@ class VerifyHelper(commands.Cog):
             raise error
 
 
-class persistantButton(commands.Cog):
+class PersistentButton(commands.Cog):
     """
     Listener for Adding the verification as a persistent listener
     """
@@ -158,7 +157,4 @@ class persistantButton(commands.Cog):
 def setup(bot):
     """Required."""
     bot.add_cog(VerifyHelper(bot))
-    bot.add_cog(persistantButton(bot))
-
-
-
+    bot.add_cog(PersistentButton(bot))
