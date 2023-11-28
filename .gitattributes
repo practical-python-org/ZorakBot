@@ -1,1 +1,2 @@
+* text=auto eol=lf
 src/zorak/_version.py export-subst

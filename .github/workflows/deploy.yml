@@ -1,0 +1,23 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - Main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH and Deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'ENDSSH'
+            cd /srv/ZorakBot
+            sudo git pull
+            sudo chmod -R 755 db/ && docker-compose up -d --build zorak || sudo chmod -R 755 db/ && docker-compose up -d --build zorak
+          ENDSSH
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
