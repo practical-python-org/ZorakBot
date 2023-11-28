@@ -22,11 +22,11 @@ class AdminVerification(discord.ui.View):
     def is_verified(self, member):
         if "✅" in [role.name for role in member.roles]:
             return True
-        
+
     async def send_wrong_button_message(self, guild, member):
         button_message = f"""
             Hi there, {member.mention}
-            you have pressed the wrong button to verify yourself. 
+            you have pressed the wrong button to verify yourself.
 
             Make sure you press the **GREEN** button to verify yourself.
             Please join the server again and try again.
@@ -46,21 +46,21 @@ class AdminVerification(discord.ui.View):
         await self.send_wrong_button_message(interaction.guild, user)
         await user.kick(reason="User failed to verify by pressing red button.")
 
-    @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Verify!", row=0, custom_id="Button_1", style=discord.ButtonStyle.red)
     async def verify_button_callback_red_1(self, button: discord.ui.Button, interaction: discord.Interaction):
         """
         This is a dummy button, if pressed kicks user.
         """
         await self.send_wrong_button_message_and_kick(interaction)
 
-    @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Verify!", row=0, custom_id="Button_2", style=discord.ButtonStyle.red)
     async def verify_button_callback_red_2(self, button: discord.ui.Button, interaction: discord.Interaction):
         """
         This is a dummy button, if pressed kicks user.
         """
         await self.send_wrong_button_message_and_kick(interaction)
 
-    @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.success)
+    @discord.ui.button(label="Verify!", row=0, custom_id="Button_3", style=discord.ButtonStyle.success)
     async def verify_button_callback_green(self, button: discord.ui.Button, interaction: discord.Interaction):
         """
         This is the stuff that happens
@@ -75,7 +75,6 @@ class AdminVerification(discord.ui.View):
 
         embed = discord.Embed(title="Welcome to Practical Python", color=discord.Color.yellow())
         embed.set_thumbnail(url="https://raw.githubusercontent.com/Xarlos89/PracticalPython/main/logo.png")
-
         if not verified:
             guild = interaction.guild
             roles = guild.roles
@@ -87,26 +86,26 @@ class AdminVerification(discord.ui.View):
             verified_role = discord.utils.get(roles, id=self.bot.server_settings.verified_role['verified'])
             await user.add_roles(verified_role)
 
+
             log_channels_verification_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["verification_log"])
             log_channels_join = await self.bot.fetch_channel(self.bot.server_settings.log_channel["join_log"])
 
             await log_channels_verification_log.send(f"{user.mention} has verified!")
             await log_channels_join.send(embed=embed_verified_success(user.mention, user.guild.member_count))
 
-    @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Verify!", row=0, custom_id="Button_4", style=discord.ButtonStyle.red)
     async def verify_button_callback_red_3(self, button: discord.ui.Button, interaction: discord.Interaction):
         """
         This is a dummy button, if pressed kicks user.
         """
         await self.send_wrong_button_message_and_kick(interaction)
 
-    @discord.ui.button(label="Verify!", row=0, style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Verify!", row=0, custom_id="Button_5", style=discord.ButtonStyle.red)
     async def verify_button_callback_red_4(self, button: discord.ui.Button, interaction: discord.Interaction):
         """
         This is a dummy button, if pressed kicks user.
         """
         await self.send_wrong_button_message_and_kick(interaction)
-
 
 class VerifyHelper(commands.Cog):
     """
@@ -127,8 +126,10 @@ class VerifyHelper(commands.Cog):
                           "please click the **GREEN** 'Verify' button to confirm your identity and gain "
                           "access to the server. **If you click the RED button you will be kicked!** Feel free to introduce yourself and don't "
                           "hesitate to ask any questions. Happy coding!")
-        
+
         await ctx.respond(button_message, view=AdminVerification(self.bot))
+
+
 
     async def cog_command_error(self, ctx: commands.Context, error: commands.CommandError):
         if isinstance(error, commands.MissingPermissions):
@@ -140,6 +141,24 @@ class VerifyHelper(commands.Cog):
             raise error
 
 
+class persistantButton(commands.Cog):
+    """
+    Listener for Adding the verification as a persistent listener
+    """
+
+    def __init__(self, bot):
+        self.bot = bot
+
+    # Registers a View for persistent listening
+    @commands.Cog.listener()
+    async def on_ready(self):
+        self.bot.add_view(AdminVerification(self.bot))
+
+
 def setup(bot):
     """Required."""
     bot.add_cog(VerifyHelper(bot))
+    bot.add_cog(persistantButton(bot))
+
+
+
