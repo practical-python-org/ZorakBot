@@ -17,7 +17,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'ENDSSH'
             cd /srv/ZorakBot
             sudo git pull
-            docker-compose up -d --build zorak_bot_prod
+            sudo chmod -R 755 db/ && docker-compose up -d --build zorak || sudo chmod -R 755 db/ && docker-compose up -d --build zorak
           ENDSSH
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
