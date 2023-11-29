@@ -37,6 +37,11 @@ class LoggingMessageEdit(commands.Cog):
                     # Dont log admin actions.
                     # This just gets really messy when we are cleaning things up
                     # or doing dodgy business in secret places.
+                    if len(message_before) > 1000:
+                        message_before = message_before[:1000]
+                    if len(message_after) > 1000:
+                        message_after = message_after[:1000]
+
                     embed = embed_message_edit(username, author, message_before, message_after)
                     logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["chat_log"])
                     await logs_channel.send(embed=embed)
