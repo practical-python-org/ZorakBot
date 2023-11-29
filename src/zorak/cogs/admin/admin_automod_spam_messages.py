@@ -35,6 +35,9 @@ class ModerationSpamMessages(commands.Cog):
         # Dont catch Zorak
         if message.author.bot:
             return
+        # Dont care about DM channels
+        if isinstance(message.channel, discord.DMChannel):
+            return
 
         # new speaker. Welcome to auto mod.
         if message.author.id not in self.records:

@@ -51,7 +51,7 @@ class ModerationInvites(commands.Cog):
             author = arg_message.author
             embed = discord.Embed(
                 title="<:red_circle:1043616578744357085> Invite removed",
-                description=f"Posted by {arg_message.author}\nIn {arg_message.channel.mention}",
+                description=f"Posted by {arg_message.author}\nIn {'a DM.' if isinstance(arg_message.channel, discord.DMChannel) else arg_message.channel.mention}",
                 color=discord.Color.dark_red(),
                 timestamp=datetime.utcnow(),
             )
@@ -70,8 +70,8 @@ class ModerationInvites(commands.Cog):
             embed = discord.Embed(
                 title="<:x:1055080113336762408> External Invites are not allowed here!",
                 description=f"{arg_message.author}, your message was removed "
-                f"because it contained an external invite.\nIf this "
-                f"was a mistake, contact the @staff",
+                            f"because it contained an external invite.\nIf this "
+                            f"was a mistake, contact the @staff",
                 color=discord.Color.dark_red(),
                 timestamp=datetime.utcnow(),
             )
@@ -87,6 +87,9 @@ class ModerationInvites(commands.Cog):
             return any(role.id in self.bot.server_settings.admin_roles.values() for role in message.author.roles)
 
         if is_invite(txt):
+            if isinstance(message.channel, discord.DMChannel):
+                return
+
             if not check_for_admin_override(txt):
                 logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
                 await logs_channel.send(embed=log_message(message))
