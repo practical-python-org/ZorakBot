@@ -27,6 +27,7 @@ python_help_1 = 903542455675260928
 python_help_2 = 903542494409674803
 challenges_channel = 1045104938071633994
 news_channel = 1071848336442794094
+suggestions_channel = 962415552737996800
 
 [channels.log_channel]
 server_change_log = 953545221260595280
