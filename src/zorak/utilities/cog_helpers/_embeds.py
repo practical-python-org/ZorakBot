@@ -423,6 +423,7 @@ def embed_suggestions(author, question):
 
     return embed
 
+
 def embed_suggestion_error(channel):
     embed = discord.Embed(
         title='Oops!'
