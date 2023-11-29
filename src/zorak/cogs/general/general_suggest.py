@@ -27,12 +27,25 @@ class GeneralSuggest(commands.Cog):
         logger.info("%s used the %s command."
                     , ctx.author.name
                     , ctx.command)
+        
+        '''
+        
+        '''
+        embed = discord.Embed(description= question)
+        embed.set_author(name= f"Suggestion by user {ctx.author.name}")
+        error_embed = discord.Embed(title= "**Oops...**", description= "Slow down, please only use /suggest in #📎suggestions!", color= discord.Color.red())
 
-        embed = discord.Embed(description=question)
-        embed.set_author(name=f"Suggestion by {ctx.author.name}")
-        msg = await ctx.send(embed=embed)
-        await msg.add_reaction("👍")
-        await msg.add_reaction("👎")
+
+        '''
+        If the channel name/ID of the command matches with the current 
+        channel, the suggestion will be posted. If not, an error message will occur.
+        '''
+        if ctx.channel.name == "📎suggestions" or ctx.channel_id == "962415552737996800":
+            msg = await ctx.respond(embed=embed)
+            await msg.add_reaction("👍")
+            await msg.add_reaction("👎")
+        else:
+            await ctx.respond(embed=error_embed)
 
 
 def setup(bot):
