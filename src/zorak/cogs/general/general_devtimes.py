@@ -30,7 +30,7 @@ class GeneralDevtimes(commands.Cog):
                     , ctx.author.name
                     , ctx.command)
 
-        embed = discord.Embed(title="**Staff Times**", description="")
+        embed = discord.Embed(title="**Developer Times**", description="")
         dev_times_list = self.bot.db_client.get_all_dev_times()
 
         for iteration, dev_time in enumerate(dev_times_list):

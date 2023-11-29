@@ -6,6 +6,10 @@ import logging
 import discord
 from discord.ext import commands
 
+from zorak.utilities.cog_helpers._embeds import (
+    embed_suggestion,
+    embed_suggestion_error# pylint: disable=E0401
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,11 +32,17 @@ class GeneralSuggest(commands.Cog):
                     , ctx.author.name
                     , ctx.command)
 
-        embed = discord.Embed(description=question)
-        embed.set_author(name=f"Suggestion by {ctx.author.name}")
-        msg = await ctx.send(embed=embed)
-        await msg.add_reaction("👍")
-        await msg.add_reaction("👎")
+        '''
+        If the channel name/ID of the command matches with the current
+        channel, the suggestion will be posted. If not, an error message will occur.
+        '''
+        suggest_channel = await self.bot.fetch_channel(self.bot.server_settings.normal_channel["suggestions_channel"])
+        if ctx.channel_id == suggest_channel.id:
+            msg = await ctx.respond(embed = embed_suggestion(ctx.author, question))
+            await msg.add_reaction("👍")
+            await msg.add_reaction("👎")
+        else:
+            await ctx.respond(embed=embed_suggestion_error(suggest_channel))
 
 
 def setup(bot):
