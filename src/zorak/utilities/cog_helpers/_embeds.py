@@ -117,10 +117,10 @@ def embed_message_edit(some_username, orig_author, some_message_before, some_mes
         , color=discord.Color.dark_orange()
         , timestamp=datetime.utcnow()
     )
-
-    embed.set_thumbnail(
-        url=orig_author.avatar
-    )
+    if orig_author.avatar is not None:
+        embed.set_thumbnail(
+            url=orig_author.avatar
+        )
 
     embed.add_field(
         name='Original message: '
