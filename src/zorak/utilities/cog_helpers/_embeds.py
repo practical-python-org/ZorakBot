@@ -409,7 +409,7 @@ def embed_spammer_warn(channel1, channel2):
 
 def embed_suggestions(author, question):
     embed = discord.Embed(
-        title=f'Suggestion by user {author.name}'
+        title=f'Suggestion by {author.name}'
         , description=f'Please vote using reactions.'
         , color=discord.Color.yellow()
         , timestamp=datetime.utcnow()
