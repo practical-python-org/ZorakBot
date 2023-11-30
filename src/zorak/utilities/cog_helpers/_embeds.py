@@ -124,13 +124,13 @@ def embed_message_edit(some_username, orig_author, some_message_before, some_mes
 
     embed.add_field(
         name='Original message: '
-        , value=some_message_before.content
+        , value=some_message_before.content[:1000]
         , inline=True
     )
 
     embed.add_field(
         name="After editing: "
-        , value=some_message_after.content
+        , value=some_message_after.content[:1000]
         , inline=True
     )
 
