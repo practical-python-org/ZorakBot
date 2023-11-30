@@ -6,7 +6,9 @@ import logging
 import discord
 from discord.ext import commands
 
-from zorak.utilities.cog_helpers._embeds import embed_suggestions, embed_suggestion_error# pylint: disable=E0401
+
+from zorak.utilities.cog_helpers._embeds import embed_suggestions, embed_suggestion_error  # pylint: disable=E0401
+
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +42,7 @@ class GeneralSuggest(commands.Cog):
 
             await msg.add_reaction(emoji="👍")
             await msg.add_reaction(emoji="👎")
+
         else:
             await ctx.respond(embed=embed_suggestion_error(suggest_channel))
 
