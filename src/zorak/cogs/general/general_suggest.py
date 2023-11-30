@@ -35,11 +35,11 @@ class GeneralSuggest(commands.Cog):
         '''
         suggest_channel = await self.bot.fetch_channel(self.bot.server_settings.normal_channel["suggestions_channel"])
         if ctx.channel_id == suggest_channel.id:
-            msg = await ctx.respond(embed = embed_suggestions(ctx.author, question))
-            up = "👍"
-            down = "👎"
-            await msg.add_reaction(emoji=up)
-            await msg.add_reaction(emoji=down)
+            await ctx.response.send_message(embed=embed_suggestions(ctx.author, question))
+            msg = await ctx.interaction.original_response()
+
+            await msg.add_reaction(emoji="👍")
+            await msg.add_reaction(emoji="👎")
         else:
             await ctx.respond(embed=embed_suggestion_error(suggest_channel))
 
