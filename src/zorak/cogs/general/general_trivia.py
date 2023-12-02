@@ -21,7 +21,7 @@ class GeneralTrivia(commands.Cog):
         self.bot = bot
 
     @commands.slash_command()
-    async def trivia_cmd(self, ctx):
+    async def trivia(self, ctx):
         """
         Sends a trivia using an API
         """
@@ -30,7 +30,7 @@ class GeneralTrivia(commands.Cog):
                     , ctx.command)
         req = requests.get("https://opentdb.com/api.php?amount=1&category=18&difficulty=medium&type=multiple")
         if req.json()['response_code'] == 0:
-            
+
             await ctx.respond(html.unescape(req.json()['results'][0]['question']))
             view = discord.ui.View()
             answer_list = []
@@ -40,12 +40,15 @@ class GeneralTrivia(commands.Cog):
             al = answer_list[:]
             correct_ans = len(answer_list)-1
             button_list = []
+
             async def empty(interaction:discord.Interaction):
                 pass
+
             async def correct(interaction:discord.Interaction):
                 if interaction.user == ctx.author:
                     await interaction.response.defer()
-                    await interaction.followup.send(content="The answer is correct, good job human")
+                    await interaction.followup.send(content="The answer is correct, good job human. +1 point.")
+                    self.bot.db_client.add_points_to_user(ctx.author.id, 1)
                     for i in button_list:
                         i.callback = empty
 
@@ -56,14 +59,15 @@ class GeneralTrivia(commands.Cog):
                     await interaction.edit_original_response()
                     for i in button_list:
                         i.callback = empty
+
+
             for i in range(correct_ans+1):
                 index = random.randint(0,len(al)-1)
                 label = html.unescape(al[index][0])
                 button = discord.ui.Button(label=label)
                 button_list.append(button)
-                #print(button.callback)
+
                 if al[index][1]:
-                    
                     button.callback = correct
                 else:
                     button.callback = wrong
