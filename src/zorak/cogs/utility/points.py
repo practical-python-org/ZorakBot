@@ -125,7 +125,7 @@ class Points(commands.Cog):
         """Get points for a user."""
         mention = str(mention)
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
-        points = self.bot.db_client.get_user_points(user.id)
+        points = self.bot.db_client.get_user_points(int(user.id))
         await ctx.respond(f"{mention} has {points} point{('s', '')[abs(points) == 1]}.")
 
     @commands.slash_command()
