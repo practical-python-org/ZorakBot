@@ -21,7 +21,7 @@ class GeneralTrivia(commands.Cog):
         self.bot = bot
 
     @commands.slash_command()
-    async def trivia_cmd(self, ctx):
+    async def trivia(self, ctx):
         """
         Sends a trivia using an API
         """
