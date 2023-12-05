@@ -34,7 +34,8 @@ class Points(commands.Cog):
         """When a member sends a message, give them 1 point."""
         if message.author.bot:
             return
-        self.bot.db_client.add_points_to_user(message.author.id, 1)
+        message_value = len(message.content.split(" "))
+        self.bot.db_client.add_points_to_user(message.author.id, abs(message_value))
 
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
