@@ -142,11 +142,14 @@ class Points(commands.Cog):
         top10_no_staff = []
         points = self.bot.db_client.get_top_10()
         guild = self.bot.get_guild(self.bot.server_settings.server_info['id'])
-        if len(top10_no_staff) < 10:  # should only allow 10 people into the list
-            for iteration, person in enumerate(points):
+
+        for iteration, person in enumerate(points):
+            if len(top10_no_staff) < 10:  # should only allow 10 people into the list
                 member = guild.get_member(person['UserID'])
                 if not is_staff(member):
                     top10_no_staff.append((member, person['Points']))
+            else:
+                return
 
         embed = embed_leaderboard(top10_no_staff, self.bot.server_settings.server_info['name'],
                                   self.bot.server_settings.server_info['logo'])
