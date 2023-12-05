@@ -120,7 +120,6 @@ class Points(commands.Cog):
         await ctx.respond("Points reset for all users.")
 
     @commands.slash_command()
-    @commands.has_any_role("Admin", "Sudo", "Staff", "Project Manager")
     async def get_points_for_user(self, ctx, mention):
         """Get points for a user."""
         mention = str(mention)
