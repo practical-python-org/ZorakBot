@@ -34,14 +34,16 @@ class Points(commands.Cog):
         """When a member sends a message, give them 1 point."""
         if message.author.bot:
             return
-        self.bot.db_client.add_points_to_user(message.author.id, 1)
+        message_value = len(message.content.split(" "))
+        self.bot.db_client.add_points_to_user(message.author.id, abs(message_value))
 
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
         """When a member deletes a message, remove a point."""
+        message_value = len(message.content.split(" "))
         mod_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
-        await mod_log.send(f"1 Point removed from {message.author} for deleting a message.")
-        self.bot.db_client.remove_points_from_user(message.author.id, 1)
+        await mod_log.send(f"{message_value} Point/s removed from {message.author} for deleting a message.")
+        self.bot.db_client.remove_points_from_user(message.author.id, abs(message_value))
     #
     # # TODO: Fix the backup command.
     # # @commands.slash_command()
@@ -120,7 +122,6 @@ class Points(commands.Cog):
         await ctx.respond("Points reset for all users.")
 
     @commands.slash_command()
-    @commands.has_any_role("Admin", "Sudo", "Staff", "Project Manager")
     async def get_points_for_user(self, ctx, mention):
         """Get points for a user."""
         mention = str(mention)
@@ -142,11 +143,14 @@ class Points(commands.Cog):
         top10_no_staff = []
         points = self.bot.db_client.get_top_10()
         guild = self.bot.get_guild(self.bot.server_settings.server_info['id'])
-        if len(top10_no_staff) < 10:  # should only allow 10 people into the list
-            for iteration, person in enumerate(points):
+
+        for iteration, person in enumerate(points):
+            if len(top10_no_staff) < 10:  # should only allow 10 people into the list
                 member = guild.get_member(person['UserID'])
                 if not is_staff(member):
                     top10_no_staff.append((member, person['Points']))
+            else:
+                return
 
         embed = embed_leaderboard(top10_no_staff, self.bot.server_settings.server_info['name'],
                                   self.bot.server_settings.server_info['logo'])
