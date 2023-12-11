@@ -68,8 +68,8 @@ def embed_leave(some_member):
     Embedding for user leave alerts.
     """
     embed = discord.Embed(
-        title='\u200b'
-        , description=f'{some_member} has left us.'
+        title=""
+        , description=f"{some_member} has left us."
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
     )
@@ -91,7 +91,7 @@ def embed_message_delete(some_member, some_message):
     )
 
     embed.set_thumbnail(
-        url=some_member.avatar  # the person who DELETED the message
+        url=some_member.avatar # the person who DELETED the message
     )
     if len(some_message.content) > 1020:
         the_message = some_message.content[0:1020] + '...'
@@ -117,20 +117,20 @@ def embed_message_edit(some_username, orig_author, some_message_before, some_mes
         , color=discord.Color.dark_orange()
         , timestamp=datetime.utcnow()
     )
-    if orig_author.avatar is not None:
-        embed.set_thumbnail(
-            url=orig_author.avatar
-        )
+
+    embed.set_thumbnail(
+        url=orig_author.avatar
+    )
 
     embed.add_field(
         name='Original message: '
-        , value=some_message_before.content[:1000]
+        , value=some_message_before.content
         , inline=True
     )
 
     embed.add_field(
         name="After editing: "
-        , value=some_message_after.content[:1000]
+        , value=some_message_after.content
         , inline=True
     )
 
@@ -172,9 +172,10 @@ def embed_verified_success(name, amount):
     Embedding for user verification success, and therefore a join
     """
     embed = discord.Embed(
-        title="",
-        description=f"{name}, human number {amount} has joined.",
-        color=discord.Color.dark_green(),
+        title=""
+        , description=f"{name}, human number {amount} has joined."
+        , color=discord.Color.dark_green()
+        , timestamp=datetime.utcnow()
     )
 
     return embed
@@ -385,7 +386,6 @@ def embed_spammer(message_to_report):
     embed.add_field(name="Message:", value=message_to_report, inline=True)
     return embed
 
-
 def embed_spammer_warn(channel1, channel2):
     """
     Embedding warn for detected spam messages.
@@ -407,33 +407,6 @@ def embed_spammer_warn(channel1, channel2):
     return embed
 
 
-def embed_suggestions(author, question):
-    embed = discord.Embed(
-        title=f'Suggestion by {author.name}'
-        , description=f'Please vote using reactions.'
-        , color=discord.Color.yellow()
-        , timestamp=datetime.utcnow()
-    )
-
-    embed.add_field(
-        name='Suggestion:'
-        , value=f'{question}'
-        , inline=True
-    )
-
-    return embed
-
-
-def embed_suggestion_error(channel):
-    embed = discord.Embed(
-        title='Oops!'
-        , description=f'Please only use the /suggest command in {channel.mention}'
-        , color=discord.Color.red()
-        , timestamp=datetime.utcnow()
-    )
-    return embed
-
-
 def embed_leaderboard(people_list, server_name, server_logo):
     """
         Embedding for the leaderboard command.
@@ -449,9 +422,19 @@ def embed_leaderboard(people_list, server_name, server_logo):
     )
     for place, person in enumerate(people_list):
         embed.add_field(
-            name=f"#{place + 1}  -  {person[0].display_name}"
+            name=f"#{place+1}  -  {person[0].display_name}"
             , value=f"Points: {person[1]}"
             , inline=False
         )
 
     return embed
+
+
+def embed_suggestion():
+    """
+        Embed for the suggestion command
+        """
+    embed = discord.Embed(
+        title=f""
+
+    )
