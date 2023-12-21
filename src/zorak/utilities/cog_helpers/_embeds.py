@@ -60,6 +60,7 @@ def embed_kick(some_member, audit_log_entry):
         , value=f'{audit_log_entry.reason}'
         , inline=True
     )
+
     return embed
 
 
@@ -68,7 +69,7 @@ def embed_leave(some_member):
     Embedding for user leave alerts.
     """
     embed = discord.Embed(
-        title='\u200b'
+        title=''
         , description=f'{some_member} has left us.'
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
@@ -129,7 +130,7 @@ def embed_message_edit(some_username, orig_author, some_message_before, some_mes
     )
 
     embed.add_field(
-        name="After editing: "
+        name='After editing: '
         , value=some_message_after.content[:1000]
         , inline=True
     )
@@ -172,9 +173,10 @@ def embed_verified_success(name, amount):
     Embedding for user verification success, and therefore a join
     """
     embed = discord.Embed(
-        title="",
-        description=f"{name}, human number {amount} has joined.",
-        color=discord.Color.dark_green(),
+        title=''
+        , description=f'{name}, human number {amount} has joined.'
+        , color=discord.Color.dark_green()
+        , timestamp=datetime.utcnow()
     )
 
     return embed
@@ -185,7 +187,7 @@ def embed_ticket_create(user, ticket_name):
     Embed for creation of a new ticket.
     """
     embed = discord.Embed(
-        title=f"{str(user)} opened a ticket.",
+        title=f'{str(user)} opened a ticket.',
         description=f"Ticket: {ticket_name}",
         color=discord.Color.green(),
         timestamp=datetime.utcnow(),
@@ -199,8 +201,8 @@ def embed_ticket_update(user, ticket_name):
     Embed for update of a new ticket.
     """
     embed = discord.Embed(
-        title=f"{str(user)} updated a ticket.",
-        description=f"Ticket: <#{ticket_name}>",
+        title=f'{str(user)} updated a ticket.',
+        description=f'Ticket: <#{ticket_name}>',
         color=discord.Color.green(),
         timestamp=datetime.utcnow(),
     )
@@ -213,8 +215,8 @@ def embed_ticket_delete(user, ticket_name):
     Embed for deletion of a new ticket.
     """
     embed = discord.Embed(
-        title=f"{str(user)} deleted a ticket.",
-        description=f"Ticket: <#{ticket_name}>",
+        title=f'{str(user)} deleted a ticket.',
+        description=f'Ticket: <#{ticket_name}>',
         color=discord.Color.red(),
         timestamp=datetime.utcnow(),
     )
@@ -227,8 +229,8 @@ def embed_ticket_remove(user, ticket_name):
     Embed for removal of a new ticket.
     """
     embed = discord.Embed(
-        title=f"{str(user)} removed a ticket.",
-        description=f"Ticket: <#{ticket_name}>",
+        title=f'{str(user)} removed a ticket.',
+        description=f'Ticket: <#{ticket_name}>',
         color=discord.Color.red(),
         timestamp=datetime.utcnow(),
     )
@@ -308,7 +310,7 @@ def embed_docs(search_term, link_list):
         return embed
 
     embed = discord.Embed(
-        title="Python Official Documentation"
+        title='Python Official Documentation'
         , description=f'Search-term: {search_term}'
         , color=discord.Color.yellow()
         , timestamp=datetime.utcnow()
@@ -325,9 +327,9 @@ def embed_docs(search_term, link_list):
 
         else:
             embed.add_field(
-                name="Read more at:"
-                , value=f"[Python Official Docs](https://docs.python.org/3/"
-                        f"search.html?q={search_term}&check_keywords=yes&area=default)"
+                name='Read more at:'
+                , value=f'[Python Official Docs](https://docs.python.org/3/'
+                        f'search.html?q={search_term}&check_keywords=yes&area=default)'
                 , inline=False
             )
             return embed
@@ -352,7 +354,7 @@ def embed_definition(the_word, part_of_speech, definition, synonym, source):
         )
     embed.add_field(
         name=''
-        , value=f"[Source]({source})"
+        , value=f'[Source]({source})'
         , inline=True
     )
     return embed
@@ -377,12 +379,12 @@ def embed_spammer(message_to_report):
     """
     embed = discord.Embed(
         title='Firewall has been triggered'
-        , description="When you send the same message three times, you get the quarantine."
-                      " Wait for the staff to come let you out."
+        , description='When you send the same message three times, you get the quarantine.'
+                      ' Wait for the staff to come let you out.'
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
     )
-    embed.add_field(name="Message:", value=message_to_report, inline=True)
+    embed.add_field(name='Message:', value=message_to_report, inline=True)
     return embed
 
 
@@ -392,7 +394,7 @@ def embed_spammer_warn(channel1, channel2):
     """
     embed = discord.Embed(
         title='Warning'
-        , description="When you send the same message **three times**, you get the quarantine.\n"
+        , description='When you send the same message **three times**, you get the quarantine.\n'
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
     )
