@@ -13,4 +13,4 @@ PyNaCl==1.5.0
 ffmpeg-python==0.2.0
 yt-dlp==2023.12.30
 googletrans==3.1.0a0
-dnspython==2.3.0
+dnspython==2.6.1
