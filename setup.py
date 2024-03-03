@@ -41,7 +41,7 @@ setuptools.setup(
             "cfgv==3.4.0",
             "distlib==0.3.8",
             "filelock==3.13.1",
-            "identify==2.5.33",
+            "identify==2.5.35",
             "nodeenv==1.8.0",
             "platformdirs==4.1.0",
             "pre-commit==3.6.2",
