@@ -16,6 +16,7 @@ oceana = 974951025050025984
 [reaction_roles.employment]
 open_to_work = 1113020825596067850
 employer = 1113020504148815944
+ping = 1213855270732570624
 
 [reaction_roles.color]
 red = 1148145845770915870
@@ -27,6 +28,15 @@ light_blue = 1148144625836625961
 blue = 1148144828631224391
 pink = 1143109787316396082
 purple = 1148146380880216065
+
+
+[selectors.notifications]
+name = "Server notifications"
+single_choice = true
+description = "Do you want to receive relevant server pings for news, events and announcements?"
+options = [
+    { label = "Yes!", emoji = "🟢", description = "I want to receive Pings from the server.", id = 1213855270732570624 },
+]
 
 [selectors.experience]
 name = "experience"
