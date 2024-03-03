@@ -96,6 +96,7 @@ oceana = 1064259760674840666
 [reaction_roles.employment]
 open_to_work = 1113020825596067850
 employer = 1113020504148815944
+ping = 1213857615537250324
 
 [reaction_roles.color]
 red = 1149951355000201267
@@ -108,6 +109,15 @@ blue = 1149951872711528529
 pink = 1149951973513252914
 purple = 1149951930253185084
 
+[selectors.notifications]
+name = "Server notifications"
+single_choice = true
+description = "Do you want to receive relevant server pings for news, events and announcements?"
+options = [
+    { label = "Yes!", emoji = "🟢", description = "I want to receive Pings from the server.", id = 1213857615537250324 },
+]
+
+
 [selectors.experience]
 name = "experience"
 single_choice = true
@@ -117,6 +127,7 @@ options = [
     { label = "Intermediate", emoji = "🟡", description = "Can solve issues and diagnose problems", id = 1064259555497877534 },
     { label = "Professional", emoji = "🔴", description = "Using Python in professional life.", id = 1064259557049761863 },
 ]
+
 
 [selectors.location]
 name = "location"
