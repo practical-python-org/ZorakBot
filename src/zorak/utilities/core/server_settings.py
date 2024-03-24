@@ -56,3 +56,10 @@ class Settings:
         except Exception as e:
             self.reaction_role_data = None
             logger.warning(f"Failed to grab reaction roles. No file under {reaction_role_config_path}")
+
+        verification_path = os.path.join(settings_path, "verification_options.toml")
+        try:
+            self.verification_options = toml.load(verification_path)
+        except Exception as f:
+            self.verification_options = None
+            logger.warning(f"Failed to grab verification options. No file under {reaction_role_config_path}")
