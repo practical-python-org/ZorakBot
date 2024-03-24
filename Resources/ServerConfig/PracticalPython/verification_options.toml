@@ -1,0 +1,18 @@
+[verified.verified_role]
+verified = 1173219859878924298
+
+
+[selectors.are_you_human]
+name = "Verification"
+single_choice = true
+description = "Are you really human??"
+options = [
+    { label = "Verify me!", emoji = "🟢", description = "I would like to join the server!", id = 1173170054695764050 },
+    { label = "I am NOT human.", emoji = "❌", description = "When you are indeed, a robot.", id = 0 },
+    { label = "I am NOT human.", emoji = "❌", description = "When you are indeed, a robot.", id = 1 },
+    { label = "I am NOT human.", emoji = "❌", description = "When you are indeed, a robot.", id = 2 },
+    { label = "I am NOT human.", emoji = "❌", description = "When you are indeed, a robot.", id = 3 },
+    { label = "I am NOT human.", emoji = "❌", description = "When you are indeed, a robot.", id = 4 }
+
+]
+
