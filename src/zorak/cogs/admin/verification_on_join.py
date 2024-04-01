@@ -6,6 +6,8 @@ import logging
 import discord
 from discord.ext import commands
 
+from zorak.utilities.cog_helpers._embeds import embed_verified_success  # pylint: disable=E0401
+
 logger = logging.getLogger(__name__)
 
 
@@ -28,6 +30,9 @@ class LoggingVerification(commands.Cog):
         # Add verification role
         await member.add_roles(member.guild.get_role(self.bot.server_settings.unverified_role["needs_approval"]))
 
+        log_channels_join = await self.bot.fetch_channel(self.bot.server_settings.log_channel["join_log"])
+        await log_channels_join.send(embed=embed_verified_success(member.mention, member.guild.member_count))
+
     async def send_welcome_message(self, guild, member):
         welcome_message = f"""
             Hi there, {member.mention}
@@ -35,7 +40,7 @@ class LoggingVerification(commands.Cog):
 
             We are very happy that you have decided to join us.
             Before you are allowed to chat, you need to verify that you aren't a bot.
-            Dont worry, it's easy. Just go to 
+            Dont worry, it's easy. Just go to
             {self.bot.get_channel(self.bot.server_settings.mod_channel['verification_channel']).mention}
             and click the green button.
 
