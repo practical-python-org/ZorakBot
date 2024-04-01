@@ -12,3 +12,15 @@ Contains a function to abstract the configuration and instatiation of Python's b
 
 ### mongo.py
 Contains a class that implements a MongoDB client and abstracts a number of commonly used functions for ease of use.
+
+### channels.py
+Contains the class for turning channels into channel IDs
+
+### info.py
+Contains the class for getting information about a server.
+
+### log.py
+Contains the class for logging channel IDs, and logging options
+
+### roles.py
+Contains the class for roles and role IDs

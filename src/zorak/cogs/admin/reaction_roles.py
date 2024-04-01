@@ -95,9 +95,9 @@ class Roles(commands.Cog):
     @commands.slash_command(description="Get new roles, or change the ones you have!")
     async def roles(self, ctx):
         """The slash command that initiates the fancy menus."""
-        if hasattr(self.bot.server_settings, "reaction_role_data"):
-            if "reaction_roles" in self.bot.server_settings.reaction_role_data:
-                await ctx.respond("Edit Reaction Roles", view=SelectView(self.bot.server_settings.reaction_role_data), ephemeral=True)
+        if hasattr(self.bot.settings.roles, "reaction"):
+            if "reaction_roles" in self.bot.settings.reaction:
+                await ctx.respond("Edit Reaction Roles", view=SelectView(self.bot.settings.reaction), ephemeral=True)
             else:
                 await ctx.respond("No reaction roles have been set up!", ephemeral=True)
         else:

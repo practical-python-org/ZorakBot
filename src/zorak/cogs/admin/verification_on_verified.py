@@ -43,7 +43,7 @@ class VerificationSelector(discord.ui.Select):
                 ** _Make sure you press the "Verify me!" button to verify yourself._ **
 
                 Please join the server again and try again.
-                {self.bot.server_settings.server_info['invite']}
+                {self.bot.settings.info['invite']}
                 """
             )
         except discord.errors.Forbidden as catch_dat_forbidden:
@@ -121,14 +121,14 @@ class Verification(commands.Cog):
     @commands.slash_command(description="Verification!")
     async def verify(self, ctx):
         """The slash command that initiates the fancy menus."""
-        if hasattr(self.bot.server_settings, "verification_options"):
-            if "selectors" in self.bot.server_settings.verification_options:
+        if hasattr(self.bot.settings, "verification_options"):
+            if "selectors" in self.bot.settings.verification_options:
                 if "✅" not in [role.name for role in ctx.author.roles]:
                     await ctx.respond(
                         "# ~ Verification ~ \n"
                         "_Before you can join the server, we need to make sure you are not a robot._\n"
                         "_Please answer the following question._"
-                        , view=SelectView(self.bot, self.bot.server_settings.verification_options)
+                        , view=SelectView(self.bot, self.bot.settings.verification_options)
                         , ephemeral=True
                     )
                 else:

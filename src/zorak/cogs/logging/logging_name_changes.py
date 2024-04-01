@@ -35,7 +35,7 @@ class LoggingNameChanges(commands.Cog):
         if before.nick != after.nick and before.nick is not None:
             embed = embed_name_change(before, after, username_before, username_after)
 
-            logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+            logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
             await logs_channel.send(f"{username_after.mention}", embed=embed)
 
 

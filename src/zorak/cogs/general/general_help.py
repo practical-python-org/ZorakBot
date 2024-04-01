@@ -30,16 +30,16 @@ class HelpButtons(discord.ui.View):
     async def first_button_callback(self, button, interaction):
         # staff_role = interaction.guild.get_role(admin_roles["staff"])
         embed = discord.Embed(
-            title=f"{self.server_settings.server_info['name']}",
-            description=f"**Website** \n{self.server_settings.server_info['website']}\n\n"
+            title=f"{self.server_settings.info['name']}",
+            description=f"**Website** \n{self.server_settings.info['website']}\n\n"
             f"**Owner** \n{interaction.guild.owner.mention}\n\n"  # pylint: disable=W1401
-            f"**Email** \n{self.server_settings.server_info['email']}\n\n"  # pylint: disable=W1401
-            f"**Invite Link** \n{self.server_settings.server_info['invite']}\n\n"  # pylint: disable=W1401
-            f"**Leave a reveiw** \n{self.server_settings.server_info['review']}\n\n"  # pylint: disable=W1401
+            f"**Email** \n{self.server_settings.info['email']}\n\n"  # pylint: disable=W1401
+            f"**Invite Link** \n{self.server_settings.info['invite']}\n\n"  # pylint: disable=W1401
+            f"**Leave a reveiw** \n{self.server_settings.info['review']}\n\n"  # pylint: disable=W1401
             f"**Questions?** \nMake a ticket using **/ticket**, or send us an email.",
             color=discord.Color.yellow(),
         )
-        embed.set_thumbnail(url=self.server_settings.server_info["logo"])
+        embed.set_thumbnail(url=self.server_settings.info["logo"])
         await interaction.response.send_message(embed=embed)
 
     @discord.ui.button(label="Running code", row=0, style=discord.ButtonStyle.success)
@@ -69,7 +69,7 @@ class HelpCommand(commands.Cog):
         A standard slash command.
         """
         logger.info("%s used the %s command.", ctx.author.name, ctx.command)
-        await ctx.respond("What do you want, human?", view=HelpButtons(self.bot.server_settings, timeout=120))
+        await ctx.respond("What do you want, human?", view=HelpButtons(self.bot.settings, timeout=120))
 
 
 def setup(bot):

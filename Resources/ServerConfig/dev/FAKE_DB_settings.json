@@ -1,0 +1,73 @@
+{
+  "1031644670436061324": {
+    "info": {
+      "id": 1031644670436061324,
+      "name": "Practical Python",
+      "website": "https://practical-python-org.github.io/Home/",
+      "email": "Practicalpython-staff@pm.me",
+      "review": "https://disboard.org/review/create/900302240559018015",
+      "invite": "https://discord.gg/vgZmgNwuHw",
+      "logo": "https://raw.githubusercontent.com/Xarlos89/PracticalPython/main/logo.png"
+    },
+    "channels": {
+      "verification": {
+        "verification_channel": 1055126587512721439
+      },
+      "quarantine": {
+        "quarantine_channel": 1055126882691076177
+      },
+      "support": {
+        "server_support": 1068103243734994964
+      },
+      "general": {
+        "role_channel": 1062268986726813758,
+        "rules_channel": 1062269049121275914,
+        "general_channel": 1031644670436061327,
+        "resources_channel": 1062300735338983485,
+        "python_help_1": 1062302503351365632,
+        "python_help_2": 12345,
+        "challenges_channel": 1045104938071633994,
+        "news_channel": 1071095960538718261,
+        "suggestions_channel": 117939062999902620
+      },
+      "logging": {
+        "chat_log": 1043607758685089932,
+        "join_log": 1043967844934762556,
+        "mod_log": 1055124663526752297,
+        "server_change_log": 1062269270047862884,
+        "user_log": 1044331443884654692,
+        "verification_log": 1043621605940674580,
+        "zorak_log": 1062754277543645324
+      }
+    },
+    "roles": {
+      "admin": {
+        "owner": 1054762426614157354,
+        "admin": 1134861924882989097,
+        "staff": 1031903615310385232,
+        "staff_networking": 1134861783358775367,
+        "bot": 1054763353538576437
+      },
+      "reaction": {
+        "beginner": 1064259543250522112,
+        "intermediate": 1064259555497877534,
+        "professional": 1064259557049761863,
+        "north_america": 1064259558819770379,
+        "europe": 1064259561302794361,
+        "asia": 1064259687924637768,
+        "africa": 1064259690948722708,
+        "south_america": 1064259693545013288,
+        "oceana": 1064259760674840666,
+        "open_to_work": 1114611004182102218,
+        "employer": 1114611092677722113
+      },
+      "punishment": {
+        "naughty": 1062270109839790110
+      },
+      "verified": {
+        "verified": 1173219859878924298
+      }
+    }
+  }
+}
+

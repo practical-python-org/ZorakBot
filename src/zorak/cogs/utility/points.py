@@ -41,7 +41,7 @@ class Points(commands.Cog):
     async def on_message_delete(self, message: discord.Message):
         """When a member deletes a message, remove a point."""
         message_value = len(message.content.split(" "))
-        mod_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+        mod_log = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
         await mod_log.send(f"{message_value} Point/s removed from {message.author} for deleting a message.")
         self.bot.db_client.remove_points_from_user(message.author.id, abs(message_value))
     #
@@ -66,7 +66,7 @@ class Points(commands.Cog):
         """Add points to a user."""
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.add_points_to_user(user.id, int(points))
-        mod_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+        mod_log = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
         await mod_log.send(f"{points} point{('s', '')[abs(int(points)) == 1]} added to {mention} by {ctx.author}.")
         await ctx.respond(f"{points} point{('s', '')[abs(int(points)) == 1]} added to {mention}.")
 
@@ -75,7 +75,7 @@ class Points(commands.Cog):
     async def add_points_to_all_users(self, ctx, points):
         """Add points to all users."""
         self.bot.db_client.add_points_to_all_users(int(points))
-        mod_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+        mod_log = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
         await mod_log.send(f"{points} point{('s', '')[abs(int(points)) == 1]} added to all users by {ctx.author}.")
         await ctx.respond(f"{points} point{('s', '')[abs(int(points)) == 1]} added to all users.")
 
@@ -87,7 +87,7 @@ class Points(commands.Cog):
         points = int(points)
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.remove_points_from_user(user.id, points)
-        mod_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+        mod_log = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
         await mod_log.send(f"{points} point{('s', '')[abs(points) == 1]} removed from {mention} by {ctx.author}.")
         await ctx.respond(f"{points} point{('s', '')[abs(points) == 1]} removed from {mention}.")
 
@@ -97,7 +97,7 @@ class Points(commands.Cog):
         """Remove points from all users."""
         points = int(points)
         self.bot.db_client.remove_points_from_all_users(points)
-        mod_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+        mod_log = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
         await mod_log.send(f"{points} point{('s', '')[abs(points) == 1]} removed from all users by {ctx.author}.")
         await ctx.respond(f"{points} point{('s', '')[abs(points) == 1]} removed from all users.")
 
@@ -108,7 +108,7 @@ class Points(commands.Cog):
         mention = str(mention)
         user = self.bot.get_user(int(mention.split("@")[1].split(">")[0]))
         self.bot.db_client.set_user_points(user.id, 0)
-        mod_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+        mod_log = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
         await mod_log.send(f"Points reset for {mention} by {ctx.author}.")
         await ctx.respond(f"Points reset for {mention}.")
 
@@ -117,7 +117,7 @@ class Points(commands.Cog):
     async def reset_points_for_all_users(self, ctx):
         """Reset points for all users."""
         self.bot.db_client.set_all_user_points(0)
-        mod_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+        mod_log = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
         await mod_log.send(f"Points reset for all users by {ctx.author}.")
         await ctx.respond("Points reset for all users.")
 
@@ -135,14 +135,15 @@ class Points(commands.Cog):
 
         def is_staff(member_obj):
             """ Tells us if the 'member_obj' has an admin role. """
-            for role in self.bot.server_settings.admin_roles:
-                if self.bot.server_settings.admin_roles[role] in [y.id for y in member_obj.roles]:
+            # TODO: .admin_roles no longer exists, find a workaround here.
+            for role in self.bot.settings.admin:
+                if self.bot.settings.admin[role] in [y.id for y in member_obj.roles]:
                     return True
             return False
 
         top10_no_staff = []
         points = self.bot.db_client.get_top_10()
-        guild = self.bot.get_guild(self.bot.server_settings.server_info['id'])
+        guild = self.bot.get_guild(self.bot.settings.info['id'])
 
         for iteration, person in enumerate(points):
             if len(top10_no_staff) < 10:  # should only allow 10 people into the list
@@ -152,8 +153,8 @@ class Points(commands.Cog):
             else:
                 return
 
-        embed = embed_leaderboard(top10_no_staff, self.bot.server_settings.server_info['name'],
-                                  self.bot.server_settings.server_info['logo'])
+        embed = embed_leaderboard(top10_no_staff, self.bot.settings.info['name'],
+                                  self.bot.settings.info['logo'])
         await ctx.respond(embed=embed)
 
 

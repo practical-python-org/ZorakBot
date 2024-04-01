@@ -23,7 +23,7 @@ class LoggingAvatars(commands.Cog):
         if before.avatar != after.avatar:
             embed = embed_avatar(before, after)
 
-            logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+            logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
             await logs_channel.send(embed=embed)
 
 

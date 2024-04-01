@@ -25,17 +25,12 @@ class AdminPurge(commands.Cog):
 
         # removes the need for a response
         await ctx.defer()
-        logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])  # Welcome channel
+        logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])  # Welcome channel
 
-        # Check that users are not removing from log channels
-        if ctx.channel.id in self.bot.server_settings.log_channel.values():
-            await ctx.channel.send(f"{ctx.author.mention}, you should not be purging the {ctx.channel.mention}.")
-            await logs_channel.send(f"{ctx.author.mention} atempted to purge the {ctx.channel.mention}.")
-        else:
-            # Do the purge
-            await ctx.channel.purge(limit=int(number_messages))
-            # Log the purge
-            await logs_channel.send(f"{number_messages} messages purged" f" from {ctx.channel.mention}" f" by {ctx.author.mention}.")
+        # Do the purge
+        await ctx.channel.purge(limit=int(number_messages))
+        # Log the purge
+        await logs_channel.send(f"{number_messages} messages purged" f" from {ctx.channel.mention}" f" by {ctx.author.mention}.")
 
     async def cog_command_error(self, ctx: commands.Context, error: commands.CommandError):
         """

@@ -93,10 +93,10 @@ class ModerationSpamMessages(commands.Cog):
                     # timeout right away
                     await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=30))
 
-                    naughty = message.author.guild.get_role(self.bot.server_settings.user_roles["bad"]["naughty"])
-                    verified = message.author.guild.get_role(self.bot.server_settings.verified_role['verified'])
+                    naughty = message.author.guild.get_role(self.bot.settings.punishment["naughty"])
+                    verified = message.author.guild.get_role(self.bot.settings.verified["verified"])
                     quarantine = await self.bot.fetch_channel(
-                        self.bot.server_settings.channels["moderation"]["quarantine_channel"])
+                         self.bot.settings.quarantine["quarantine_channel"])
 
                     # assign Naughty roll
                     member = message.author

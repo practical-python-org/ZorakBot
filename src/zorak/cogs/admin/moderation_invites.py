@@ -84,14 +84,14 @@ class ModerationInvites(commands.Cog):
             if not message.content.startswith('z.invite '):
                 return False
 
-            return any(role.id in self.bot.server_settings.admin_roles.values() for role in message.author.roles)
+            return any(role.id in self.bot.settings.admin.values() for role in message.author.roles)
 
         if is_invite(txt):
             if isinstance(message.channel, discord.DMChannel):
                 return
 
             if not check_for_admin_override(txt):
-                logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+                logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
                 await logs_channel.send(embed=log_message(message))
                 await message.delete()
                 await current_channel.send(embed=embed_warning(message))

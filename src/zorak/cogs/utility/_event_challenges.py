@@ -39,7 +39,7 @@ class Challenges(commands.Cog):
                         )
                         embed.set_thumbnail(
                             url="https://raw.githubusercontent.com/Xarlos89/"
-                                "PracticalPython/main/logo.png"
+                                "prod/main/logo.png"
                         )
                         embed.add_field(
                             name=f"Challenge #{day}:", value=current_day, inline=True

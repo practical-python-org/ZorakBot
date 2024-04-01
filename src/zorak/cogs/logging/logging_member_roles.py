@@ -23,7 +23,7 @@ class LoggingRoles(commands.Cog):
         Checks what roles were changed, and logs it in the log channel.
         Can be quite spammy.
         """
-        current_guild = self.bot.get_guild(self.bot.server_settings.server_info["id"])
+        current_guild = self.bot.get_guild(self.bot.settings.info["id"])
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
 
         if str(audit_log.action) == "AuditLogAction.member_role_update":
@@ -31,7 +31,7 @@ class LoggingRoles(commands.Cog):
             responsible_member = audit_log.user
 
             changed_roles = []
-            logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+            logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
             if len(before.roles) > len(after.roles):
                 for role in before.roles:
                     if role not in after.roles:

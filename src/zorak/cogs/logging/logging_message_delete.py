@@ -23,9 +23,9 @@ class LoggingMessageDelete(commands.Cog):
         """
         If a mod deletes, take the audit log event. If a user deletes, handle it normally.
         """
-        current_guild = self.bot.get_guild(self.bot.server_settings.server_info['id'])
+        current_guild = self.bot.get_guild(self.bot.settings.info['id'])
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
-        logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["chat_log"])
+        logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["chat_log"])
 
         # If the audit log is triggered, it means someone OTHER than the author deleted the message.
         # https://discordpy.readthedocs.io/en/stable/api.html
@@ -40,7 +40,8 @@ class LoggingMessageDelete(commands.Cog):
             username = message.author
 
             for role in message.author.roles:
-                if role.id in self.bot.server_settings.admin_roles.values():
+                # TODO: .admin_roles no longer exists, find a workaround here.
+                if role.id in self.bot.settings.admin.values():
                     await logs_channel.send(embed=embed_message_delete(username, message))
                     return
 

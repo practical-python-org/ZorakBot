@@ -21,7 +21,7 @@ class LoggingUnbans(commands.Cog):
         """
         embed = embed_unban(member)
 
-        logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
+        logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
         await logs_channel.send(embed=embed)
 
 

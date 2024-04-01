@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class error_handler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.error_channel = self.bot.server_settings.log_channel["zorak_log"]
+        self.error_channel = self.bot.settings.channels["zorak_log"]
 
     @commands.Cog.listener()
     async def on_application_command_error(self, ctx, error):
