@@ -11,6 +11,9 @@ import discord
 from discord.ext import commands
 from time import sleep
 
+from zorak.utilities.cog_helpers._embeds import embed_verified_success  # pylint: disable=E0401
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -83,8 +86,22 @@ class VerificationSelector(discord.ui.Select):
                     if self.single_choice:
                         await interaction.user.add_roles(selected_role)
                         logger.info(f"{interaction.user.display_name} has verified!")
-                        await interaction.response.send_message(f"You have been verified!: <@&{selected_role.id}>",
-                                                            ephemeral=True)
+
+                        # Fetch channels AFTER role add, so broken config doesn't break verification.
+                        log_channels_join = await self.bot.fetch_channel(
+                            self.bot.server_settings.log_channel["join_log"])
+                        logs_channel_verify = await self.bot.fetch_channel(
+                            self.bot.server_settings.log_channel["verification_log"])
+
+                        await interaction.response.send_message(
+                            f"You have been verified!: <@&{selected_role.id}>", ephemeral=True)
+                        await logs_channel_verify.send(f"<@{interaction.user.id}> joined, but has not verified.")
+                        await log_channels_join.send(
+                            embed=embed_verified_success(
+                                interaction.user.mention
+                                , interaction.user.guild.member_count
+                            )
+                        )
                 except Exception as shit:
                     logger.info(f"Attempted to verify someone...\nERROR: {shit}")
         else:
