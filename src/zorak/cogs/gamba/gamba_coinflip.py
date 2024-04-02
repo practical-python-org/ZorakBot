@@ -16,7 +16,7 @@ class GambaCoinflip(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command()
+    @commands.slash_command(description="Coinflip command. Heads or Tails, you decide (lowercase). Example: /coinflip heads 1000")
     async def coinflip(self, ctx, heads_or_tails, points):
         """
         A simple coinflip.
