@@ -87,12 +87,15 @@ class VerificationSelector(discord.ui.Select):
                         await interaction.user.add_roles(selected_role)
                         logger.info(f"{interaction.user.display_name} has verified!")
 
+                        # Fetch channels AFTER role add, so broken config doesn't break verification.
                         log_channels_join = await self.bot.fetch_channel(
-                            self.bot.server_settings.log_channel["join_log"]
-                        )
+                            self.bot.server_settings.log_channel["join_log"])
+                        logs_channel_verify = await self.bot.fetch_channel(
+                            self.bot.server_settings.log_channel["verification_log"])
 
-                        await interaction.response.send_message(f"You have been verified!: <@&{selected_role.id}>",
-                                                            ephemeral=True)
+                        await interaction.response.send_message(
+                            f"You have been verified!: <@&{selected_role.id}>", ephemeral=True)
+                        await logs_channel_verify.send(f"<@{interaction.user.id}> joined, but has not verified.")
                         await log_channels_join.send(
                             embed=embed_verified_success(
                                 interaction.user.mention
