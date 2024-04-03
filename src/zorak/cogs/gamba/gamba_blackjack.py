@@ -1,6 +1,7 @@
 """
 Blackjack. 
 """
+import json
 import logging
 import random
 from random import choice
@@ -10,11 +11,14 @@ from zorak.utilities.cog_utilities.card_deck import Deck
 
 logger = logging.getLogger(__name__)
 
-"""
-f"Welcome to Blackjack. Dealer stands at 17.
-\nYour hand: {str(first_card.value)} of {str(first_card.suit)} and {str(second_card.value)} of {str(second_card.suit)}. You're on {str(game.player.score)}. 
-\nDealer's hand: {str(dealer_card.value)} of {str(dealer_card.suit)} and a hidden card." 
-"""
+# read cards.json
+with open("src/zorak/cogs/gamba/cards.json") as f:
+    cards = json.load(f)
+    
+# read cards_mapping_lowercase.json
+with open("src/zorak/cogs/gamba/cards_mapping_lowercase.json") as f:
+    cards_mapping_lowercase = json.load(f)
+
 class MessageFormatter:
     def __init__(self, player, dealer):
         self.player = player
@@ -24,22 +28,28 @@ class MessageFormatter:
         return f"Welcome to Blackjack. Dealer stands at 17."
     
     def player_hand_message(self):
-        message = "Your hand: "
+        message = "# Your hand: "
         for card in self.player.hand:
-            message += f"{str(card.value)} of {str(card.suit)} and "
-            
-        message = message[:-4]
-        message += f". You're on {str(self.player.score)}."
+            card_value = str(card.value)[0] if not str(card.value).isdigit() else str(card.value)
+            card_key = f"{card_value}{str(card.suit)}".lower()
+            emoji_id = cards[cards_mapping_lowercase[card_key]]
+            message += f"<:{card_key}:{emoji_id}>"
+        
+        # message = message[:-4]
+        message += f"\nYou're on {str(self.player.score)}."
         return message
     
     def dealer_hand_message(self):
-        message = "Dealer's hand: "
+        message = "# Dealer's hand: "
         for card in self.dealer.hand:
-            message += f"{str(card.value)} of {str(card.suit)} and "
+            card_value = str(card.value)[0] if not str(card.value).isdigit() else str(card.value)
+            card_key = f"{card_value}{str(card.suit)}".lower()
+            emoji_id = cards[cards_mapping_lowercase[card_key]]
+            message += f"<:{card_key}:{emoji_id}>"
             
-        message = message[:-4]
-        message += f"."
-        return message 
+        #message = message[:-4]
+        message += f"\nDealer is on {str(self.dealer.score)}."
+        return message
 
 class Player:
     def __init__(self, name):
@@ -103,13 +113,11 @@ class BlackjackView(discord.ui.View):
             for child in self.children:
                 child.disabled = True
                 card = self.game.player.hand[-1]
+                self.game.bot.db_client.add_points_to_user(self.game.user_id, -self.game.player_bet)
                 await interaction.response.edit_message( # @TODO - check if this is taking away points
                     content=f"You drew a {str(card.value)} of {str(card.suit)} and busted with {str(self.game.player.score)}!\nYou lost {str(self.game.player_bet)} points.",
                     view=self,
-                )
-            
-            # remove points from user    
-            self.game.bot.db_client.add_points_to_user(self.game.user_id, -self.game.player_bet)
+                )    
             return
         card = self.game.player.hand[-1]
 
