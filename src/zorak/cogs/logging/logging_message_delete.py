@@ -2,11 +2,14 @@
 logs when a message is deleted.
 """
 from datetime import datetime
-
+import logging
 import discord
 from discord.ext import commands
 
+from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 from zorak.utilities.cog_helpers._embeds import embed_message_delete
+
+logger = logging.getLogger(__name__)
 
 
 class LoggingMessageDelete(commands.Cog):
@@ -23,14 +26,15 @@ class LoggingMessageDelete(commands.Cog):
         """
         If a mod deletes, take the audit log event. If a user deletes, handle it normally.
         """
-        current_guild = self.bot.get_guild(self.bot.settings.info['id'])
+        settings = GuildSettings(self.bot.settings.server, message.guild)
+        current_guild = message.guild
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
-        logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["chat_log"])
+        logs_channel = await self.bot.fetch_channel(settings.chat_log)
 
         # If the audit log is triggered, it means someone OTHER than the author deleted the message.
         # https://discordpy.readthedocs.io/en/stable/api.html
         # ?highlight=audit%20log#discord.AuditLogAction.message_delete
-        if str(audit_log.action) == 'AuditLogAction.message_delete':
+        if str(audit_log.action) == 'AuditLogAction.message_delete' and audit_log.user == message.author:
             embed = embed_message_delete(audit_log.user, message)
             await logs_channel.send(embed=embed)
 
@@ -41,7 +45,7 @@ class LoggingMessageDelete(commands.Cog):
 
             for role in message.author.roles:
                 # TODO: .admin_roles no longer exists, find a workaround here.
-                if role.id in self.bot.settings.admin.values():
+                if role.id in settings.admin_roles.values():
                     await logs_channel.send(embed=embed_message_delete(username, message))
                     return
 
