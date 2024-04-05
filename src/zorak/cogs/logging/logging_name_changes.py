@@ -39,7 +39,7 @@ class LoggingNameChanges(commands.Cog):
             embed = embed_name_change(before, after, username_before, username_after)
 
             logs_channel = await self.bot.fetch_channel(settings.mod_log)
-            await logs_channel.send(f"{username_after.mention}", embed=embed)
+            await logs_channel.send(f"{after.mention}", embed=embed)
 
 
 def setup(bot):
