@@ -10,6 +10,8 @@ from random import shuffle
 import discord
 from discord.ext import commands
 from time import sleep
+from zorak.utilities.cog_helpers.guild_settings import GuildSettings
+
 
 logger = logging.getLogger(__name__)
 
@@ -19,8 +21,9 @@ class VerificationSelector(discord.ui.Select):
     This is the dropdown selection menu that the user interacts with.
     """
 
-    def __init__(self, discord_bot, selector_data):
+    def __init__(self, discord_bot, selector_data, settings):
         self.bot = discord_bot
+        self.settings = settings
         self.name = selector_data["name"]
         self.single_choice = selector_data["single_choice"]
         self.description = selector_data["description"]
@@ -33,7 +36,7 @@ class VerificationSelector(discord.ui.Select):
 
         super().__init__(placeholder=selector_data["description"], options=options)
 
-    async def send_wrong_button_message(self, guild, member):
+    async def send_wrong_button_message(self, member):
         try:
             await member.send(
                 f"""
@@ -43,7 +46,7 @@ class VerificationSelector(discord.ui.Select):
                 ** _Make sure you press the "Verify me!" button to verify yourself._ **
 
                 Please join the server again and try again.
-                {self.bot.settings.info['invite']}
+                {self.settings.info['invite']}
                 """
             )
         except discord.errors.Forbidden as catch_dat_forbidden:
@@ -98,12 +101,12 @@ class SelectView(discord.ui.View):
     under it. We also define our button timeout here.
     Consider this the entrypoint for all the other classes defined above.
     """
-    def __init__(self, bot, verification_data, *, timeout=180):
+    def __init__(self, bot, verification_data, settings, *, timeout=180):
         super().__init__(timeout=timeout)
         selectors = verification_data["selectors"]
         shuffle(selectors)
         for menu in selectors:
-            self.add_item(VerificationSelector(bot, selectors[menu]))
+            self.add_item(VerificationSelector(bot, selectors[menu], settings))
 
 
 class Verification(commands.Cog):
@@ -121,14 +124,15 @@ class Verification(commands.Cog):
     @commands.slash_command(description="Verification!")
     async def verify(self, ctx):
         """The slash command that initiates the fancy menus."""
-        if hasattr(self.bot.settings, "verification_options"):
-            if "selectors" in self.bot.settings.verification_options:
+        settings = GuildSettings(self.bot.settings.server, ctx.guild)
+        if hasattr(self.bot.settings, "verification_options"):  # TODO:  THIS IS FROM THE OLD SETTINGS
+            if "selectors" in self.bot.settings.verification_options:  # TODO:  THIS IS FROM THE OLD SETTINGS
                 if "✅" not in [role.name for role in ctx.author.roles]:
                     await ctx.respond(
                         "# ~ Verification ~ \n"
                         "_Before you can join the server, we need to make sure you are not a robot._\n"
                         "_Please answer the following question._"
-                        , view=SelectView(self.bot, self.bot.settings.verification_options)
+                        , view=SelectView(self.bot, self.bot.settings.verification_options, settings)  # TODO:  THIS IS FROM THE OLD SETTINGS
                         , ephemeral=True
                     )
                 else:
