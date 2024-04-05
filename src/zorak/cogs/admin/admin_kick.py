@@ -23,7 +23,6 @@ class AdminKick(commands.Cog):
 
     @commands.slash_command(description="Kick a user.")
     @commands.has_permissions(kick_members=True)
-    @commands.has_role("Staff")
     async def kick_member(self, ctx, target: discord.Member, reason):
         """
         Take in a user mention, and a string reason.
@@ -42,7 +41,9 @@ class AdminKick(commands.Cog):
                 await target.kick(reason=f"{ctx.author.name} - {reason}")
                 logger.info("{%s} kicked {%s}. Reason: {%s}", ctx.author.name, target.name, reason)
                 # Then we publicly announce what happened.
-                await ctx.respond(embed=embed_cant_do_that(f"**{ctx.author.name}** kicked **{target.name}**" f"\n**Reason:** {reason}"))
+                await ctx.respond(
+                    embed=embed_cant_do_that(f"**{ctx.author.name}** kicked **{target.name}**" f"\n"
+                                             f"**Reason:** {reason}"))
 
             else:
                 await ctx.respond(embed=embed_cant_do_that("You can't kick an Admin."), ephemeral=True)
