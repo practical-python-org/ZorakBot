@@ -24,7 +24,6 @@ class AdminMute(commands.Cog):
 
     @commands.slash_command(description="Mute a user.")
     @commands.has_permissions(moderate_members=True)
-    @commands.has_role("Staff")
     async def mute_member(self, ctx, target: discord.Member, time, reason):
         """
         Take in a user mention, and a string reason.
