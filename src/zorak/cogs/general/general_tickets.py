@@ -6,6 +6,9 @@ import logging
 import discord
 from discord.ext import commands
 
+from zorak.utilities.cog_helpers.guild_settings import GuildSettings
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -22,10 +25,11 @@ class AddTicketButton(commands.Cog):
         """
         A simple command with a view.
         """
+        settings = GuildSettings(self.bot.settings.server, ctx.guild)
         logger.info("%s used the %s command.", ctx.author.name, ctx.command)
         await ctx.respond(
             "Do you need help, or do you have a question for the Staff?",
-            view=MakeATicket(self.bot.settings),
+            view=MakeATicket(settings),
             ephemeral=True,
         )
 
@@ -35,9 +39,9 @@ class MakeATicket(discord.ui.View):
     A UI component that sends a button, which does other things.
     """
 
-    def __init__(self, server_settings, *, timeout=None):
+    def __init__(self, settings, *, timeout=None):
         super().__init__(timeout=timeout)
-        self.server_settings = server_settings
+        self.settings = settings
 
     @discord.ui.button(label="Open a support Ticket", style=discord.ButtonStyle.primary)
     async def button_callback(self, button, interaction):
@@ -49,8 +53,8 @@ class MakeATicket(discord.ui.View):
         button.disabled = True
         await interaction.edit_original_response(view=self)
 
-        support = await interaction.guild.fetch_channel(self.server_settings.support["server_support"])
-        staff = interaction.guild.get_role(self.server_settings.admin["staff"])
+        support = await interaction.guild.fetch_channel(self.settings.support_channel)
+        staff = interaction.guild.get_role(self.settings.admin_roles["staff"])
 
         ticket = await support.create_thread(
             name=f"[Ticket] - {interaction.user}",
@@ -60,6 +64,7 @@ class MakeATicket(discord.ui.View):
             reason=None,
         )
 
+        # TODO: Can just mention the staff role here instead of a for loop
         for person in interaction.guild.members:
             if staff in person.roles:
                 await ticket.add_user(person)
