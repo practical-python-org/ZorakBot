@@ -4,7 +4,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class GuildSettings():
+class GuildSettings:
     def __init__(self, settings, guild):
         self.settings = settings
         self.guild_name = guild
