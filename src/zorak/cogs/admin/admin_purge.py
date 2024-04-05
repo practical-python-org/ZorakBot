@@ -2,12 +2,12 @@
 Admin command to remove messages in bulk.
 """
 from discord.ext import commands
+from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 
 
 class AdminPurge(commands.Cog):
     """
     We are limited to 100 messages per command by Discord API
-    TODO: This command should be hidden from non-staff users.
     """
 
     def __init__(self, bot):
@@ -15,17 +15,18 @@ class AdminPurge(commands.Cog):
 
     @commands.slash_command(description="Removes up to 100 messages from channel.")
     @commands.has_permissions(manage_messages=True)
-    @commands.has_role("Staff")
+    @commands.has_permissions(moderate_members=True)
     async def purge_messages(self, ctx, number_messages):
         """
         We currently have permissions on this command set,
         which throws an error when the user does not have the correct perms.
         We handle this with an error_handler block
         """
+        settings = GuildSettings(self.bot.settings.server, ctx.guild)
 
         # removes the need for a response
         await ctx.defer()
-        logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])  # Welcome channel
+        logs_channel = await self.bot.fetch_channel(settings.mod_log)  # Welcome channel
 
         # Do the purge
         await ctx.channel.purge(limit=int(number_messages))
