@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import discord.errors
 from discord.ext import commands
 
+from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 from zorak.utilities.cog_helpers._embeds import (
     embed_spammer,  # pylint: disable=E0401
     embed_spammer_warn  # pylint: disable=E0401
@@ -39,9 +40,16 @@ class ModerationSpamMessages(commands.Cog):
         if isinstance(message.channel, discord.DMChannel):
             return
 
+        settings = GuildSettings(self.bot.settings.server, message.guild)
+
         # new speaker. Welcome to auto mod.
-        if message.author.id not in self.records:
-            self.records[message.author.id] = {
+        if message.guild.id not in self.records:
+            self.records[message.guild.id] = {}
+
+        guild_record = self.records[message.guild.id]
+
+        if message.author.id not in guild_record:
+            guild_record[message.author.id] = {
                 "last_message": message.content
                 , "occurrence": 1
                 , "1st": {"message_id": message.id, "channel_id": message.channel.id}
@@ -52,7 +60,7 @@ class ModerationSpamMessages(commands.Cog):
         # Old speaker. We are watching you...
         else:
             # Check if the last message is the same as the new one.
-            the_archive = self.records[message.author.id]
+            the_archive = guild_record[message.author.id]
 
             if the_archive["last_message"] == message.content:
                 # If so, increase the occurance by 1
@@ -93,10 +101,9 @@ class ModerationSpamMessages(commands.Cog):
                     # timeout right away
                     await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=30))
 
-                    naughty = message.author.guild.get_role(self.bot.settings.punishment["naughty"])
-                    verified = message.author.guild.get_role(self.bot.settings.verified["verified"])
-                    quarantine = await self.bot.fetch_channel(
-                         self.bot.settings.quarantine["quarantine_channel"])
+                    naughty = message.author.guild.get_role(settings.punishment_role)
+                    verified = message.author.guild.get_role(settings.verified_role)
+                    quarantine = await self.bot.fetch_channel(settings.quarantine_channel)
 
                     # assign Naughty roll
                     member = message.author
