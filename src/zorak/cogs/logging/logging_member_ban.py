@@ -26,7 +26,7 @@ class LoggingBans(commands.Cog):
             return
 
         settings = GuildSettings(self.bot.settings.server, member.guild)
-        current_guild = self.bot.get_guild(member.guild)
+        current_guild = self.bot.get_guild(member.guild.id)
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
 
 

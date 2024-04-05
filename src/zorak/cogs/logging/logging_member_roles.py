@@ -25,7 +25,7 @@ class LoggingRoles(commands.Cog):
         Can be quite spammy.
         """
         settings = GuildSettings(self.bot.settings.server, before.guild)
-        current_guild = self.bot.get_guild(before.guild)
+        current_guild = self.bot.get_guild(before.guild.id)
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
 
         if str(audit_log.action) == "AuditLogAction.member_role_update":
