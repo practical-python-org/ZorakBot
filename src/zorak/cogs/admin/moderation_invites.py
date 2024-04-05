@@ -22,13 +22,11 @@ class ModerationInvites(commands.Cog):
         """
         Scans every message with the regex below.
         """
-        if str(message.type) == "MessageType.application_command":
-            return
-        else:
+        if not message.author.bot:
             txt = message.content
             current_channel = message.channel
             author = message.author
-            settings = GuildSettings(self.bot.settings.server, message.guild)
+            settings = GuildSettings(self.bot.settings.server, author.guild)
 
             def is_invite(arg_message):
                 """
