@@ -81,7 +81,7 @@ def main():
     )
     if not args.drop_db:
         logger.info("Initialising Database...")
-        #initialise_bot_db(bot)
+        initialise_bot_db(bot)
 
     settings_path = args.server_settings_path if args.server_settings_path else os.environ.get(
         "SERVER_SETTINGS")
