@@ -31,6 +31,25 @@ class LoggingVerification(commands.Cog):
                 f"{member.mention} did not verify after {int((time_to_kick / 3600))} hour/s, auto-removed.")
             await member.kick(reason="Did not verify.")
 
+    async def send_welcome_message(self, guild, member, settings):
+        welcome_message = f"""
+            Hi there, {member.mention}
+            I'm Zorak, the moderator of {guild.name}.
+
+            We are very happy that you have decided to join us.
+            Before you are allowed to chat, you need to verify that you aren't a bot.
+            Dont worry, it's easy. Just go to
+            {self.bot.get_channel(settings.verification_channel).mention}
+            and click the green button.
+
+            After you do, all of {guild.name} is available to you. Have a great time :-)
+            """
+        # Send Welcome Message
+        try:
+            await member.send(welcome_message)
+        except discord.errors.Forbidden as catch_dat_forbidden:
+            logger.debug(f'{member.name} cannot be sent a DM.')
+
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         guild = member.guild
@@ -39,7 +58,7 @@ class LoggingVerification(commands.Cog):
         logs_channel = await self.bot.fetch_channel(settings.verification_log)
 
         await self.log_unverified_join(member, logs_channel)
-        await self.send_welcome_message(guild, member)
+        await self.send_welcome_message(guild, member, settings)
         await self.kick_if_not_verified(member, 3600, logs_channel)
 
 
