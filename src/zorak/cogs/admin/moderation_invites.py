@@ -6,6 +6,7 @@ from datetime import datetime
 
 import discord
 from discord.ext import commands
+from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 
 
 class ModerationInvites(commands.Cog):
@@ -23,6 +24,7 @@ class ModerationInvites(commands.Cog):
         """
         txt = message.content
         current_channel = message.channel
+        settings = GuildSettings(self.bot.settings.server, message.guild)
 
         def is_invite(arg_message):
             """
@@ -84,14 +86,14 @@ class ModerationInvites(commands.Cog):
             if not message.content.startswith('z.invite '):
                 return False
 
-            return any(role.id in self.bot.settings.admin.values() for role in message.author.roles)
+            return any(role.id in settings.admin_roles.values() for role in message.author.roles)
 
         if is_invite(txt):
             if isinstance(message.channel, discord.DMChannel):
                 return
 
             if not check_for_admin_override(txt):
-                logs_channel = await self.bot.fetch_channel(self.bot.settings.logging["mod_log"])
+                logs_channel = await self.bot.fetch_channel(settings.mod_log)
                 await logs_channel.send(embed=log_message(message))
                 await message.delete()
                 await current_channel.send(embed=embed_warning(message))
