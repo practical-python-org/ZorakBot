@@ -21,8 +21,11 @@ class LoggingMessageEdit(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, message_before, message_after):
-        settings = GuildSettings(self.bot.settings.server, message_before.guild)
+        # Ignore any bot messages
+        if message_before.author.bot or message_after.author.bot:
+            return
 
+        settings = GuildSettings(self.bot.settings.server, message_after.guild)
         # IGNORE /run, since we will set up an on_message_edit handler there with opposite logic
         if message_before.content.startswith('/run') or message_after.content.startswith('/run'):
             return
