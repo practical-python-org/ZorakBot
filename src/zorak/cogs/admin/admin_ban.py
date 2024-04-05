@@ -23,7 +23,6 @@ class AdminBan(commands.Cog):
 
     @commands.slash_command(description="Ban a user.")
     @commands.has_permissions(ban_members=True)
-    @commands.has_role("Staff")
     async def ban_member(self, ctx, target: discord.Member, reason):
         """
         Take in a user mention, and a string reason.
@@ -42,7 +41,9 @@ class AdminBan(commands.Cog):
                 await target.ban(reason=f"{ctx.author.name} - {reason}")
                 logger.info("{%s} banned {%s}. Reason: {%s}", ctx.author.name, target.name, reason)
                 # Then we publicly announce what happened.
-                await ctx.respond(embed=embed_cant_do_that(f"**{ctx.author.name}** banned **{target.name}**" f"\n**Reason:** {reason}"))
+                await ctx.respond(
+                    embed=embed_cant_do_that(f"**{ctx.author.name}** banned **{target.name}**" f"\n"
+                                             f"**Reason:** {reason}"))
 
             else:
                 await ctx.respond(embed=embed_cant_do_that("You can't ban an Admin."), ephemeral=True)
