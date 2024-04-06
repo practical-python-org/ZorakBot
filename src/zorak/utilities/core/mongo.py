@@ -357,6 +357,12 @@ class CustomMongoDBClient(MongoDBClient):
         self.create_collection("GuildSettings", validator_schema=validator)
         logger.info("GuildSettings initialised.")
 
+    def get_guild_settings(self, guild):
+        settings = self.find_one("GuildSettings", {"id": guild.id})
+        if settings:
+            return settings
+        return None
+
     def add_guild_to_table(self, guild):
         if not self.find_one("GuildSettings", {"id": guild.id}):
             logger.info(f" ---- Adding {guild.name} to DB")
@@ -412,12 +418,6 @@ class CustomMongoDBClient(MongoDBClient):
                 , "naughty_role": None
                 , "verified_role": None
             })
-
-    def get_guild_settings(self, guild):
-        settings = self.find_one("GuildSettings", {"id": guild.id})
-        if settings:
-            return settings
-        return None
 
     def update_guild_settings(self, guild, item, value):
         """Update the settings of a guild."""
