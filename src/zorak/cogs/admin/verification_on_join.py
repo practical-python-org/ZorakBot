@@ -39,10 +39,10 @@ class LoggingVerification(commands.Cog):
             I'm Zorak, the moderator of {guild.name}.
 
             We are very happy that you have decided to join us.
-            Before you are allowed to chat, you need to verify that you aren't a bot.
+            Before you are allowed to chat, you need to verify that you are NOT a bot.
             Dont worry, it's easy. Just go to
             {self.bot.get_channel(self.bot.server_settings.mod_channel['verification_channel']).mention}
-            and click the green button.
+            and use the **/verify** slash command.
 
             After you do, all of {guild.name} is available to you. Have a great time :-)
             """
