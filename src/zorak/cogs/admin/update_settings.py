@@ -21,7 +21,7 @@ class Settings(commands.Cog):
         self.bot = bot  # Passed in from main.py
 
     @commands.slash_command(description="Edit the bot settings for your guild!")
-    async def update_settings(self, ctx, setting: str, value: int):
+    async def update_settings(self, ctx, setting: str, value: str):
         """The slash command that initiates the fancy menus."""
         self.bot.db_client.update_guild_settings(ctx.guild, setting, int(value))
 
