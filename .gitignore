@@ -159,3 +159,5 @@ data/
 db/*
 /deploy
 .env
+/Pipfile
+/Pipfile.lock
