@@ -6,7 +6,7 @@ import logging
 import discord
 from discord.ext import commands
 
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
+
 
 
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ class AddTicketButton(commands.Cog):
         """
         A simple command with a view.
         """
-        settings = GuildSettings(self.bot.settings.server, ctx.guild)
+        settings = self.bot.db_client.get_guild_settings(ctx.guild)
         logger.info("%s used the %s command.", ctx.author.name, ctx.command)
         await ctx.respond(
             "Do you need help, or do you have a question for the Staff?",
@@ -53,8 +53,8 @@ class MakeATicket(discord.ui.View):
         button.disabled = True
         await interaction.edit_original_response(view=self)
 
-        support = await interaction.guild.fetch_channel(self.settings.support_channel)
-        staff = interaction.guild.get_role(self.settings.admin_roles["staff"])
+        support = await interaction.guild.fetch_channel(self.settings["support_channel"])
+        staff = interaction.guild.get_role(self.settings["staff_role"])
 
         ticket = await support.create_thread(
             name=f"[Ticket] - {interaction.user}",

@@ -3,7 +3,6 @@ import logging
 import discord
 from discord.ext import commands
 from datetime import datetime
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 
 logger = logging.getLogger(__name__)
 
@@ -14,9 +13,9 @@ class error_handler(commands.Cog):
 
     @commands.Cog.listener()
     async def on_application_command_error(self, ctx, error):
-        settings = GuildSettings(self.bot.settings.server, ctx.guild)
+        settings = self.bot.db_client.get_guild_settings(ctx.guild)
 
-        error_log = await self.bot.fetch_channel(settings.error_log)
+        error_log = await self.bot.fetch_channel(settings["zorak_log"])
 
         # # This is just an interesting way of handling errors PER ERROR.
         # # For now, let's just catch all and redirect to logs and channel

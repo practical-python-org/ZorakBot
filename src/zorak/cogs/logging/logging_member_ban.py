@@ -3,7 +3,6 @@ Logs member bans
 """
 from discord.ext import commands
 
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 from zorak.utilities.cog_helpers._embeds import embed_ban  # pylint: disable=E0401
 
 
@@ -25,16 +24,16 @@ class LoggingBans(commands.Cog):
         if "Needs Approval" in [role.name for role in member.roles]:
             return
 
-        settings = GuildSettings(self.bot.settings.server, member.guild)
-        current_guild = self.bot.get_guild(member.guild.id)
-        audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
+        settings = self.bot.db_client.get_guild_settings(member.guild)
 
+        current_guild = self.bot.get_guild(settings["id"])
+        audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
 
         if str(audit_log.action) == "AuditLogAction.ban":
             if audit_log.target == member:
                 embed = embed_ban(member, audit_log)
 
-                logs_channel = await self.bot.fetch_channel(settings.mod_log)
+                logs_channel = await self.bot.fetch_channel(settings["mod_log"])
                 await logs_channel.send(embed=embed)
                 return
 

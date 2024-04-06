@@ -3,7 +3,6 @@ Logging for role changes. Logs the user who did the changing, the target user an
 """
 from discord.ext import commands
 
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 from zorak.utilities.cog_helpers._embeds import (  # pylint: disable=E0401
     embed_role_add,
     embed_role_remove,
@@ -24,8 +23,9 @@ class LoggingRoles(commands.Cog):
         Checks what roles were changed, and logs it in the log channel.
         Can be quite spammy.
         """
-        settings = GuildSettings(self.bot.settings.server, before.guild)
-        current_guild = self.bot.get_guild(before.guild.id)
+        settings = self.bot.db_client.get_guild_settings(after.guild)
+
+        current_guild = self.bot.get_guild(settings["id"])
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
 
         if str(audit_log.action) == "AuditLogAction.member_role_update":
@@ -33,7 +33,7 @@ class LoggingRoles(commands.Cog):
             responsible_member = audit_log.user
 
             changed_roles = []
-            logs_channel = await self.bot.fetch_channel(settings.mod_log)
+            logs_channel = await self.bot.fetch_channel(settings["mod_log"])
             if len(before.roles) > len(after.roles):
                 for role in before.roles:
                     if role not in after.roles:

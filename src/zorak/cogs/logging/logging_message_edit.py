@@ -4,7 +4,6 @@ Logs when messages are edited.
 import logging
 from discord.ext import commands
 
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 from zorak.utilities.cog_helpers._embeds import (
     embed_message_edit,  # pylint: disable=E0401
 )
@@ -25,7 +24,8 @@ class LoggingMessageEdit(commands.Cog):
         if message_before.author.bot or message_after.author.bot:
             return
 
-        settings = GuildSettings(self.bot.settings.server, message_after.guild)
+        settings = self.bot.db_client.get_guild_settings(message_before.guild)
+
         # IGNORE /run, since we will set up an on_message_edit handler there with opposite logic
         if message_before.content.startswith('/run') or message_after.content.startswith('/run'):
             return
@@ -45,7 +45,7 @@ class LoggingMessageEdit(commands.Cog):
                     # This just gets really messy when we are cleaning things up
                     # or doing dodgy business in secret places.
                     embed = embed_message_edit(username, author, message_before, message_after)
-                    logs_channel = await self.bot.fetch_channel(settings.chat_log)
+                    logs_channel = await self.bot.fetch_channel(settings["chat_log"])
                     await logs_channel.send(embed=embed)
                     return
 

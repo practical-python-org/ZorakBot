@@ -10,7 +10,7 @@ from random import shuffle
 import discord
 from discord.ext import commands
 from time import sleep
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
+
 
 
 logger = logging.getLogger(__name__)
@@ -124,7 +124,7 @@ class Verification(commands.Cog):
     @commands.slash_command(description="Verification!")
     async def verify(self, ctx):
         """The slash command that initiates the fancy menus."""
-        settings = GuildSettings(self.bot.settings.server, ctx.guild)
+        settings = self.bot.db_client.get_guild_settings(ctx.guild)
         if hasattr(self.bot.settings, "verification_options"):  # TODO:  THIS IS FROM THE OLD SETTINGS
             if "selectors" in self.bot.settings.verification_options:  # TODO:  THIS IS FROM THE OLD SETTINGS
                 if "✅" not in [role.name for role in ctx.author.roles]:

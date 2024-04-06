@@ -3,7 +3,6 @@ Logs when a member is UN-banned.
 """
 from discord.ext import commands
 
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 from zorak.utilities.cog_helpers._embeds import embed_unban  # pylint: disable=E0401
 
 
@@ -21,9 +20,9 @@ class LoggingUnbans(commands.Cog):
         Just listen for the event, embed it, and send it off.
         """
         embed = embed_unban(member)
-        settings = GuildSettings(self.bot.settings.server, member.guild)
+        settings = self.bot.db_client.get_guild_settings(member.guild)
 
-        logs_channel = await self.bot.fetch_channel(settings.mod_log)
+        logs_channel = await self.bot.fetch_channel(settings["mod_log"])
         await logs_channel.send(embed=embed)
 
 

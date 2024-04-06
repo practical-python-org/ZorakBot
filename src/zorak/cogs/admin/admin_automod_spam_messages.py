@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 import discord.errors
 from discord.ext import commands
 
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 from zorak.utilities.cog_helpers._embeds import (
     embed_spammer,  # pylint: disable=E0401
     embed_spammer_warn  # pylint: disable=E0401
@@ -40,7 +39,7 @@ class ModerationSpamMessages(commands.Cog):
         if isinstance(message.channel, discord.DMChannel):
             return
 
-        settings = GuildSettings(self.bot.settings.server, message.guild)
+        settings = self.bot.db_client.get_guild_settings(message.guild)
 
         # new speaker. Welcome to auto mod.
         if message.guild.id not in self.records:
@@ -101,9 +100,9 @@ class ModerationSpamMessages(commands.Cog):
                     # timeout right away
                     await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=30))
 
-                    naughty = message.author.guild.get_role(settings.punishment_role)
-                    verified = message.author.guild.get_role(settings.verified_role)
-                    quarantine = await self.bot.fetch_channel(settings.quarantine_channel)
+                    naughty = message.author.guild.get_role(settings["naughty_role"])
+                    verified = message.author.guild.get_role(settings["verified_role"])
+                    quarantine = await self.bot.fetch_channel(settings["quarantine_channel"])
 
                     # assign Naughty roll
                     member = message.author

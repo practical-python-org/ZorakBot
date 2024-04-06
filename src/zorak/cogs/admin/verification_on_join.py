@@ -5,7 +5,6 @@ from asyncio import sleep
 import logging
 import discord
 from discord.ext import commands
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 
 logger = logging.getLogger(__name__)
 
@@ -53,9 +52,9 @@ class LoggingVerification(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         guild = member.guild
-        settings = GuildSettings(self.bot.settings.server, guild)
+        settings = self.bot.db_client.get_guild_settings(member.guild)
 
-        logs_channel = await self.bot.fetch_channel(settings.verification_log)
+        logs_channel = await self.bot.fetch_channel(settings["verification_log"])
 
         await self.log_unverified_join(member, logs_channel)
         await self.send_welcome_message(guild, member, settings)

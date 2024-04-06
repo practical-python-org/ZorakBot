@@ -2,7 +2,6 @@
 Admin command to remove messages in bulk.
 """
 from discord.ext import commands
-from zorak.utilities.cog_helpers.guild_settings import GuildSettings
 
 
 class AdminPurge(commands.Cog):
@@ -22,11 +21,11 @@ class AdminPurge(commands.Cog):
         which throws an error when the user does not have the correct perms.
         We handle this with an error_handler block
         """
-        settings = GuildSettings(self.bot.settings.server, ctx.guild)
+        settings = self.bot.db_client.get_guild_settings(ctx.guild)
 
         # removes the need for a response
         await ctx.defer()
-        logs_channel = await self.bot.fetch_channel(settings.mod_log)  # Welcome channel
+        logs_channel = await self.bot.fetch_channel(settings["mod_log"])  # Welcome channel
 
         # Do the purge
         await ctx.channel.purge(limit=int(number_messages))
