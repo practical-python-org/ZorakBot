@@ -20,8 +20,25 @@ class Settings(commands.Cog):
 
     @commands.slash_command(description="See the bot settings for your guild!")
     async def setup_zorak(self, ctx):
-        self.bot.db_client.add_guild_to_table(ctx.guild)
-        await ctx.respond(f"Added {ctx.guild.name} to database.")
+        if not self.bot.db_client.guild_exists_in_db(ctx.guild):
+            self.bot.db_client.add_guild_to_table(ctx.guild)
+            await ctx.respond(
+                f"## **Added {ctx.guild.name} to database.**"
+                f"\n\nPlease use the **/update_roles** command to set Guild roles."
+                f"\nPlease use the **/update_channels** command to set Guild channels."
+                f"\nPlease use the **/update_logging_channels** command to set Guild log channels."
+                f"\n\nTo see roles, use **/see_roles**."
+                f"\nTo see channels, use **/see_channels**."
+                f"\nTo see logging channels, use **/see_logging_channels**."
+            )
+        else:
+            await ctx.respond(
+                f"Looks like {ctx.guild.name} is already in the database."
+                f"\n\nTo see roles, use **/see_roles**."
+                f"\nTo see channels, use **/see_channels**."
+                f"\nTo see logging channels, use **/see_logging_channels**."
+            )
+
 
     ####################
     #  Roles
