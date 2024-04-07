@@ -2,6 +2,7 @@
 import logging
 import time
 from typing import Dict, List
+from bson.int64 import Int64
 
 import pymongo
 from discord.ext.commands import Bot
@@ -358,13 +359,18 @@ class CustomMongoDBClient(MongoDBClient):
         logger.info("GuildSettings initialised.")
 
     def get_guild_settings(self, guild):
-        settings = self.find_one("GuildSettings", {"id": guild.id})
+        settings = self.find_one("GuildSettings", {"id": Int64(guild.id)})
         if settings:
             return settings
         return None
 
+    def guild_exists_in_db(self, guild):
+        if self.find_one("GuildSettings", {"id": Int64(guild.id)}):
+            return True
+        return False
+
     def add_guild_to_table(self, guild):
-        if not self.find_one("GuildSettings", {"id": guild.id}):
+        if not self.find_one("GuildSettings", {"id": Int64(guild.id)}):
             logger.info(f" ---- Adding {guild.name} to DB")
             self.insert_one("GuildSettings", {
                 # Guild Info
@@ -423,7 +429,7 @@ class CustomMongoDBClient(MongoDBClient):
         """Update the settings of a guild."""
         try:
             self.update_one(
-                "GuildSettings", {"id": guild.id}, {"$set": {item: value}}
+                "GuildSettings", {"id": Int64(guild.id)}, {"$set": {item: value}}
             )  # The $set operator replaces the value of a field with the specified value.
 
         except Exception as ohfuck:
