@@ -95,7 +95,7 @@ class VerificationSelector(discord.ui.Select):
 
                         await interaction.response.send_message(
                             f"You have been verified!: <@&{selected_role.id}>", ephemeral=True)
-                        await logs_channel_verify.send(f"<@{interaction.user.id}> joined, but has not verified.")
+                        await logs_channel_verify.send(f"{interaction.user.mention} has verified!")
                         await log_channels_join.send(
                             embed=embed_verified_success(
                                 interaction.user.mention
