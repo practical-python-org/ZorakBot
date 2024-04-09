@@ -15,15 +15,15 @@ class Settings:
             return
 
 
-        self.settings_path = os.path.join(settings_path, "FAKE_DB_settings.json")
+        # self.settings_path = os.path.join(settings_path, "FAKE_DB_settings.json")
         self.reactions_path = os.path.join(settings_path, "reaction_roles.toml")
         self.reactions_path = os.path.join(settings_path, "reaction_roles.toml")
         self.verification_path = os.path.join(settings_path, "verification_options.toml")
 
 
-        with open(self.settings_path, 'r') as f:
-            server_settings = json.load(f)
-            self.server = server_settings
+        # with open(self.settings_path, 'r') as f:
+        #     server_settings = json.load(f)
+        #     self.server = server_settings
 
 
         # Reaction Roles
