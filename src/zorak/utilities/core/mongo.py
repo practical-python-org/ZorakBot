@@ -192,6 +192,7 @@ class CustomMongoDBClient(MongoDBClient):
     """A further extension ontop of the earlier MongoDB class to abstract functions to be able
     to more easily interact with a custom database design. This is only intended to handle a single
     guild, but could be extended to handle multiple guilds by adding a guild_id field
+    guild, but could be extended to handle multiple guilds by adding a guild_id field
     to the user table, or adding a new table for each guild."""
 
     ###############
@@ -439,6 +440,112 @@ class CustomMongoDBClient(MongoDBClient):
         """Remove a guild from the GuildSettings table."""
         self.delete_one("GuildSettings", {"id": guild.id})
 
+
+
+    ###############
+    # Reaction Roles
+    ###############
+    def initialise_reaction_roles_table(self):
+        """Initialise the reaction roles table."""
+        validator = {
+                "type": "object",
+                "properties": {
+                    "ReactionRoles": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "guildID": {"type": "integer"},
+                                "name": {"type": "string"},
+                                "single_choice": {"type": "boolean"},
+                                "description": {"type": "string"},
+                                "options": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "label": {"type": "string"},
+                                            "emoji": {"type": "string"},
+                                            "description": {"type": "string"},
+                                            "id": {"type": "integer"}
+                                        },
+                                        "required": ["label", "emoji", "id"]
+                                    }
+                                }
+                            },
+                            "required": ["guildID", "name", "single_choice", "description", "options"]
+                        }
+                    }
+                },
+                "required": ["ReactionRoles"]
+            }
+        self.create_collection("ReactionRoles", validator_schema=validator)
+        logger.info("ReactionRoles initialised.")
+
+    def add_reaction_role_to_table(self, guild, reaction_role_data):
+        """Add a reaction role set to the reaction roles table for the specified guild."""
+        if not self.find_one("ReactionRoles", {"guildID": Int64(guild.id), "name": reaction_role_data["name"]}):
+            self.insert_one("ReactionRoles", reaction_role_data)
+
+    def remove_reaction_role_from_table(self, guild, reaction_role_data):
+        """Remove a reaction role set from the reaction roles table for the specified guild."""
+        if self.find_one("ReactionRoles", {"guildID": Int64(guild.id), "name": reaction_role_data["name"]}):
+            self.delete_one({"guildID": Int64(guild.id), "name": reaction_role_data["name"]})
+
+    def update_reaction_role_set(self, guild, reaction_role_id, updated_data):
+        """Update a reaction role set in the reaction roles table for the specified guild."""
+        if self.find_one("ReactionRoles", {"guildID": Int64(guild.id), "name": updated_data["name"]}):
+            self.update_one(
+                "ReactionRoles"
+                , {"guildID": Int64(guild.id), "name": updated_data["name"]}
+                , {"$set": updated_data}
+            )
+
+    def see_all_reaction_role_sets(self, guild):
+        """See all reaction role sets in the reaction roles table for the specified guild."""
+        return self.find("ReactionRoles", {"guildID": Int64(guild.id)})
+
+    def see_one_reaction_role_set(self, guild, name):
+        """See one reaction role set from the reaction roles table for the specified guild."""
+        return self.find_one("ReactionRoles", {"guildID": Int64(guild.id), "name": name})
+
+
+    ### EXAMPLE
+    # Assuming you have instantiated your custom MongoDB class as db
+
+    # Define the reaction role data
+    # reaction_role_id = 1  # Unique identifier for the reaction role set
+    # reaction_role_data = {
+    #     "name": "Color",
+    #     "single_choice": True,
+    #     "description": "Select your favorite color!",
+    #     "options": [
+    #         {
+    #             "label": "Red",
+    #             "emoji": "🔴",
+    #             "description": "The color red",
+    #             "id": 1234567
+    #         },
+    #         {
+    #             "label": "Blue",
+    #             "emoji": "🔵",
+    #             "description": "The color blue",
+    #             "id": 1234568
+    #         },
+    #         {
+    #             "label": "Green",
+    #             "emoji": "🟢",
+    #             "description": "The color green",
+    #             "id": 1234569
+    #         }
+    #     ]
+    # }
+    #
+    # # Add the reaction role set to the table
+    # db.add_reaction_role_to_table(reaction_role_id, reaction_role_data)
+
+
+
     ###############
     #    Users
     ###############
@@ -619,6 +726,7 @@ def initialise_bot_db(
 
         db_client.initialise_user_table()  # type: ignore
         db_client.initialise_settings_table()  # type: ignore
+        db_client.initialise_reaction_roles_table()  # type: ignore
 
         bot.db_client = db_client  # type: ignore
         # This adds the db_client to the bot
