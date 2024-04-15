@@ -11,6 +11,11 @@ from discord.ext import commands
 logger = logging.getLogger(__name__)
 
 
+def chop_dat_boi_up(string, chunk_size):
+    # vOmIt #
+    return [string[i:i + chunk_size] for i in range(0, len(string), chunk_size)]
+
+
 class UtilityRunCode(commands.Cog):
     """Uses PistonAPI to run code in the server."""
 
@@ -22,11 +27,21 @@ class UtilityRunCode(commands.Cog):
             embed = discord.Embed(colour=discord.Colour.red(), title="Oops...")
         else:
             embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.10")
-        embed.add_field(
-            name=name,
-            value=value,
-            # pylint: disable=W1401
-        )
+
+        for i, field in enumerate(chop_dat_boi_up(value, 1000)):  # Discord only supports fields with 1024 chars
+            if i != 0:
+                if i <= 25:  # Discord only supports 25 add_fields
+                    embed.add_field(
+                        name="\u200b",
+                        value=field,
+                        # pylint: disable=W1401
+                    )
+            else:
+                embed.add_field(
+                    name=name,
+                    value=field,
+                    # pylint: disable=W1401
+                )
         return embed
 
     @commands.command()
