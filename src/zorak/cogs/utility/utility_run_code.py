@@ -28,20 +28,28 @@ class UtilityRunCode(commands.Cog):
         else:
             embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.10")
 
-        for i, field in enumerate(chop_dat_boi_up(value, 1000)):  # Discord only supports fields with 1024 chars
+        size = 11  # start counting how big the embed is.
+
+        for i, field in enumerate(chop_dat_boi_up(value, 500)):  # Discord only supports fields with 1024 chars
+
             if i != 0:
-                if i <= 25:  # Discord only supports 25 add_fields
+                size += len(field)
+                if size < 6000:  # Discord only supports EMBEDS with a total character size of 6000
+                    print(field)
                     embed.add_field(
                         name="\u200b",
                         value=field,
+                        inline=False
                         # pylint: disable=W1401
                     )
             else:
-                embed.add_field(
-                    name=name,
-                    value=field,
-                    # pylint: disable=W1401
-                )
+                size += len(field)
+                if size < 6000:
+                    embed.add_field(
+                        name=name,
+                        value=field,
+                        # pylint: disable=W1401
+                    )
         return embed
 
     @commands.command()
