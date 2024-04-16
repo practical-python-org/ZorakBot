@@ -25,7 +25,7 @@ class LoggingMessageDelete(commands.Cog):
         """
         If a mod deletes, take the audit log event. If a user deletes, handle it normally.
         """
-        current_guild = self.bot.server_settings.info["id"]
+        current_guild = message.guild
         audit_log = [entry async for entry in current_guild.audit_logs(limit=1)][0]
         logs_channel = await self.bot.fetch_channel(self.bot.server_settings.log_channel["chat_log"])
 
