@@ -11,22 +11,50 @@ from discord.ext import commands
 logger = logging.getLogger(__name__)
 
 
+def chop_dat_boi_up(string, chunk_size):
+    # vOmIt #
+    return [string[i:i + chunk_size] for i in range(0, len(string), chunk_size)]
+
+
 class UtilityRunCode(commands.Cog):
     """Uses PistonAPI to run code in the server."""
 
     def __init__(self, bot):
         self.bot = bot
 
-    def get_embed(self, name, value, is_error=False):
+    def get_embed(self, name, value, channel, is_error=False):
         if is_error:
             embed = discord.Embed(colour=discord.Colour.red(), title="Oops...")
         else:
             embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.10")
-        embed.add_field(
-            name=name,
-            value=value,
-            # pylint: disable=W1401
-        )
+
+        size = 11  # start counting how big the embed is.
+        max_size = 1000 # Default to 1000 chars.
+
+        # Check if the user is in the bot_spam channel, to allow for larger embeds.
+        print(self.bot.server_settings.normal_channel)
+        if channel.id == self.bot.server_settings.normal_channel['bot_spam_channel']:
+            max_size = 6000  # Discord limitation
+
+        for i, field in enumerate(chop_dat_boi_up(value, 500)):  # Discord only supports fields with 1024 chars
+            if i != 0:
+                size += len(field)
+                if size < max_size:  # Discord only supports EMBEDS with a total character size of 6000
+                    print(field)
+                    embed.add_field(
+                        name="\u200b",
+                        value=field,
+                        inline=False
+                        # pylint: disable=W1401
+                    )
+            else:
+                size += len(field)
+                if size < max_size:
+                    embed.add_field(
+                        name=name,
+                        value=field,
+                        # pylint: disable=W1401
+                    )
         return embed
 
     @commands.command()
@@ -72,19 +100,19 @@ class UtilityRunCode(commands.Cog):
 
             piston = PistonAPI()
             runcode = piston.execute(language="py", version="3.10.0", code=codeblock)
-            embed = self.get_embed("Output:", runcode)
+            embed = self.get_embed("Output:", runcode, ctx.channel)
             message = await ctx.reply(embed=embed)
 
         elif codeblock.startswith("'''") and codeblock.endswith("'''"):
             value = "Did you mean to use a \` instead of a ' ?\n\`\`\`py Your code here \`\`\`"
-            embed = self.get_embed("Formatting error", value, True)
+            embed = self.get_embed("Formatting error", value, ctx.channel, True)
             message = await ctx.channel.send(embed=embed)
 
         else:
             print(codeblock)
             value = 'Please place your code inside a code block. (between \`\`\`py ' \
                     'and \`\`\`)\n\n\`\`\`py \nx = "like this"\nprint(x) \n\`\`\`'
-            embed = self.get_embed("Formatting error", value, True)
+            embed = self.get_embed("Formatting error", value, ctx.channel, True)
             message = await ctx.channel.send(embed=embed)
 
     @commands.Cog.listener()
