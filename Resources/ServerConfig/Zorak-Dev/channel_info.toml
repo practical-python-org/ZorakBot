@@ -28,6 +28,7 @@ python_help_2 = 12345
 challenges_channel = 1045104938071633994
 news_channel = 1071095960538718261
 suggestions_channel = 1179390629999026207
+bot_spam_channel = 1229687584905760809
 
 
 [channels.log_channel]
