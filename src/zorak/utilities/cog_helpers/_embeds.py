@@ -78,21 +78,21 @@ def embed_leave(some_member):
     return embed
 
 
-def embed_message_delete(some_member, some_message):
+def embed_message_delete(some_member, some_message, some_moderator=None):
     """
     Embedding for user message deletion alerts.
     """
     embed = discord.Embed(
-        title='<:red_circle:1043616578744357085> Deleted Message'
-        , description=f'{some_member} deleted a message'
+        title=f'<:red_circle:1043616578744357085> Deleted Message'
+        , description=f'{some_moderator if some_moderator is not None else some_member} deleted a message'
                       f'\nIn {some_message.channel}\nMessage '
-                      f'author: {some_message.author}'
+                      f'author: {some_member}'
         , color=discord.Color.dark_red()
         , timestamp=datetime.utcnow()
     )
 
     embed.set_thumbnail(
-        url=some_member.avatar  # the person who DELETED the message
+        url=some_member.avatar if some_moderator is None else some_moderator.avatar  # the person who DELETED the message
     )
     if len(some_message.content) > 1020:
         the_message = some_message.content[0:1020] + '...'
