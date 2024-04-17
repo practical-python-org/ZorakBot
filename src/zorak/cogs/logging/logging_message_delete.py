@@ -34,23 +34,29 @@ class LoggingMessageDelete(commands.Cog):
         # If the audit log is triggered, it means someone OTHER than the author deleted the message.
         # https://discordpy.readthedocs.io/en/stable/api.html
         # ?highlight=audit%20log#discord.AuditLogAction.message_delete
-        if str(audit_log.action) == 'AuditLogAction.message_delete' and audit_log.user.id == message.author.id:
-            logger.info(f" --- {audit_log.user.name}'s action triggered the audit log.")
 
-            # TODO: refactor the embed to accept both the person that triggered the audit log, and the message author.
-            embed = embed_message_delete(audit_log.user, message)
+        # print(audit_log)
+        # print(f"-> {audit_log.action}")
+        # print(f"-> {audit_log.after}")
+        # print(f"-> {audit_log.before}")
+        # print(f"-> {audit_log.category}")
+        # print(f"-> {audit_log.changes}")
+        # print(f"-> {audit_log.created_at}")
+        # print(f"-> {audit_log.extra}")
+        # print(f"-> {audit_log.guild}")
+        # print(f"-> {audit_log.id}")
+        # print(f"-> {audit_log.reason}")
+        # print(f"-> {audit_log.target}")
+        # print(f"-> {audit_log.user}")
+
+        if str(audit_log.action) == 'AuditLogAction.message_delete' and audit_log.user != audit_log.target:
+            # Then a moderator deleted a message.
+            embed = embed_message_delete(message.author, message, audit_log.user)
             await logs_channel.send(embed=embed)
 
         else:
             # Otherwise, the author deleted it.
             username = message.author
-
-            # I think this is causing the issue with staff ghost-deleting messages.
-            # for role in message.author.roles:
-            #     if role.id in [settings['staff_role'], settings["admin_role"], settings["owner_role"]]:
-            #         await logs_channel.send(embed=embed_message_delete(username, message))
-            #         return
-            logger.info(f" --- {username.name}'s action DID NOT trigger the audit log.")
             await logs_channel.send(f"{username.mention}", embed=embed_message_delete(username, message))
 
 
