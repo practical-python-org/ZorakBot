@@ -59,14 +59,13 @@ class ModerationSpamMessages(commands.Cog):
                 # If so, increase the occurance by 1
                 the_archive["occurrence"] += 1
                 logger.debug("%s has sent a double message in %s", message.author.name, message.channel.name)
-                print(self.records[message.author.id])
+
                 if the_archive["occurrence"] == 2:
                     # when a repeat message is sent, set the message ID for the 2nd message
                     the_archive["2nd"]["message_id"] = message.id
                     the_archive["2nd"]["channel_id"] = message.channel.id
                     the_archive["2nd"]["file_name"] = message.attachments[0].filename if message.content == "" else None
                     the_archive["2nd"]["file_url"] = message.attachments[0].url if message.content == "" else None
-                    print(self.records[message.author.id])
 
                     if the_archive["1st"]["channel_id"] != the_archive["2nd"]["channel_id"]:
                         await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=15))
@@ -95,7 +94,6 @@ class ModerationSpamMessages(commands.Cog):
                     the_archive["3rd"]["channel_id"] = message.channel.id
                     the_archive["3rd"]["file_name"] = message.attachments[0].filename if message.content == "" else None
                     the_archive["3rd"]["file_url"] = message.attachments[0].url if message.content == "" else None
-                    print(self.records[message.author.id])
 
                     # timeout right away
                     await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=30))
