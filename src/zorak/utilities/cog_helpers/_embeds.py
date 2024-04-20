@@ -49,8 +49,8 @@ def embed_quarantine(moderator, some_member, number_of_removed_messages):
     Embedding for user ban alerts.
     """
     embed = discord.Embed(
-        title=f'<:red_circle:1043616578744357085> {some_member.mention} was quarantined.'
-        , description=f'By: {moderator.name}'
+        title=f'<:red_circle:1043616578744357085> {moderator.name} quarantined {some_member.name}.'
+        , description=f'Quarantined member: {some_member.mention}'
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
     )
