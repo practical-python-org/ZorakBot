@@ -40,6 +40,8 @@ class Points(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
         """When a member deletes a message, remove a point."""
+        if message.author.bot:
+            return
         message_value = len(message.content.split(" "))
         mod_log = await self.bot.fetch_channel(self.bot.server_settings.log_channel["mod_log"])
         await mod_log.send(f"{message_value} Point/s removed from {message.author} for deleting a message.")
