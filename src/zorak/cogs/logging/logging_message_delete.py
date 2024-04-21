@@ -26,7 +26,7 @@ class LoggingMessageDelete(commands.Cog):
         If a mod deletes, take the audit log event. If a user deletes, handle it normally.
         """
         # Don't record edits in Staff only channels.
-        if message.channel.category_id == 1054761641289449482:  # This is the ID of the "staff area" category.
+        if message.channel.category_id == 940543787250364486:  # This is the ID of the "staff area" category.
             # Yes, that's hardcoded. Suck it.
             return
 

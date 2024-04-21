@@ -30,7 +30,7 @@ class LoggingMessageEdit(commands.Cog):
             return
 
         # Don't record edits in Staff only channels.
-        if message_before.channel.category_id == 1054761641289449482:  # This is the ID of the "staff area" category.
+        if message_before.channel.category_id == 940543787250364486:  # This is the ID of the "staff area" category.
             # Yes, that's hardcoded. Suck it.
             return
 
