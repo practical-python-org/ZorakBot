@@ -84,9 +84,9 @@ def embed_message_delete(some_member, some_message, some_moderator=None):
     """
     embed = discord.Embed(
         title=f'<:red_circle:1043616578744357085> Deleted Message'
-        , description=f'{some_moderator if some_moderator is not None else some_member} deleted a message'
+        , description=f'{some_moderator.name if some_moderator is not None else some_member} deleted a message'
                       f'\nIn {some_message.channel}\nMessage '
-                      f'author: {some_member}'
+                      f'author: {some_member.mention}'
         , color=discord.Color.dark_red()
         , timestamp=datetime.utcnow()
     )
