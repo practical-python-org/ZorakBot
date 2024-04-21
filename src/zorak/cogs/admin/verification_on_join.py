@@ -79,7 +79,6 @@ class LoggingVerification(commands.Cog):
                     await sleep(10)  # wait 10 seconds, and then we delete the message in the channel
 
                     async for msg in message.channel.history(limit=5):
-                        print(msg)
                         if msg.author.bot:
                             await msg.delete()
                             break  # only delete 1
