@@ -29,6 +29,11 @@ class LoggingMessageEdit(commands.Cog):
         if message_before.content.startswith('/run') or message_after.content.startswith('/run'):
             return
 
+        # Don't record edits in Staff only channels.
+        if message_before.channel.category_id == 1054761641289449482:  # This is the ID of the "staff area" category.
+            # Yes, that's hardcoded. Suck it.
+            return
+
         elif message_before.content != message_after.content:
             # This guy here makes sure we use the displayed name inside the guild.
 
