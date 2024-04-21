@@ -373,18 +373,21 @@ def embed_cant_do_that(message):
     return embed
 
 
-def embed_spammer(message_to_report):
+def embed_spammer(spammer, message_to_report=None, file_url=None):
     """
     Embedding for detected spam messages.
     """
     embed = discord.Embed(
         title='Firewall has been triggered'
-        , description='When you send the same message three times, you get the quarantine.'
-                      ' Wait for the staff to come let you out.'
+        , description=f'When you send the same message three times, {spammer.mention}, you get the quarantine.'
+                      f' Wait for the staff to come let you out.'
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
     )
-    embed.add_field(name='Message:', value=message_to_report, inline=True)
+    if message_to_report:
+        embed.add_field(name='Message:', value=message_to_report, inline=True)
+    if file_url:
+        embed.add_field(name="Image:", value=file_url, inline=True)
     return embed
 
 

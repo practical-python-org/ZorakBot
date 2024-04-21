@@ -42,9 +42,9 @@ class ModerationSpamMessages(commands.Cog):
         # new speaker. Welcome to auto mod.
         if message.author.id not in self.records:
             self.records[message.author.id] = {
-                "last_message": message.content
+                "last_message": message.content if message.content != "" else message.attachments[0].filename
                 , "occurrence": 1
-                , "1st": {"message_id": message.id, "channel_id": message.channel.id}
+                , "1st": {"message_id": message.id, "channel_id": message.channel.id, "file_name": message.attachments[0].filename if message.content == "" else None, "file_url": message.attachments[0].url if message.content == "" else None}
                 , "2nd": {}
                 , "3rd": {}
             }
@@ -54,7 +54,8 @@ class ModerationSpamMessages(commands.Cog):
             # Check if the last message is the same as the new one.
             the_archive = self.records[message.author.id]
 
-            if the_archive["last_message"] == message.content:
+            if the_archive["last_message"] == (message.content if message.content != "" else message.attachments[0].filename):
+
                 # If so, increase the occurance by 1
                 the_archive["occurrence"] += 1
                 logger.debug("%s has sent a double message in %s", message.author.name, message.channel.name)
@@ -63,6 +64,8 @@ class ModerationSpamMessages(commands.Cog):
                     # when a repeat message is sent, set the message ID for the 2nd message
                     the_archive["2nd"]["message_id"] = message.id
                     the_archive["2nd"]["channel_id"] = message.channel.id
+                    the_archive["2nd"]["file_name"] = message.attachments[0].filename if message.content == "" else None
+                    the_archive["2nd"]["file_url"] = message.attachments[0].url if message.content == "" else None
 
                     if the_archive["1st"]["channel_id"] != the_archive["2nd"]["channel_id"]:
                         await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=15))
@@ -72,9 +75,9 @@ class ModerationSpamMessages(commands.Cog):
 
                         # Send a DM. If you can't, send in the channel.
                         try:
-                            await message.author.send(embed=embed_spammer_warn(channel1, channel2))
+                            self.warn_message = await message.author.send(embed=embed_spammer_warn(channel1, channel2))
                             logger.debug("%s was sent a DM about their double message.", message.author.name)
-                        except discord.errors.HTTPException as closed_dms:
+                        except discord.errors.Forbidden as closed_dms:
                             logger.debug("could not send %s a message, diverting to channel: %s"
                                          , message.author.name
                                          , message.channel.name)
@@ -89,6 +92,8 @@ class ModerationSpamMessages(commands.Cog):
                     logger.info("%s was quarantined for sending 3 repeat messages.", message.author.name)
                     the_archive["3rd"]["message_id"] = message.id
                     the_archive["3rd"]["channel_id"] = message.channel.id
+                    the_archive["3rd"]["file_name"] = message.attachments[0].filename if message.content == "" else None
+                    the_archive["3rd"]["file_url"] = message.attachments[0].url if message.content == "" else None
 
                     # timeout right away
                     await message.author.timeout(until=datetime.utcnow() + timedelta(seconds=30))
@@ -104,7 +109,7 @@ class ModerationSpamMessages(commands.Cog):
                     await member.add_roles(naughty)
 
                     # Post the message in Quarantine channel
-                    await quarantine.send(embed=embed_spammer(message.content))
+                    await quarantine.send(embed=embed_spammer(message.author, message.content, the_archive["3rd"]["file_url"]))
 
                     # delete the messages
                     channel1 = await self.bot.fetch_channel(the_archive["1st"]["channel_id"])
@@ -117,13 +122,12 @@ class ModerationSpamMessages(commands.Cog):
                     await one.delete()
                     await two.delete()
                     await three.delete()
-                    await self.warn_message.delete()
 
                     # reset after the quarantine, as the user might actually not be a bot.
                     self.records[message.author.id] = {
-                        "last_message": message.content
+                        "last_message": message.content if message.content != "" else message.attachments[0].filename
                         , "occurrence": 1
-                        , "1st": {"message_id": message.id, "channel_id": message.channel.id}
+                        , "1st": {"message_id": message.id, "channel_id": message.channel.id, "file_name": message.attachments[0].filename if message.content == "" else None, "file_url": message.attachments[0].url if message.content == "" else None}
                         , "2nd": {}
                         , "3rd": {}
                     }
@@ -131,9 +135,9 @@ class ModerationSpamMessages(commands.Cog):
             else:
                 # Message is new, and we reset back to the first occurrence.
                 self.records[message.author.id] = {
-                    "last_message": message.content
+                    "last_message": message.content if message.content != "" else message.attachments[0].filename
                     , "occurrence": 1
-                    , "1st": {"message_id": message.id, "channel_id": message.channel.id}
+                    , "1st": {"message_id": message.id, "channel_id": message.channel.id, "file_name": message.attachments[0].filename if message.content == "" else None, "file_url": message.attachments[0].url if message.content == "" else None}
                     , "2nd": {}
                     , "3rd": {}
                 }
