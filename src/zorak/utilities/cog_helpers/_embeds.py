@@ -44,6 +44,23 @@ def embed_ban(some_member, audit_log_entry):
     return embed
 
 
+def embed_quarantine(moderator, some_member, number_of_removed_messages):
+    """
+    Embedding for user ban alerts.
+    """
+    embed = discord.Embed(
+        title=f'<:red_circle:1043616578744357085> {moderator.name} quarantined {some_member.name}.'
+        , description=f'Quarantined member: {some_member.mention}'
+        , color=discord.Color.red()
+        , timestamp=datetime.utcnow()
+    )
+
+    if number_of_removed_messages > 0:
+        embed.add_field(name="Messages removed:", value=f"{str(number_of_removed_messages)} messages.")
+
+    return embed
+
+
 def embed_kick(some_member, audit_log_entry):
     """
     Embedding for user kick alerts.
@@ -84,9 +101,9 @@ def embed_message_delete(some_member, some_message, some_moderator=None):
     """
     embed = discord.Embed(
         title=f'<:red_circle:1043616578744357085> Deleted Message'
-        , description=f'{some_moderator if some_moderator is not None else some_member} deleted a message'
+        , description=f'{some_moderator.name if some_moderator is not None else some_member} deleted a message'
                       f'\nIn {some_message.channel}\nMessage '
-                      f'author: {some_member}'
+                      f'author: {some_member.mention}'
         , color=discord.Color.dark_red()
         , timestamp=datetime.utcnow()
     )
@@ -373,18 +390,21 @@ def embed_cant_do_that(message):
     return embed
 
 
-def embed_spammer(message_to_report):
+def embed_spammer(spammer, message_to_report=None, file_url=None):
     """
     Embedding for detected spam messages.
     """
     embed = discord.Embed(
         title='Firewall has been triggered'
-        , description='When you send the same message three times, you get the quarantine.'
-                      ' Wait for the staff to come let you out.'
+        , description=f'When you send the same message three times, {spammer.mention}, you get the quarantine.'
+                      f' Wait for the staff to come let you out.'
         , color=discord.Color.red()
         , timestamp=datetime.utcnow()
     )
-    embed.add_field(name='Message:', value=message_to_report, inline=True)
+    if message_to_report:
+        embed.add_field(name='Message:', value=message_to_report, inline=True)
+    if file_url:
+        embed.add_field(name="Image:", value=file_url, inline=True)
     return embed
 
 
