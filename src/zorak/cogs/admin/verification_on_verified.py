@@ -138,25 +138,31 @@ class Verification(commands.Cog):
     @commands.slash_command(description="Verification!")
     async def verify(self, ctx):
         """The slash command that initiates the fancy menus."""
-        if hasattr(self.bot.server_settings, "verification_options"):
-            if "selectors" in self.bot.server_settings.verification_options:
-                if "✅" not in [role.name for role in ctx.author.roles]:
+        if str(type(ctx.channel)) == "<class 'discord.channel.DMChannel'>":
+            await ctx.respond(
+                f"You need to use the command in the {self.bot.get_channel(self.bot.server_settings.mod_channel['verification_channel']).mention} channel.")
+            return
+
+        else:
+            if hasattr(self.bot.server_settings, "verification_options"):
+                if "selectors" in self.bot.server_settings.verification_options:
+                    if "✅" not in [role.name for role in ctx.author.roles]:
+                        await ctx.respond(
+                            "# ~ Verification ~ \n"
+                            "_Before you can join the server, we need to make sure you are not a robot._\n"
+                            "_Please answer the following question._"
+                            , view=SelectView(self.bot, self.bot.server_settings.verification_options)
+                            , ephemeral=True
+                        )
+                    else:
+                        await ctx.respond("You are already verified. Go away.", ephemeral=True)
+                else:
                     await ctx.respond(
-                        "# ~ Verification ~ \n"
-                        "_Before you can join the server, we need to make sure you are not a robot._\n"
-                        "_Please answer the following question._"
-                        , view=SelectView(self.bot, self.bot.server_settings.verification_options)
+                        "Please contact the @Staff. Verification is having technical problems."
                         , ephemeral=True
                     )
-                else:
-                    await ctx.respond("You are already verified. Go away.", ephemeral=True)
             else:
-                await ctx.respond(
-                    "Please contact the @Staff. Verification is having technical problems."
-                    , ephemeral=True
-                )
-        else:
-            await ctx.respond("Verification has not been set up!", ephemeral=True)
+                await ctx.respond("Verification has not been set up!", ephemeral=True)
 
 
 def setup(bot):
