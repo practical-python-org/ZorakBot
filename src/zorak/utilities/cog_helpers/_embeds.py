@@ -44,6 +44,23 @@ def embed_ban(some_member, audit_log_entry):
     return embed
 
 
+def embed_quarantine(moderator, some_member, number_of_removed_messages):
+    """
+    Embedding for user ban alerts.
+    """
+    embed = discord.Embed(
+        title=f'<:red_circle:1043616578744357085> {moderator.name} quarantined {some_member.name}.'
+        , description=f'Quarantined member: {some_member.mention}'
+        , color=discord.Color.red()
+        , timestamp=datetime.utcnow()
+    )
+
+    if number_of_removed_messages > 0:
+        embed.add_field(name="Messages removed:", value=f"{str(number_of_removed_messages)} messages.")
+
+    return embed
+
+
 def embed_kick(some_member, audit_log_entry):
     """
     Embedding for user kick alerts.
