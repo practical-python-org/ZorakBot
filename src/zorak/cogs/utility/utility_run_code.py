@@ -2,7 +2,6 @@
 Uses PistonAPI to run code in the server.
 """
 import logging
-import re
 
 from pistonapi import PistonAPI
 import discord
