@@ -38,25 +38,14 @@ class UtilityRunCode(commands.Cog):
 
         # Discord only supports fields with 1024 chars
         for i, field in enumerate(chop_dat_boi_up(value, 500)):
-            if i != 0:
-                size += len(field)
-                # Discord only supports EMBEDS with a total character size of 6000
-                if size < max_size:
-                    print(field)
-                    embed.add_field(
-                        name="\u200b",
-                        value=field,
-                        inline=False
-                        # pylint: disable=W1401
-                    )
-            else:
-                size += len(field)
-                if size < max_size:
-                    embed.add_field(
-                        name=name,
-                        value=field,
-                        # pylint: disable=W1401
-                    )
+            size += len(field)
+            # Discord only supports EMBEDS with a total character size of 6000
+            if size < max_size:
+                print(field)
+                embed.add_field(
+                    name=name if i == 0 else "\u200b", value=field, inline=i != 0
+                )
+            # pylint: disable=W1401
         return embed
 
     @commands.command()
