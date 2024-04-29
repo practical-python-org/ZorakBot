@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def chop_dat_boi_up(string, chunk_size):
     # vOmIt #
-    return [string[i:i + chunk_size] for i in range(0, len(string), chunk_size)]
+    return [string[i : i + chunk_size] for i in range(0, len(string), chunk_size)]
 
 
 class UtilityRunCode(commands.Cog):
@@ -29,17 +29,19 @@ class UtilityRunCode(commands.Cog):
             embed = discord.Embed(colour=discord.Colour.green(), title="Python 3.10")
 
         size = 11  # start counting how big the embed is.
-        max_size = 1000 # Default to 1000 chars.
+        max_size = 1000  # Default to 1000 chars.
 
         # Check if the user is in the bot_spam channel, to allow for larger embeds.
         print(self.bot.server_settings.normal_channel)
-        if channel.id == self.bot.server_settings.normal_channel['bot_spam_channel']:
+        if channel.id == self.bot.server_settings.normal_channel["bot_spam_channel"]:
             max_size = 6000  # Discord limitation
 
-        for i, field in enumerate(chop_dat_boi_up(value, 500)):  # Discord only supports fields with 1024 chars
+        # Discord only supports fields with 1024 chars
+        for i, field in enumerate(chop_dat_boi_up(value, 500)):
             if i != 0:
                 size += len(field)
-                if size < max_size:  # Discord only supports EMBEDS with a total character size of 6000
+                # Discord only supports EMBEDS with a total character size of 6000
+                if size < max_size:
                     print(field)
                     embed.add_field(
                         name="\u200b",
@@ -62,16 +64,13 @@ class UtilityRunCode(commands.Cog):
         """
         Uses Piston-API to run code in the server.
         """
-        logger.info("%s used the %s command."
-                    , ctx.author.name
-                    , ctx.command)
+        logger.info("%s used the %s command.", ctx.author.name, ctx.command)
 
         # Adjust iOS quotation marks “”‘’ to avoid SyntaxError: invalid character
         for i, c in enumerate("“‘”’"):
             codeblock = codeblock.replace(c, "\"'"[i % 2])
 
         if codeblock.startswith("```py") and "```" in codeblock[3:]:
-
             # Split input args from codeblock
             _, codeblock, args = codeblock.split("```")
             args = [arg for arg in args.split("\n") if arg]
@@ -84,11 +83,13 @@ class UtilityRunCode(commands.Cog):
             if args or input_count:
                 # Check if number of input() functions matches args from user.
                 if len(args) != input_count:
-                    value = 'I am happy to run your script but I do not want to interact with you. You can ' \
-                            'remove your input() functions, however if you insist on keeping them, please ' \
-                            'put your input values in order on separate lines after the codeblock:' \
-                            '\n\n\`\`\`py \nx = input("What is your first input: ")\ny = input("What is ' \
-                            'your second input: ")\nprint(x)\nprint(y)\n\`\`\`\nmy_first_input\nmy_second_input'
+                    value = (
+                        "I am happy to run your script but I do not want to interact with you. You can "
+                        "remove your input() functions, however if you insist on keeping them, please "
+                        "put your input values in order on separate lines after the codeblock:"
+                        '\n\n\`\`\`py \nx = input("What is your first input: ")\ny = input("What is '
+                        'your second input: ")\nprint(x)\nprint(y)\n\`\`\`\nmy_first_input\nmy_second_input'
+                    )
                     embed = self.get_embed("Formatting error", value, True)
                     message = await ctx.channel.send(embed=embed)
                     # self.previous_message_id = message.id
@@ -110,8 +111,10 @@ class UtilityRunCode(commands.Cog):
 
         else:
             print(codeblock)
-            value = 'Please place your code inside a code block. (between \`\`\`py ' \
-                    'and \`\`\`)\n\n\`\`\`py \nx = "like this"\nprint(x) \n\`\`\`'
+            value = (
+                "Please place your code inside a code block. (between \`\`\`py "
+                'and \`\`\`)\n\n\`\`\`py \nx = "like this"\nprint(x) \n\`\`\`'
+            )
             embed = self.get_embed("Formatting error", value, ctx.channel, True)
             message = await ctx.channel.send(embed=embed)
 
@@ -120,11 +123,15 @@ class UtilityRunCode(commands.Cog):
         if before.author.bot:
             # Ignore messages sent by bots
             return
-        if before.content.startswith('/run') or after.content.startswith('/run'):
+        if before.content.startswith("/run") or after.content.startswith("/run"):
             # Make sure we ONLY re-run messages that are /run commands
             channel = after.channel  # The channel that the edited message is in
             # Grab the last 10 (should be enough...) bot messages
-            all_replies = [message async for message in channel.history(limit=20) if message.author == self.bot.user]
+            all_replies = [
+                message
+                async for message in channel.history(limit=20)
+                if message.author == self.bot.user
+            ]
             for bot_reply in all_replies:
                 if bot_reply.reference.message_id == after.id:
                     await bot_reply.delete()
