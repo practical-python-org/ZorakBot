@@ -73,50 +73,59 @@ class UtilityRunCode(commands.Cog):
         if codeblock.startswith("```py") and "```" in codeblock[3:]:
             # Split input args from codeblock
             _, codeblock, args = codeblock.split("```")
-            args = [arg for arg in args.split("\n") if arg]
+            args = args.strip()
 
             # Remove py/python language indicator from codeblock
             codeblock = codeblock.removeprefix("py").removeprefix("thon").strip()
 
-            # Check for input() args or calls to input() function
-            input_count = codeblock.count("input(")
-            if args or input_count:
-                # Check if number of input() functions matches args from user.
-                if len(args) != input_count:
+            # Check for input() args and calls to input() function
+            if "input(" in codeblock and not args:
+                value = (
+                    "I am happy to run your script but I do not want to interact with you. You can "
+                    "remove your input() functions, however if you insist on keeping them, please "
+                    "put your input values in order on separate lines after the codeblock:\n\n"
+                    '\`\`\`py \nx = input("What is your first input: ")\ny = input("What is '
+                    'your second input: ")\nprint(x)\nprint(y)\n\`\`\`\nmy_first_input\nmy_second_input'
+                )
+
+            else:
+                # Try executing the code
+                piston = PistonAPI()
+                runcode = piston.execute(
+                    language="py", version="3.10.0", code=codeblock, stdin=args
+                )
+
+                # Check for EOFError
+                if all(item in runcode for item in ("Traceback", "EOFError:")):
                     value = (
-                        "I am happy to run your script but I do not want to interact with you. You can "
-                        "remove your input() functions, however if you insist on keeping them, please "
-                        "put your input values in order on separate lines after the codeblock:"
-                        '\n\n\`\`\`py \nx = input("What is your first input: ")\ny = input("What is '
+                        "The function input() was called more times than the number of inputs provided.\n"
+                        "Make sure you have the correct number of input strings after the codeblock.\n"
+                        "(Each input string should be separated by a new line)\n\n"
+                        '\`\`\`py \nx = input("What is your first input: ")\ny = input("What is '
                         'your second input: ")\nprint(x)\nprint(y)\n\`\`\`\nmy_first_input\nmy_second_input'
                     )
-                    embed = self.get_embed("Formatting error", value, True)
-                    message = await ctx.channel.send(embed=embed)
-                    # self.previous_message_id = message.id
-                    return
-                # Else, replace all input()s with values
+
+                # Code execution successful without EOFError
                 else:
-                    for i in re.findall(r"input\(.*\)\n", codeblock):
-                        codeblock = codeblock.replace(i, f'"""{args.pop(0)}"""\n', 1)
+                    embed = self.get_embed("Output:", runcode, ctx.channel)
+                    message = await ctx.reply(embed=embed)
+                    return
 
-            piston = PistonAPI()
-            runcode = piston.execute(language="py", version="3.10.0", code=codeblock)
-            embed = self.get_embed("Output:", runcode, ctx.channel)
-            message = await ctx.reply(embed=embed)
-
-        elif codeblock.startswith("'''") and codeblock.endswith("'''"):
-            value = "Did you mean to use a \` instead of a ' ?\n\`\`\`py Your code here \`\`\`"
-            embed = self.get_embed("Formatting error", value, ctx.channel, True)
-            message = await ctx.channel.send(embed=embed)
-
+        # Check for single quotes instead of codeblocks
+        elif codeblock.startswith("'''") or codeblock.endswith("'''"):
+            value = (
+                "Did you mean to use a \` instead of a ' ?\n\n"
+                "\`\`\`py \nx = 'like this'\nprint(x) \n\`\`\`"
+            )
         else:
-            print(codeblock)
             value = (
                 "Please place your code inside a code block. (between \`\`\`py "
-                'and \`\`\`)\n\n\`\`\`py \nx = "like this"\nprint(x) \n\`\`\`'
+                "and \`\`\`)\n\n\`\`\`py \nx = 'like this'\nprint(x) \n\`\`\`"
             )
-            embed = self.get_embed("Formatting error", value, ctx.channel, True)
-            message = await ctx.channel.send(embed=embed)
+
+        # Output error message
+        embed = self.get_embed("Formatting error", value, ctx.channel, True)
+        message = await ctx.channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
