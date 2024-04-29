@@ -87,7 +87,7 @@ class UtilityRunCode(commands.Cog):
                 if all(item in runcode for item in ("Traceback", "EOFError:")):
                     value = (
                         "The function input() was called more times than the number of input strings "
-                        " provided.\nMake sure you have the correct number of input strings after the "
+                        " provided. Make sure you have the correct number of input strings after the "
                         "codeblock.\n(Each input string should be separated by a new line)\n\n"
                         '\`\`\`py \nx = input("What is your first input: ")\ny = input("What is '
                         'your second input: ")\nprint(x)\nprint(y)\n\`\`\`\nmy_first_input\nmy_second_input'
