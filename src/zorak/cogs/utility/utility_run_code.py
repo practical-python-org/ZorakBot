@@ -31,7 +31,6 @@ class UtilityRunCode(commands.Cog):
         max_size = 1000  # Default to 1000 chars.
 
         # Check if the user is in the bot_spam channel, to allow for larger embeds.
-        print(self.bot.server_settings.normal_channel)
         if channel.id == self.bot.server_settings.normal_channel["bot_spam_channel"]:
             max_size = 6000  # Discord limitation
 
@@ -40,7 +39,6 @@ class UtilityRunCode(commands.Cog):
             size += len(field)
             # Discord only supports EMBEDS with a total character size of 6000
             if size < max_size:
-                print(field)
                 embed.add_field(
                     name=name if i == 0 else "\u200b", value=field, inline=i == 0
                 )
