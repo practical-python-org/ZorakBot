@@ -44,7 +44,7 @@ class LoggingVerification(commands.Cog):
     async def kick_if_not_verified(self, member, time_to_kick, logging_channel):
         await sleep(time_to_kick)
 
-        if "✅" not in [role.name for role in member.roles]:
+        if all(x not in [role.name for role in member.roles] for x in ("✅", "Naughty")):
             await logging_channel.send(
                 f"{member.mention} did not verify after {int((time_to_kick / 3600))} hour/s, auto-removed.")
             await member.kick(reason="Did not verify.")
