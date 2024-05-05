@@ -22,7 +22,7 @@ class GambaCoinflip(commands.Cog):
 
     async def get_sides(self, ctx: discord.AutocompleteContext):
         """Helper function for the coin sides arg"""
-        return [item for item in self.coin_options if item.startswith(ctx.value)]
+        return [item for item in self.coin_options if item.startswith(ctx.value.lower())]
 
     async def get_bets(self, ctx: discord.AutocompleteContext):
         """Helper function for the bet amount arg"""
@@ -54,8 +54,8 @@ class GambaCoinflip(commands.Cog):
 
         if wallet < bet_amount:
             # User is trying to be a sly little fox
-            await ctx.respond(f"You cant bet **{bet_amount}** points"
-                              f", because you only have **{wallet}**")
+            await ctx.respond(f"You cant bet **{bet_amount:,}** points"
+                              f", because you only have **{wallet:,}**")
             return
 
         if wallet >= bet_amount:
@@ -67,8 +67,8 @@ class GambaCoinflip(commands.Cog):
                 await ctx.respond(
                     f"{name} flipped a coin and chose **{side}**\n"
                     f"The coin landed on **{coin}**!\n"
-                    f"You won **{bet_amount} points**!\n"
-                    f"You now have **{wallet + bet_amount} points!**")
+                    f"You won **{bet_amount:,} points**!\n"
+                    f"You now have **{(wallet + bet_amount):,} points!**")
                 self.bot.db_client.add_points_to_user(ctx.author.id, bet_amount)
                 return
 
@@ -76,8 +76,8 @@ class GambaCoinflip(commands.Cog):
                 await ctx.respond(
                     f"{name} flipped a coin and chose **{side}**\n"
                     f"The coin landed on **{coin}**!\n"
-                    f"You lost **{bet_amount} points**!\n"
-                    f"You now have **{wallet - bet_amount} points**!")
+                    f"You lost **{bet_amount:,} points**!\n"
+                    f"You now have **{(wallet - bet_amount):,} points**!")
                 self.bot.db_client.add_points_to_user(ctx.author.id, -bet_amount)
                 return
 
