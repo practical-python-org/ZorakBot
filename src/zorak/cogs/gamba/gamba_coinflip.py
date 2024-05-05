@@ -1,12 +1,14 @@
 """
-Simple coinflip command. 
+Simple coinflip command.
 """
 import logging
-import random
 from random import choice
+import discord
+from discord.commands import option
 from discord.ext import commands
 
 logger = logging.getLogger(__name__)
+
 
 class GambaCoinflip(commands.Cog):
     """
@@ -15,54 +17,70 @@ class GambaCoinflip(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        
-        # !coinflip heads 1000
-        
-        if message.content.startswith('!coinflip'):
-            
-            parsed = message.content.split()
-            heads_or_tails = parsed[1]
-            
-            try: 
-                points = int(parsed[2])
-            except ValueError:
-                await message.channel.send("You need to bet full points!")
-                return
-            if heads_or_tails not in ["heads", "tails"]:
-                await message.channel.send("You can only bet on heads or tails!")
-                return
+        self.coin_options = ["Heads", "Tails"]
+        self.bet_options = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
-            if points < 0:
-                await message.channel.send("You betting negative points? You are a madman!")
-                return
+    async def get_sides(self, ctx: discord.AutocompleteContext):
+        """Helper function for the coin sides arg"""
+        return [item for item in self.coin_options if item.startswith(ctx.value)]
 
-            if points == 0:
-                await message.channel.send("You betting zero points? You are a coward!")
-                return
+    async def get_bets(self, ctx: discord.AutocompleteContext):
+        """Helper function for the bet amount arg"""
+        return [num for num in self.bet_options if str(num).startswith(str(ctx.value))]
 
-            if points > 0:
+    @commands.slash_command(name="coinflip")
+    @option("side", description="Heads or Tails?", autocomplete=get_sides)
+    @option("bet", description="Bet amount", autocomplete=get_bets)
+    async def coinflip(self, ctx: discord.ApplicationContext, side: str, bet_amount: int):
+        """Flips a coin, adds or removes points from the user based on their bet."""
+        wallet = self.bot.db_client.get_user_points(int(ctx.user.id))
 
-                if points > self.bot.db_client.get_user_points(message.author.id):
-                    await message.channel.send("You don't have enough points!")
-                    return
-
-                await message.channel.send("Flipping the coin...")
-                coin = random.choice(["heads", "tails"])
-
-                if coin == heads_or_tails:
-                    await message.channel.send(f"The coin landed on {coin}! You won {points} points!")
-                    self.bot.db_client.add_points_to_user(message.author.id, points)
-                    return
-                else:
-                    await message.channel.send(f"The coin landed on {coin}! You lost {points} points!")
-                    self.bot.db_client.add_points_to_user(message.author.id, -points)
-                    return
-
-            await message.channel.send("Something went wrong.")
+        if wallet is None:
+            # User is not yet added to the DB
+            self.bot.db_client.add_user_to_table(ctx.author)
+            await ctx.respond(
+                "You have no points yet.\n"
+                "You can get points by chatting in the server,"
+                " or by doing things that make mods happy.")
             return
+
+        if bet_amount < 0:
+            await ctx.respond("You betting negative points? You are a madman!")
+            return
+
+        if bet_amount == 0:
+            await ctx.respond("You betting zero points? You are a coward!")
+            return
+
+        if wallet < bet_amount:
+            # User is trying to be a sly little fox
+            await ctx.respond(f"You cant bet **{bet_amount}** points"
+                              f", because you only have **{wallet}**")
+            return
+
+        if wallet >= bet_amount:
+            # Do you want to play a game?
+            coin = choice(self.coin_options)
+            name = ctx.author.name if ctx.author.nick is None else ctx.author.nick
+
+            if coin == side:
+                await ctx.respond(
+                    f"{name} flipped a coin and chose **{side}**\n"
+                    f"The coin landed on **{coin}**!\n"
+                    f"You won **{bet_amount} points**!\n"
+                    f"You now have **{wallet + bet_amount} points!**")
+                self.bot.db_client.add_points_to_user(ctx.author.id, bet_amount)
+                return
+
+            else:
+                await ctx.respond(
+                    f"{name} flipped a coin and chose **{side}**\n"
+                    f"The coin landed on **{coin}**!\n"
+                    f"You lost **{bet_amount} points**!\n"
+                    f"You now have **{wallet - bet_amount} points**!")
+                self.bot.db_client.add_points_to_user(ctx.author.id, -bet_amount)
+                return
+
 
 def setup(bot):
     """
