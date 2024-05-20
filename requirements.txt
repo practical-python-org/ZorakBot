@@ -9,6 +9,7 @@ toml
 feedparser
 html2text
 pymongo
+clean-text
 PyNaCl==1.5.0
 ffmpeg-python==0.2.0
 yt-dlp==2023.12.30
