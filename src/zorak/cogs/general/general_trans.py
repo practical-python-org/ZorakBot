@@ -253,36 +253,49 @@ class trans_auto(commands.Cog):
         try:
             # clean up text
             message.content = format_text(message.content)
-            # message.content = re.sub(
-            #     r'<url>|<email>|<phone>|<code>'
-            #     , ''
-            #     , message.content.lower()
-            # )
 
+            # remove reactions
             await message.clear_reaction(emoji)
-            logger.debug(f"auto_translation: {self.auto_translation}")
-            logger.debug(
-                f"translated: {self.auto_translation[message.content.lower()]}"
+
+            # translate message to native language
+            print("translating...")  # info print
+            lang, confidence, translated_from = self.detect_lang(message)
+            translation = self.translator.translate(
+                message.content,
+                src=lang.lower(),
+                dest=self.LANGCODES[self.NATIVE_LANGUAGE],
             )
-            await message.reply(
-                embed=self.auto_translation[message.content.lower()],
-                mention_author=False,
+            translation.text = translation.text.lower()
+            print(f"translation: {translation.text}")
+
+            # parse pronunciation from extra_data
+            pronunciation = self.parse_pronunciation(message.content, translation)
+            print(f"pronunciation after parse: {pronunciation}")
+
+            # format and create embed object
+            description = f"**{translation.text}**"
+            description += (
+                f"\n- pronounced: {pronunciation.lower()}" if pronunciation else ""
+            )
+            description += (
+                f"\n- translated from {translated_from} to {self.NATIVE_LANGUAGE}"
+            )
+            embed = create_embed(
+                title=f"{message.content} {self.EMOJI_ARROW}",
+                description=description,
+                thumbnail=True,
             )
 
-            # # this breaks shit...i just wanna delete the dictionary item ;n;
-            # self.auto_translation = self.auto_translation.pop(message.content)
-            del self.auto_translation[message.content.lower()]
-
-        except KeyError:
-            pass
+            # send embed as untagged reply to message
+            await message.reply(embed=embed, mention_author=False)
 
         # if error, send error message to channel that caused it
         except Exception as e:
-            logger.debug(e)
+            print(e)
             embed = create_embed(
                 title="Something went wrong with the auto translator!",
-                description=f"Please contact a developer for support.\nTraceback: {e}",
-                footer="Sorry! This bot is still in development <3 This message auto deletes after 30 seconds.",
+                description=f"Please contact a developer for support.\nTraceback: ```{e}```",
+                footer="Sorry! This message auto deletes after 30 seconds.",
             )
             await message.channel.send(embed=embed, delete_after=30)
 
