@@ -428,15 +428,6 @@ class trans_auto(commands.Cog):
             )
             await ctx.respond(embed=embed, ephemeral=True)
 
-        except Exception as e:
-            logger.info(e)
-            embed = create_embed(
-                title="Something went wrong!",
-                description=f"Please contact a developer for support.\nTraceback: {e}",
-                footer="Sorry! This bot is still in development <3",
-            )
-            await ctx.respond(embed=embed, ephemeral=True)
-
     @commands.slash_command(
         description="Add a word to be blacklisted from the auto translator"
     )
