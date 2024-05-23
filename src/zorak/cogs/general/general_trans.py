@@ -45,18 +45,21 @@ def create_embed(
 def word_is_in_blacklist(message):
     # read blacklist
     logger.info("checking blacklist...")
-    with open(blacklist, "r") as f:
+    with open(blacklist, "r", encoding="utf-8") as f:
         blacklisted_words = f.read()
+        blacklisted_words = list(filter(None, blacklisted_words.lower().split("\n")))
+
+    # check message as a whole against blacklist entries
+    if message in blacklisted_words:
+        return blacklisted_words
 
     # format lists of words from blacklist and message
-    message = message.lower().split(" ")
-    blacklisted_words = list(filter(None, blacklisted_words.lower().split("\n")))
+    message = message.lower().split()
 
     # iterate entire blacklist by word until word is found, then return blacklist contents
     for word in message:
 
         # check if word in blacklist
-        # logger.info('checking blacklist...')
         if word in blacklisted_words:
             # when word matches with blacklisted word
             return blacklisted_words
