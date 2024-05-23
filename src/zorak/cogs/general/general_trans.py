@@ -101,7 +101,6 @@ class trans_auto(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.translator = googletrans.Translator()
-        self.auto_translation = {}
         self.NATIVE_LANGUAGE = "english"  # default lang to not be translated
         self.REACTION_EMOJI = "⤵️"
         self.LANGUAGES = googletrans.LANGUAGES  # all supported langs in a dict
@@ -144,118 +143,98 @@ class trans_auto(commands.Cog):
         logger.debug(f"pronunciation after parse: {pronunciation}")
         return pronunciation
 
+    def detect_lang(self, message):
+        # remove format tokens for language detection only
+        detected = re.sub(r"<url>|<email>|<phone>|<code>", "", message.content.lower())
+
+        # detect language of message
+        detected = self.translator.detect(detected)
+        logger.debug(f"detected = {detected}")  # info print
+        confidence = detected.confidence
+
+        # if detection picks up 2 potential languages
+        if type(detected.lang) is list:
+            # assign lang to first item in lang list to use as translation src
+            lang = detected.lang[0].lower()
+            # format for embed response
+            translated_from = f"{self.LANGUAGES[lang[0]]}/{self.LANGUAGES[lang[1]]}"
+        else:
+            lang = detected.lang.lower()
+            translated_from = f"{self.LANGUAGES[lang]}"
+
+        return lang, confidence, translated_from
+
+    def should_translate(self, message, lang, confidence):
+        # check blacklisted_words.txt
+        # (prevents edge cases not able to be easily caught by the rest of the checks)
+        # TODO: We should add this to the Database
+        if word_is_in_blacklist(message):
+            logger.debug("word is in blacklist, aborting translation...")
+            return False
+
+        # if lang == NATIVE_LANGUAGE then dont translate
+        if lang == self.LANGCODES[self.NATIVE_LANGUAGE]:
+            logger.debug(
+                f"lang == NATIVE_LANGUAGE ({lang}), aborting translation..."
+            )  # info print
+            return False  # guard clause
+
+        # if not >= the CONFIDENCE_THRESHOLD of NATIVE_LANGUAGE then dont translate
+        if float(confidence) < float(self.CONFIDENCE_THRESHOLD):
+            logger.debug(
+                f"lang = {lang}\n"
+                f"confidence < THRESHOLD ({confidence}), aborting translation..."
+            )  # info print
+            return False  # guard clause
+
+        return True
+
+    def should_add_reaction(self, message, translation):
+        # if translation == message, dont translate
+        if translation.text == message.content:
+            logger.debug(
+                "translation == message, aborting translation..."
+            )  # info print
+            return False
+
+        # check similarity between original and translated text, dont translate if too similar
+        similarity = similarity_ratio(message.content, translation.text)
+        if similarity > self.SIMILARITY_THRESHOLD:
+            logger.debug(
+                f"similarity > THRESHOLD, aborting translation... ({similarity})"
+            )
+            return False  # guard clause
+
+        return True
+
     @commands.Cog.listener()
     async def on_message(self, message):
         # initial checks
         if message.author.bot:
             return  # guard clause
 
+        # debug chunk seperator
+        logger.debug("---")
+
         # returns formatted text
-        message.content = return_only_text(message.content)
+        message.content = format_text(message.content)
 
-        # check blacklisted_words.txt (prevents edge cases not able to be easily caught by the rest of the checks)
-        # TODO: We should add this to the Database
-        if word_is_in_blacklist(message.content):
-            logger.debug("word is in blacklist...")
+        # only continue if all pre translation checks pass
+        lang, confidence, translated_from = self.detect_lang(message)
+        should_translate = self.should_translate(message.content, lang, confidence)
+        if should_translate is False:
             return
-
-        logger.debug("---")  # info print
-
-        detected_language = None
-
-        # remove format tokens
-        detected = re.sub(r"<url>|<email>|<phone>|<code>", "", message.content.lower())
-
-        # logger.debug(f'detected: {detected}')
-
-        # detect language of message
-        detected = self.translator.detect(detected)
-        logger.debug(f"detected = {detected}")  # info print
-        lang = detected.lang.lower()
-        confidence = detected.confidence
-
-        # if detection picks up 2 potential languages
-        if more_than_one_language_detected(lang, confidence, self.CONFIDENCE_THRESHOLD):
-            # extract confidence value from list
-            logger.debug(confidence)
-            # format for embed response
-            detected_language = (
-                f"{self.LANGUAGES[lang[0]]}/" f"{self.LANGUAGES[lang[1]]}"
-            )
-            # assign lang to first item in lang list to use as translation src
-            lang = lang[0]
-
-        # if NATIVE_LANGUAGE then dont translate
-        elif lang == self.LANGCODES[self.NATIVE_LANGUAGE]:
-            logger.debug(
-                f"lang == NATIVE_LANGUAGE ({lang}), " f"aborting translation..."
-            )  # info print
-            return  # guard clause
-
-        # if within the CONFIDENCE_THRESHOLD of NATIVE_LANGUAGE then dont translate
-        elif float(confidence) < float(self.CONFIDENCE_THRESHOLD):
-            logger.debug(
-                f"lang = {lang}\nconfidence < THRESHOLD ({confidence}), aborting translation..."
-            )  # info print
-            return  # guard clause
-
-        # preformat
-        elif detected_language is None:
-            detected_language = f"{self.LANGUAGES[lang]}"
-
-        # turn confidence from decimal to percent value
-        confidence *= 100
 
         # translate message to native language
-        logger.debug("translating...")  # info print
         translation = self.translator.translate(
-            message.content, src=lang, dest=self.LANGCODES[self.NATIVE_LANGUAGE]
+            message.content, src=lang.lower(), dest=self.LANGCODES[self.NATIVE_LANGUAGE]
         )
-        logger.debug(f"translation = {translation}")  # info print
+        translation.text = translation.text.lower()
 
-        # if translation == message, dont translate
-        if translation.text.lower() == message.content.lower():
-            logger.debug(
-                "translation == message, aborting translation..."
-            )  # info print
-            return
-
-        # check similarity between original and translated text, dont translate if too similar
-        similarity = similarity_ratio(message.content.lower(), translation.text.lower())
-        if similarity > self.SIMILARITY_THRESHOLD:
-            logger.debug(
-                f"similarity > THRESHOLD" f", aborting translation... ({similarity})"
-            )
-            return  # guard clause
-
-        # parse pronunciation from extra_data
-        pronunciation = self.parse_pronunciation(message.content, translation)
-
-        description = f"**{translation.text}**"
-        description += (
-            f"\n- pronounced: {pronunciation.lower()}" if pronunciation else ""
-        )
-        description += (
-            f"\n- translated from {detected_language} to {self.NATIVE_LANGUAGE}"
-        )
-
-        # footer = f"translated from {detected_language} to {self.NATIVE_LANGUAGE}"
-        # footer += f"\nauto detection confidence: {confidence}%"
-        # footer += f"\nsimilarity to original text: {similarity:.2}%" if similarity > float(0) else ""
-
-        embed = create_embed(
-            title=f"{message.content} {self.REACTION_EMOJI}",
-            description=description
-            # , pronunciation=pronunciation
-            # , footer=footer
-            ,
-            thumbnail=True,
-        )
-
-        self.auto_translation[message.content] = embed
-
-        # add reaction
-        await message.add_reaction(self.REACTION_EMOJI)
+        # if all checks pass then add reaction
+        should_add_reaction = self.should_add_reaction(message, translation)
+        if should_add_reaction:
+            await message.add_reaction(self.REACTION_EMOJI)
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
@@ -273,7 +252,7 @@ class trans_auto(commands.Cog):
 
         try:
             # clean up text
-            message.content = return_only_text(message.content)
+            message.content = format_text(message.content)
             # message.content = re.sub(
             #     r'<url>|<email>|<phone>|<code>'
             #     , ''
@@ -310,7 +289,7 @@ class trans_auto(commands.Cog):
     @commands.slash_command(description="Example: /translate hello world to japanese")
     async def translate(self, ctx, message, to):
         # find and omit any emojis
-        message = return_only_text(message)
+        message = format_text(message)
 
         # auto detect language of message for translation
         new_lang = str(to).lower()
