@@ -395,14 +395,14 @@ class trans_auto(commands.Cog):
     async def blacklist(self, ctx):
         try:
             # read blacklist db
-            with open(blacklist, "r") as f:
+            with open(blacklist, "r", encoding="utf-8") as f:
                 blacklist_entries = f.read().strip().split("\n")
-                logger.info(f"blacklist data: {blacklist_entries}")
+                logger.debug(f"blacklist data: {blacklist_entries}")
 
             # if word is in db, delete word
             if blacklist_entries[0] != "":
                 blacklist_entries = "- " + "\n- ".join(blacklist_entries)
-                logger.info(f"blacklist has data...")
+                logger.debug(f"blacklist has data...")
                 embed = create_embed(
                     title="Blacklist entries:",
                     description=blacklist_entries,
@@ -411,13 +411,22 @@ class trans_auto(commands.Cog):
                 await ctx.respond(embed=embed, ephemeral=True)
 
             else:
-                logger.info(f"blacklist has no data...")
+                logger.debug(f"blacklist has no data...")
                 embed = create_embed(
                     title="The blacklist is currently empty",
                     description="Use /blacklistadd or /blacklistremove to change blacklist entries",
                     footer="Changes to the blacklist take immediate effect.",
                 )
                 await ctx.respond(embed=embed, ephemeral=True)
+
+        except Exception as e:
+            logger.debug(e)
+            embed = create_embed(
+                title="Something went wrong!",
+                description=f"Please contact a developer for support.\nTraceback: {e}",
+                footer="Sorry! This bot is still in development <3",
+            )
+            await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as e:
             logger.info(e)
