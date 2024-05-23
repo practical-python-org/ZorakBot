@@ -472,11 +472,11 @@ class trans_auto(commands.Cog):
         try:
             # if word is in db, delete word
             word_in_blacklist = word_is_in_blacklist(word)
-            logger.info(f"blacklist contents: {word_in_blacklist}")
+            logger.debug(f"blacklist contents: {word_in_blacklist}")
             if word_in_blacklist:
                 blacklisted_words = word_in_blacklist.remove(word)
-                logger.info(f"blacklist contents after removal: {blacklisted_words}")
-                with open(blacklist, "w") as f:
+                logger.debug(f"blacklist contents after removal: {blacklisted_words}")
+                with open(blacklist, "w", encoding="utf-8") as f:
                     f.write("\n".join(blacklisted_words) if blacklisted_words else "")
                     embed = create_embed(
                         title="Deletion request successful",
@@ -495,7 +495,7 @@ class trans_auto(commands.Cog):
             await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as e:
-            logger.info(e)
+            logger.debug(e)
             embed = create_embed(
                 title="Something went wrong!",
                 description=f"Please contact a developer for support.\nTraceback: {e}",
