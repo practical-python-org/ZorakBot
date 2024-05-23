@@ -443,8 +443,8 @@ class trans_auto(commands.Cog):
                 return
 
             # add word to db
-            with open(blacklist, "a") as f:
-                logger.info(f"adding {word} to blacklist...")
+            with open(blacklist, "a", encoding="utf-8") as f:
+                logger.debug(f"adding {word} to blacklist...")
                 f.write(f"{word}\n")
 
             # send response to confirm
@@ -456,7 +456,7 @@ class trans_auto(commands.Cog):
             await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as e:
-            logger.info(e)
+            logger.debug(e)
             embed = create_embed(
                 title="Something went wrong!",
                 description=f"Please contact a developer for support.\nTraceback: {e}",
