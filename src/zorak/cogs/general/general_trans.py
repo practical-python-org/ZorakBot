@@ -488,8 +488,8 @@ class trans_auto(commands.Cog):
 
             # if word is not in db
             embed = create_embed(
-                title="Deletion request successful",
-                description=f"{word} was removed from blacklist",
+                title="Deletion request not successful",
+                description=f"{word} is not in the blacklist",
                 footer="No need to remove! :3",
             )
             await ctx.respond(embed=embed, ephemeral=True)
