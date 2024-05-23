@@ -258,7 +258,7 @@ class trans_auto(commands.Cog):
             await message.clear_reaction(emoji)
 
             # translate message to native language
-            print("translating...")  # info print
+            logger.debug("translating...")  # info print
             lang, confidence, translated_from = self.detect_lang(message)
             translation = self.translator.translate(
                 message.content,
@@ -266,11 +266,11 @@ class trans_auto(commands.Cog):
                 dest=self.LANGCODES[self.NATIVE_LANGUAGE],
             )
             translation.text = translation.text.lower()
-            print(f"translation: {translation.text}")
+            logger.debug(f"translation: {translation.text}")
 
             # parse pronunciation from extra_data
             pronunciation = self.parse_pronunciation(message.content, translation)
-            print(f"pronunciation after parse: {pronunciation}")
+            logger.debug(f"pronunciation after parse: {pronunciation}")
 
             # format and create embed object
             description = f"**{translation.text}**"
@@ -291,7 +291,7 @@ class trans_auto(commands.Cog):
 
         # if error, send error message to channel that caused it
         except Exception as e:
-            print(e)
+            logger.debug(e)
             embed = create_embed(
                 title="Something went wrong with the auto translator!",
                 description=f"Please contact a developer for support.\nTraceback: ```{e}```",
