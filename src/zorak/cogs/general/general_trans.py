@@ -281,7 +281,7 @@ class trans_auto(commands.Cog):
                 f"\n- translated from {translated_from} to {self.NATIVE_LANGUAGE}"
             )
             embed = create_embed(
-                title=f"{message.content} {self.EMOJI_ARROW}",
+                title=f"{message.content} {self.REACTION_EMOJI}",
                 description=description,
                 thumbnail=True,
             )
@@ -325,7 +325,9 @@ class trans_auto(commands.Cog):
                 message, src=old_lang, dest=self.LANGCODES[new_lang]
             )
             pronunciation = self.parse_pronunciation(message, translation)
+            logger.debug(f"pronunciation after parse: {pronunciation}")
 
+            # format and create embed object
             description = f"**{translation.text}**"
             description += (
                 f"\n- pronounced: {pronunciation.lower()}" if pronunciation else ""
@@ -333,16 +335,13 @@ class trans_auto(commands.Cog):
             description += (
                 f"\n- translated from {self.LANGUAGES[old_lang]} to {new_lang}"
             )
-
-            # send embed, sometimes there is no pronunciation
             embed = create_embed(
                 title=f"{message} {self.REACTION_EMOJI}",
-                description=description
-                # , pronunciation=pronunciation
-                # , footer=f"translated from {self.LANGUAGES[old_lang]} to {new_lang}"
-                ,
+                description=description,
                 thumbnail=True,
             )
+
+            # send embed as a reply to command
             await ctx.respond(embed=embed)
 
         except KeyError or ValueError:
@@ -384,6 +383,12 @@ class trans_auto(commands.Cog):
 
         except Exception as e:
             logger.info(e)
+            embed = create_embed(
+                title="Something went wrong!",
+                description=f"Please contact a developer for support.\nTraceback: {e}",
+                footer="Sorry! This bot is still in development <3",
+            )
+            await ctx.respond(embed=embed, ephemeral=True)
 
     @commands.slash_command(description="All supported languages for /translate")
     @commands.has_permissions(manage_messages=True)
