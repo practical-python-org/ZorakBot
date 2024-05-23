@@ -14,7 +14,7 @@ blacklist = Path.cwd().joinpath(
 )
 
 
-def similarity_check(first, second):
+def similarity_ratio(first, second):
     ratio = SequenceMatcher(None, first, second).ratio()
     logger.info(f"Similarity between {first} and {second} = {ratio}")  # info print
     return float(ratio)
@@ -127,7 +127,7 @@ class trans_auto(commands.Cog):
             if pronunciation_list[0] != msg and pronunciation_list[0] != translated:
                 return pronunciation_list[0]
 
-        if similarity_check(translated, pronunciation_list[0]) > similarity_check(
+        if similarity_ratio(translated, pronunciation_list[0]) > similarity_ratio(
             msg, pronunciation_list[0]
         ):
             pronunciation = pronunciation_list[0]
@@ -218,7 +218,7 @@ class trans_auto(commands.Cog):
             return
 
         # check similarity between original and translated text, dont translate if too similar
-        similarity = similarity_check(message.content.lower(), translation.text.lower())
+        similarity = similarity_ratio(message.content.lower(), translation.text.lower())
         if similarity > self.SIMILARITY_THRESHOLD:
             logger.debug(
                 f"similarity > THRESHOLD" f", aborting translation... ({similarity})"
