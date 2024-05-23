@@ -77,7 +77,7 @@ def more_than_one_language_detected(lang, confidence, threshhold):
         return True
 
 
-def return_only_text(message):
+def format_text(message):
     # remove unicode emojis
     message = remove_emoji(message)
     # remove discord emojis
@@ -90,8 +90,8 @@ def return_only_text(message):
     message = re.sub(c.PHONE_NUMBER, "<phone>", message)
     # replace urls with token
     message = re.sub(c.URL, "<url>", message)
-    # make message lowercase and strip whitespace
-    message = " ".join(message.split())
+    # reformat and make message lowercase
+    message = " ".join(message.split("\n")).lower()
 
     return message
 
