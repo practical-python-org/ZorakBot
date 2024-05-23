@@ -9,7 +9,10 @@ from . import _constants as c
 # TODO: test 'hmu' to fis 'lus' error
 
 logger = logging.getLogger(__name__)
-blacklist = Path.cwd().joinpath("src", "zorak", "utilities", "cog_helpers", "blacklisted_words.txt")
+blacklist = Path.cwd().joinpath(
+    "src", "zorak", "utilities", "cog_helpers", "blacklisted_words.txt"
+)
+
 
 def similarity_check(first, second):
     ratio = SequenceMatcher(None, first, second).ratio()
@@ -18,21 +21,23 @@ def similarity_check(first, second):
 
 
 def create_embed(
-    title
-    , description
-    , pronunciation=None
-    , footer=None
-    , color=discord.Color.from_rgb(243, 169, 206)
-    , thumbnail=False
+    title,
+    description,
+    pronunciation=None,
+    footer=None,
+    color=discord.Color.from_rgb(243, 169, 206),
+    thumbnail=False,
 ):
     # send embed, pronunciation not always needed
     embed = discord.Embed(
-        title=title
-        , description=description + pronunciation if pronunciation else description
-        , color=color
+        title=title,
+        description=description + pronunciation if pronunciation else description,
+        color=color,
     )
-    if footer: embed.set_footer(text=footer)
-    if thumbnail: embed.set_thumbnail(url='https://i.imgur.com/NBHsCzm.png')
+    if footer:
+        embed.set_footer(text=footer)
+    if thumbnail:
+        embed.set_thumbnail(url="https://i.imgur.com/NBHsCzm.png")
     # if image: embed.set_image(url='attachment://resources/translate.png')
     return embed
 
@@ -40,12 +45,12 @@ def create_embed(
 def word_is_in_blacklist(message):
     # read blacklist
     logger.info("checking blacklist...")
-    with open(blacklist, 'r') as f:
+    with open(blacklist, "r") as f:
         blacklisted_words = f.read()
 
     # format lists of words from blacklist and message
-    message = message.lower().split(' ')
-    blacklisted_words = list(filter(None, blacklisted_words.lower().split('\n')))
+    message = message.lower().split(" ")
+    blacklisted_words = list(filter(None, blacklisted_words.lower().split("\n")))
 
     # iterate entire blacklist by word until word is found, then return blacklist contents
     for word in message:
@@ -55,7 +60,7 @@ def word_is_in_blacklist(message):
         if word in blacklisted_words:
             # when word matches with blacklisted word
             return blacklisted_words
-    
+
     # if word is not found return False
     return False
 
@@ -73,17 +78,17 @@ def return_only_text(message):
     # remove unicode emojis
     message = remove_emoji(message)
     # remove discord emojis
-    message = re.sub(c.DISCORD_EMOJI, '', message)
+    message = re.sub(c.DISCORD_EMOJI, "", message)
     # replace code blocks with token
-    message = re.sub(c.CODE_BLOCK, '<code>', message)
+    message = re.sub(c.CODE_BLOCK, "<code>", message)
     # replace email addresses with token
-    message = re.sub(c.EMAIL, '<email>', message)
+    message = re.sub(c.EMAIL, "<email>", message)
     # replace phone numbers with token
-    message = re.sub(c.PHONE_NUMBER, '<phone>', message)
+    message = re.sub(c.PHONE_NUMBER, "<phone>", message)
     # replace urls with token
-    message = re.sub(c.URL, '<url>', message)
+    message = re.sub(c.URL, "<url>", message)
     # make message lowercase and strip whitespace
-    message = ' '.join(message.split())
+    message = " ".join(message.split())
 
     return message
 
@@ -107,7 +112,9 @@ class trans_auto(commands.Cog):
         logger.debug(f"pronunciation before parse: {pronunciation_list}")  # info print
 
         # seperate list into formatted strings only
-        pronunciation_list = [string for string in pronunciation_list if type(string) is str]
+        pronunciation_list = [
+            string for string in pronunciation_list if type(string) is str
+        ]
 
         msg = message.lower()
         translated = translation.text.lower()
@@ -115,21 +122,23 @@ class trans_auto(commands.Cog):
 
         if len(pronunciation_list) == 0:
             return None
-        
+
         if len(pronunciation_list) == 1:
             if pronunciation_list[0] != msg and pronunciation_list[0] != translated:
                 return pronunciation_list[0]
 
-        if similarity_check(translated, pronunciation_list[0]) > similarity_check(msg, pronunciation_list[0]):
+        if similarity_check(translated, pronunciation_list[0]) > similarity_check(
+            msg, pronunciation_list[0]
+        ):
             pronunciation = pronunciation_list[0]
-        
+
         else:
             pronunciation = pronunciation_list[1]
-        
+
         if pronunciation == msg or pronunciation == translated:
             pronunciation = None
 
-        logger.debug(f'pronunciation after parse: {pronunciation}')
+        logger.debug(f"pronunciation after parse: {pronunciation}")
         return pronunciation
 
     @commands.Cog.listener()
@@ -144,7 +153,7 @@ class trans_auto(commands.Cog):
         # check blacklisted_words.txt (prevents edge cases not able to be easily caught by the rest of the checks)
         # TODO: We should add this to the Database
         if word_is_in_blacklist(message.content):
-            logger.debug('word is in blacklist...')
+            logger.debug("word is in blacklist...")
             return
 
         logger.debug("---")  # info print
@@ -152,11 +161,7 @@ class trans_auto(commands.Cog):
         detected_language = None
 
         # remove format tokens
-        detected = re.sub(
-            r'<url>|<email>|<phone>|<code>'
-            , ''
-            , message.content.lower()
-        )
+        detected = re.sub(r"<url>|<email>|<phone>|<code>", "", message.content.lower())
 
         # logger.debug(f'detected: {detected}')
 
@@ -167,21 +172,21 @@ class trans_auto(commands.Cog):
         confidence = detected.confidence
 
         # if detection picks up 2 potential languages
-        if more_than_one_language_detected(
-            lang, confidence, self.CONFIDENCE_THRESHOLD
-        ):
+        if more_than_one_language_detected(lang, confidence, self.CONFIDENCE_THRESHOLD):
             # extract confidence value from list
             logger.debug(confidence)
             # format for embed response
-            detected_language = (f"{self.LANGUAGES[lang[0]]}/"
-                                    f"{self.LANGUAGES[lang[1]]}")
+            detected_language = (
+                f"{self.LANGUAGES[lang[0]]}/" f"{self.LANGUAGES[lang[1]]}"
+            )
             # assign lang to first item in lang list to use as translation src
             lang = lang[0]
 
         # if NATIVE_LANGUAGE then dont translate
         elif lang == self.LANGCODES[self.NATIVE_LANGUAGE]:
-            logger.debug(f"lang == NATIVE_LANGUAGE ({lang}), "
-                        f"aborting translation...")  # info print
+            logger.debug(
+                f"lang == NATIVE_LANGUAGE ({lang}), " f"aborting translation..."
+            )  # info print
             return  # guard clause
 
         # if within the CONFIDENCE_THRESHOLD of NATIVE_LANGUAGE then dont translate
@@ -194,16 +199,14 @@ class trans_auto(commands.Cog):
         # preformat
         elif detected_language is None:
             detected_language = f"{self.LANGUAGES[lang]}"
-        
+
         # turn confidence from decimal to percent value
         confidence *= 100
 
         # translate message to native language
         logger.debug("translating...")  # info print
         translation = self.translator.translate(
-            message.content
-            , src=lang
-            , dest=self.LANGCODES[self.NATIVE_LANGUAGE]
+            message.content, src=lang, dest=self.LANGCODES[self.NATIVE_LANGUAGE]
         )
         logger.debug(f"translation = {translation}")  # info print
 
@@ -215,35 +218,37 @@ class trans_auto(commands.Cog):
             return
 
         # check similarity between original and translated text, dont translate if too similar
-        similarity = similarity_check(
-            message.content.lower(), translation.text.lower()
-        )
+        similarity = similarity_check(message.content.lower(), translation.text.lower())
         if similarity > self.SIMILARITY_THRESHOLD:
             logger.debug(
-                f"similarity > THRESHOLD"
-                f", aborting translation... ({similarity})"
+                f"similarity > THRESHOLD" f", aborting translation... ({similarity})"
             )
             return  # guard clause
 
         # parse pronunciation from extra_data
         pronunciation = self.parse_pronunciation(message.content, translation)
 
-        description = f'**{translation.text}**'
-        description += f'\n- pronounced: {pronunciation.lower()}' if pronunciation else ''
-        description += f'\n- translated from {detected_language} to {self.NATIVE_LANGUAGE}'
+        description = f"**{translation.text}**"
+        description += (
+            f"\n- pronounced: {pronunciation.lower()}" if pronunciation else ""
+        )
+        description += (
+            f"\n- translated from {detected_language} to {self.NATIVE_LANGUAGE}"
+        )
 
         # footer = f"translated from {detected_language} to {self.NATIVE_LANGUAGE}"
         # footer += f"\nauto detection confidence: {confidence}%"
         # footer += f"\nsimilarity to original text: {similarity:.2}%" if similarity > float(0) else ""
 
         embed = create_embed(
-            title=f'{message.content} {self.REACTION_EMOJI}'
-            , description=description
+            title=f"{message.content} {self.REACTION_EMOJI}",
+            description=description
             # , pronunciation=pronunciation
             # , footer=footer
-            , thumbnail=True
-            )
-        
+            ,
+            thumbnail=True,
+        )
+
         self.auto_translation[message.content] = embed
 
         # add reaction
@@ -259,7 +264,7 @@ class trans_auto(commands.Cog):
         # initial checks
         if user.bot:
             return  # guard clause
-        
+
         if str(emoji) != self.REACTION_EMOJI:
             return  # guard clause
 
@@ -273,14 +278,19 @@ class trans_auto(commands.Cog):
             # )
 
             await message.clear_reaction(emoji)
-            logger.debug(f'auto_translation: {self.auto_translation}')
-            logger.debug(f'translated: {self.auto_translation[message.content.lower()]}')
-            await message.reply(embed=self.auto_translation[message.content.lower()], mention_author=False)
+            logger.debug(f"auto_translation: {self.auto_translation}")
+            logger.debug(
+                f"translated: {self.auto_translation[message.content.lower()]}"
+            )
+            await message.reply(
+                embed=self.auto_translation[message.content.lower()],
+                mention_author=False,
+            )
 
             # # this breaks shit...i just wanna delete the dictionary item ;n;
             # self.auto_translation = self.auto_translation.pop(message.content)
             del self.auto_translation[message.content.lower()]
-        
+
         except KeyError:
             pass
 
@@ -288,10 +298,10 @@ class trans_auto(commands.Cog):
         except Exception as e:
             logger.debug(e)
             embed = create_embed(
-                title="Something went wrong with the auto translator!"
-                , description=f"Please contact a developer for support.\nTraceback: {e}"
-                , footer="Sorry! This bot is still in development <3 This message auto deletes after 30 seconds."
-                )
+                title="Something went wrong with the auto translator!",
+                description=f"Please contact a developer for support.\nTraceback: {e}",
+                footer="Sorry! This bot is still in development <3 This message auto deletes after 30 seconds.",
+            )
             await message.channel.send(embed=embed, delete_after=30)
 
     @commands.slash_command(description="Example: /translate hello world to japanese")
@@ -302,7 +312,7 @@ class trans_auto(commands.Cog):
         # auto detect language of message for translation
         new_lang = str(to).lower()
         old_lang = self.translator.detect(message).lang.lower()
-        logger.debug(f'new_lang: {new_lang}\nold_lang: {old_lang}')
+        logger.debug(f"new_lang: {new_lang}\nold_lang: {old_lang}")
 
         # initial checks
         if new_lang in ["chinese traditional", "traditional chinese", "mandarin"]:
@@ -321,38 +331,45 @@ class trans_auto(commands.Cog):
             )
             pronunciation = self.parse_pronunciation(message, translation)
 
-            description = f'**{translation.text}**'
-            description += f'\n- pronounced: {pronunciation.lower()}' if pronunciation else ''
-            description += f'\n- translated from {self.LANGUAGES[old_lang]} to {new_lang}'
+            description = f"**{translation.text}**"
+            description += (
+                f"\n- pronounced: {pronunciation.lower()}" if pronunciation else ""
+            )
+            description += (
+                f"\n- translated from {self.LANGUAGES[old_lang]} to {new_lang}"
+            )
 
             # send embed, sometimes there is no pronunciation
             embed = create_embed(
-                title=f'{message} {self.REACTION_EMOJI}'
-                , description=description
+                title=f"{message} {self.REACTION_EMOJI}",
+                description=description
                 # , pronunciation=pronunciation
                 # , footer=f"translated from {self.LANGUAGES[old_lang]} to {new_lang}"
-                , thumbnail=True
-                )
+                ,
+                thumbnail=True,
+            )
             await ctx.respond(embed=embed)
 
         except KeyError or ValueError:
             embed = create_embed(
-                title="Not a supported language!"
-                , description="Please enter a supported language."
-                , footer="Type /languages to get a list of supported languages."
-                )
+                title="Not a supported language!",
+                description="Please enter a supported language.",
+                footer="Type /languages to get a list of supported languages.",
+            )
             await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as e:
             logger.debug(e)
             embed = create_embed(
-                title="Something went wrong!"
-                , description=f"Please contact a developer for support.\nTraceback: {e}"
-                , footer="Sorry! This bot is still in development <3"
-                )
+                title="Something went wrong!",
+                description=f"Please contact a developer for support.\nTraceback: {e}",
+                footer="Sorry! This bot is still in development <3",
+            )
             await ctx.respond(embed=embed, ephemeral=True)
 
-    @commands.slash_command(description="All supported languages for auto translator and /translate")
+    @commands.slash_command(
+        description="All supported languages for auto translator and /translate"
+    )
     async def languages(self, ctx):
         # set string to fill with data from googletrans languages dict
         languages = ""
@@ -364,10 +381,10 @@ class trans_auto(commands.Cog):
         try:
             # send language list as embed
             embed = create_embed(
-                title="Supported Languages for Translation:"
-                , description=languages.title()
-                , footer="Not case sensitive but must otherwise be entered as seen"
-                )
+                title="Supported Languages for Translation:",
+                description=languages.title(),
+                footer="Not case sensitive but must otherwise be entered as seen",
+            )
             await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as e:
@@ -379,48 +396,49 @@ class trans_auto(commands.Cog):
         try:
             # read blacklist db
             with open(blacklist, "r") as f:
-                blacklist_entries = f.read().strip().split('\n')
+                blacklist_entries = f.read().strip().split("\n")
                 logger.info(f"blacklist data: {blacklist_entries}")
 
             # if word is in db, delete word
-            if blacklist_entries[0] != '':
-                blacklist_entries = '- ' + '\n- '.join(blacklist_entries)
+            if blacklist_entries[0] != "":
+                blacklist_entries = "- " + "\n- ".join(blacklist_entries)
                 logger.info(f"blacklist has data...")
                 embed = create_embed(
-                    title="Blacklist entries:"
-                    , description=blacklist_entries
-                    , footer="Use /blacklistadd or /blacklistremove to change entries."
-                    )
+                    title="Blacklist entries:",
+                    description=blacklist_entries,
+                    footer="Use /blacklistadd or /blacklistremove to change entries.",
+                )
                 await ctx.respond(embed=embed, ephemeral=True)
 
             else:
                 logger.info(f"blacklist has no data...")
                 embed = create_embed(
-                    title="The blacklist is currently empty"
-                    , description="Use /blacklistadd or /blacklistremove to change blacklist entries"
-                    , footer="Changes to the blacklist take immediate effect."
-                    )
+                    title="The blacklist is currently empty",
+                    description="Use /blacklistadd or /blacklistremove to change blacklist entries",
+                    footer="Changes to the blacklist take immediate effect.",
+                )
                 await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as e:
             logger.info(e)
             embed = create_embed(
-                title="Something went wrong!"
-                , description=f"Please contact a developer for support.\nTraceback: {e}"
-                , footer="Sorry! This bot is still in development <3"
-                )
+                title="Something went wrong!",
+                description=f"Please contact a developer for support.\nTraceback: {e}",
+                footer="Sorry! This bot is still in development <3",
+            )
             await ctx.respond(embed=embed, ephemeral=True)
 
-    @commands.slash_command(description="Add a word to be blacklisted from the auto translator")
+    @commands.slash_command(
+        description="Add a word to be blacklisted from the auto translator"
+    )
     @commands.has_permissions(manage_messages=True)
     async def blacklistadd(self, ctx, word):
         try:
             # check blacklist
             if word_is_in_blacklist(word):
                 embed = create_embed(
-                    title="Word is already in blacklist"
-                    , description="Ignoring request"
-                    )
+                    title="Word is already in blacklist", description="Ignoring request"
+                )
                 await ctx.respond(embed=embed, ephemeral=True)
                 return
 
@@ -431,56 +449,58 @@ class trans_auto(commands.Cog):
 
             # send response to confirm
             embed = create_embed(
-                title="Successfully added to blacklist"
-                , description=f"{word} was added to blacklist"
-                , footer="This change should take immediate effect"
-                )
+                title="Successfully added to blacklist",
+                description=f"{word} was added to blacklist",
+                footer="This change should take immediate effect",
+            )
             await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as e:
             logger.info(e)
             embed = create_embed(
-                    title="Something went wrong!"
-                    , description=f"Please contact a developer for support.\nTraceback: {e}"
-                    , footer="Sorry! This bot is still in development <3"
-                )
+                title="Something went wrong!",
+                description=f"Please contact a developer for support.\nTraceback: {e}",
+                footer="Sorry! This bot is still in development <3",
+            )
             await ctx.respond(embed=embed, ephemeral=True)
 
-    @commands.slash_command(description="Remove a word from the auto translator blacklist")
+    @commands.slash_command(
+        description="Remove a word from the auto translator blacklist"
+    )
     @commands.has_permissions(manage_messages=True)
     async def blacklistremove(self, ctx, word):
         try:
             # if word is in db, delete word
             word_in_blacklist = word_is_in_blacklist(word)
-            logger.info(f'blacklist contents: {word_in_blacklist}')
+            logger.info(f"blacklist contents: {word_in_blacklist}")
             if word_in_blacklist:
                 blacklisted_words = word_in_blacklist.remove(word)
                 logger.info(f"blacklist contents after removal: {blacklisted_words}")
                 with open(blacklist, "w") as f:
-                    f.write('\n'.join(blacklisted_words) if blacklisted_words else '')
+                    f.write("\n".join(blacklisted_words) if blacklisted_words else "")
                     embed = create_embed(
-                        title="Deletion request successful"
-                        , description=f"{word} was removed from blacklist"
-                        , footer="This change should take immediate effect"
-                        )
+                        title="Deletion request successful",
+                        description=f"{word} was removed from blacklist",
+                        footer="This change should take immediate effect",
+                    )
                     await ctx.respond(embed=embed, ephemeral=True)
                 return
 
             # if word is not in db
             embed = create_embed(
-                    title="Deletion request successful"
-                    , description=f"{word} was removed from blacklist"
-                    , footer="No need to remove! :3"
-                )
+                title="Deletion request successful",
+                description=f"{word} was removed from blacklist",
+                footer="No need to remove! :3",
+            )
             await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as e:
             logger.info(e)
             embed = create_embed(
-                title="Something went wrong!"
-                , description=f"Please contact a developer for support.\nTraceback: {e}"
-                , footer="Sorry! This bot is still in development <3"
-                )
+                title="Something went wrong!",
+                description=f"Please contact a developer for support.\nTraceback: {e}",
+                footer="Sorry! This bot is still in development <3",
+            )
             await ctx.respond(embed=embed, ephemeral=True)
 
 
