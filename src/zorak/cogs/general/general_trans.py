@@ -68,15 +68,6 @@ def word_is_in_blacklist(message):
     return False
 
 
-def more_than_one_language_detected(lang, confidence, threshhold):
-    if type(lang) is str:
-        return False
-    # elif float(confidence) < float(threshhold):
-    #     return False
-    else:
-        return True
-
-
 def format_text(message):
     # remove unicode emojis
     message = remove_emoji(message)
