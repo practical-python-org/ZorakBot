@@ -433,10 +433,18 @@ class trans_auto(commands.Cog):
                 await ctx.respond(embed=embed, ephemeral=True)
                 return
 
+            # read blacklist to append word
+            with open(blacklist, "r") as f:
+                logger.debug("reading blacklist...")
+                blacklisted_words = f.read().split("\n")
+
+            # append word to blacklist
+            blacklisted_words.append(word)
+
             # add word to db
-            with open(blacklist, "a", encoding="utf-8") as f:
+            with open(blacklist, "w") as f:
                 logger.debug(f"adding {word} to blacklist...")
-                f.write(f"{word}\n")
+                f.write("\n".join(blacklisted_words))
 
             # send response to confirm
             embed = create_embed(
@@ -464,11 +472,11 @@ class trans_auto(commands.Cog):
             # if word is in db, delete word
             word = word.lower()
             word_in_blacklist = word_is_in_blacklist(word)
-            print(f"blacklist contents: {word_in_blacklist}")
+            logger.debug(f"blacklist contents: {word_in_blacklist}")
             if word_in_blacklist:
                 i = word_in_blacklist.index(word)
                 word_in_blacklist.pop(i)
-                print(f"blacklist contents after removal: {word_in_blacklist}")
+                logger.debug(f"blacklist contents after removal: {word_in_blacklist}")
                 with open(blacklist, "w") as f:
                     f.write("\n".join(word_in_blacklist) if word_in_blacklist else "")
                     embed = create_embed(
