@@ -96,7 +96,7 @@ class trans_auto(commands.Cog):
         self.REACTION_EMOJI = "⤵️"
         self.LANGUAGES = googletrans.LANGUAGES  # all supported langs in a dict
         self.LANGCODES = googletrans.LANGCODES  # reverse of self.LANGUAGES
-        self.CONFIDENCE_THRESHOLD = 0.50  # if confidence lower than this then return
+        self.CONFIDENCE_THRESHOLD = 0.85  # if confidence lower than this then return
         self.SIMILARITY_THRESHOLD = 0.70  # similarity threshold for translated text
 
     def parse_pronunciation(self, message, translation):
