@@ -462,13 +462,15 @@ class trans_auto(commands.Cog):
     async def blacklistremove(self, ctx, word):
         try:
             # if word is in db, delete word
+            word = word.lower()
             word_in_blacklist = word_is_in_blacklist(word)
-            logger.debug(f"blacklist contents: {word_in_blacklist}")
+            print(f"blacklist contents: {word_in_blacklist}")
             if word_in_blacklist:
-                blacklisted_words = word_in_blacklist.remove(word)
-                logger.debug(f"blacklist contents after removal: {blacklisted_words}")
-                with open(blacklist, "w", encoding="utf-8") as f:
-                    f.write("\n".join(blacklisted_words) if blacklisted_words else "")
+                i = word_in_blacklist.index(word)
+                word_in_blacklist.pop(i)
+                print(f"blacklist contents after removal: {word_in_blacklist}")
+                with open(blacklist, "w") as f:
+                    f.write("\n".join(word_in_blacklist) if word_in_blacklist else "")
                     embed = create_embed(
                         title="Deletion request successful",
                         description=f"{word} was removed from blacklist",
