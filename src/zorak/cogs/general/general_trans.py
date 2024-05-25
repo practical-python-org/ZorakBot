@@ -156,19 +156,19 @@ class trans_auto(commands.Cog):
         return lang, confidence, translated_from
 
     def should_translate(self, message, lang, confidence):
-        # check blacklisted_words.txt
-        # (prevents edge cases not able to be easily caught by the rest of the checks)
-        # TODO: We should add this to the Database
-        if word_is_in_blacklist(message):
-            logger.debug("word is in blacklist, aborting translation...")
-            return False
-
         # if lang == NATIVE_LANGUAGE then dont translate
         if lang == self.LANGCODES[self.NATIVE_LANGUAGE]:
             logger.debug(
                 f"lang == NATIVE_LANGUAGE ({lang}), aborting translation..."
             )  # info print
             return False  # guard clause
+
+        # check blacklisted_words.txt
+        # (prevents edge cases not able to be easily caught by the rest of the checks)
+        # TODO: We should add this to the Database
+        if word_is_in_blacklist(message):
+            logger.debug("word is in blacklist, aborting translation...")
+            return False
 
         # if not >= the CONFIDENCE_THRESHOLD of NATIVE_LANGUAGE then dont translate
         if float(confidence) < float(self.CONFIDENCE_THRESHOLD):
