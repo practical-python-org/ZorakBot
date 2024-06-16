@@ -47,7 +47,7 @@ setuptools.setup(
             "pre-commit==3.7.0",
             "PyYAML==6.0.1",
             "ruff==0.4.3",
-            "virtualenv==20.26.1",
+            "virtualenv==20.26.2",
             "versioneer",
         ],
         # 'test': ['coverage'],
