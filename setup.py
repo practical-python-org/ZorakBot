@@ -44,7 +44,7 @@ setuptools.setup(
             "identify==2.6.0",
             "nodeenv==1.9.1",
             "platformdirs==4.2.2",
-            "pre-commit==3.7.1",
+            "pre-commit==3.8.0",
             "PyYAML==6.0.1",
             "ruff==0.5.2",
             "virtualenv==20.26.3",
