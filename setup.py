@@ -42,7 +42,7 @@ setuptools.setup(
             "distlib==0.3.9",
             "filelock==3.16.1",
             "identify==2.6.16",
-            "nodeenv==1.9.1",
+            "nodeenv==1.10.0",
             "platformdirs==4.3.8",
             "pre-commit==3.8.0",
             "PyYAML==6.0.3",
