@@ -38,7 +38,7 @@ setuptools.setup(
     python_requires=">=3.7",
     extras_require={
         "dev": [
-            "cfgv==3.4.0",
+            "cfgv==3.5.0",
             "distlib==0.3.9",
             "filelock==3.16.1",
             "identify==2.6.16",
