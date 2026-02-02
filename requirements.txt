@@ -13,5 +13,5 @@ clean-text
 PyNaCl==1.5.0
 ffmpeg-python==0.2.0
 yt-dlp==2024.12.23
-googletrans==3.1.0a0
+googletrans==4.0.2
 dnspython==2.7.0
