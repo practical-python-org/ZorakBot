@@ -46,7 +46,7 @@ setuptools.setup(
             "platformdirs==4.3.8",
             "pre-commit==3.8.0",
             "PyYAML==6.0.3",
-            "ruff==0.9.10",
+            "ruff==0.15.10",
             "virtualenv==20.28.1",
             "versioneer",
         ],
